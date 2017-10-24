@@ -1,5 +1,5 @@
 <template>
-	<div class="navbar" id="header">
+	<div class="navbar" id="navbar">
 		<div class="container-fluid">
 			<navbarHeader :brandTitle="brandTitle"></navbarHeader>
 			<navbarRight></navbarRight>
@@ -18,14 +18,14 @@
       }
     },
     components: {
-      navbarHeader,
-      navbarRight
+      navbarHeader: navbarHeader,
+      navbarRight: navbarRight
     }
   }
 </script>
 
 <style>
-	#header {
+	#navbar {
 		background-color : #ffc400;
 		box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.1);
     border-radius: 0 !important;
