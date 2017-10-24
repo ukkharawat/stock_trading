@@ -1,13 +1,20 @@
 <template>
   <div id="stock">
+      <stockHeader :corpShortName="'AH'"
+        :corpFullThaiName="'บริษัท อาปิโก ไฮเทค จำกัด (มหาชน)'">
+      </stockHeader>
       <h1>{{getCategory()}}</h1>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import stockHeader from '@/components/StockHeader'
 
   export default {
+    components: {
+      stockHeader
+    },
     methods: {
       ...mapGetters([
         'getCategory'
