@@ -1,8 +1,8 @@
 <template>
   <div id="index-menu">
-    <a class="main-menu" @click="setCategory(1)">{{mainMenuTitle}}</a>
+    <a class="main-menu" @click="setCategory(mainMenuTitle)">{{mainMenuTitle}}</a>
     <a class="sub-menu" v-for="subMenuTitle in subMenuTitles"
-        @click="setCategory(1)">{{subMenuTitle}}</a>
+        @click="setCategory(subMenuTitle)">{{subMenuTitle}}</a>
   </div>
 </template>
 
