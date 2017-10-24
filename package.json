@@ -13,7 +13,8 @@
     "amcharts3": "amcharts/amcharts3",
     "bootstrap-vue": "^1.0.0-beta.9",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
