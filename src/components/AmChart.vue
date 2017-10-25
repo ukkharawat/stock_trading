@@ -1,5 +1,5 @@
 <template>
-  <div id="chartdiv" style="width: 960px; height:360px;">
+  <div id="chartdiv">
   </div>
 </template>
 
@@ -7,11 +7,6 @@
 
   export default {
     name: 'app',
-    data() {
-      return {
-        msg: 'Welcome to Your Vue.js + amCharts App'
-      }
-    },
     created() {
       AmCharts.makeChart("chartdiv", {
         "type": "stock",
@@ -42,12 +37,11 @@
            * data loader for data set data
            */
           "dataLoader": {
-            "url": "https://www.amcharts.com/wp-content/uploads/assets/stock/MSFT.csv",
+            "url": "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/JSP.BK.csv",
             "format": "csv",
             "showCurtain": true,
             "showErrors": true,
             "async": true,
-            "reverse": true,
             "delimiter": ",",
             "useColumnNames": true
           },
@@ -200,3 +194,11 @@
     }
   }
 </script>
+
+<style>
+  #chartdiv {
+    width: calc(100% - 16px);
+    height:calc(50vw * 0.5125);
+    margin: 16px;
+  }
+</style>
