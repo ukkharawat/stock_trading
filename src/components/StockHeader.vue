@@ -29,6 +29,7 @@
   .shortname {
     font-size: 24px;
     display: inline;
+    margin-right: 4px;
   }
 
   .fullname {
