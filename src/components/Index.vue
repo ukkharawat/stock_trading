@@ -65,7 +65,7 @@
     margin-top: 24px;
     padding-bottom: 8px;
     background-color: #fff59d;
-    width: 176px;
+    width: calc(100% - 16px);
     height: auto;
   }
 </style>
