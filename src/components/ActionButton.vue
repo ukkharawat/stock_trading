@@ -46,5 +46,6 @@
   .log-in-button, .log-in-button:hover {
     border: #ffd740 solid 1px;
     color: #212121;
+    background-color: #ffd740;
   }
 </style>
