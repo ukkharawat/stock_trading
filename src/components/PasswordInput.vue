@@ -1,7 +1,7 @@
 <template>
-  <div id="text-input">
-    <baseInput :inputType="'text'"
-               :placeholder="placeholder">
+  <div id="password-input">
+    <baseInput :inputType="'password'"
+      :placeholder="placeholder">
     </baseInput>
   </div>
 </template>
