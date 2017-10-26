@@ -1,5 +1,5 @@
 <template>
-  <div id="action-menu">
+  <div id="action-button">
     <div class="form-group">
       <button type="submit" class="btn" :class="buttonClass">{{message}}</button>
     </div>
@@ -41,5 +41,10 @@
   .buy-button, .buy-button:hover {
     border: #0288d1 solid 1px;
     color: #0288d1;
+  }
+
+  .log-in-button, .log-in-button:hover {
+    border: #ffd740 solid 1px;
+    color: #212121;
   }
 </style>

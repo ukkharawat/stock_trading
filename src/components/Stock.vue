@@ -8,13 +8,13 @@
           <amChart></amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <amountInput></amountInput>
-          <actionMenu :message="'buy'"
+          <textInput :placeholder="'Amount'"></textInput>
+          <actionButton :message="'buy'"
                       :buttonClass="'buy-button'">
-          </actionMenu>
-          <actionMenu :message="'sell'"
+          </actionButton>
+          <actionButton :message="'sell'"
                       :buttonClass="'sell-button'">
-          </actionMenu>
+          </actionButton>
         </div>
       </div>
   </div>
@@ -24,15 +24,15 @@
   import { mapGetters } from 'vuex'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
-  import amountInput from '@/components/AmountInput'
-  import actionMenu from '@/components/ActionMenu'
+  import textInput from '@/components/TextInput'
+  import actionButton from '@/components/ActionButton'
 
   export default {
     components: {
       stockHeader,
       amChart,
-      amountInput,
-      actionMenu
+      textInput,
+      actionButton
     },
     computed: {
     },
