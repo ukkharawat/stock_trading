@@ -2,19 +2,24 @@
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <a class="disable-hover">Log in</a>
+        <a class="disable-hover" @click="openModal">Log in</a>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-
+  import { mapActions } from 'vuex'
   export default {
     props: {
       menuObjects : {
         type: Array
       }
+    },
+    methods: {
+      ...mapActions([
+        'openModal'
+      ])
     }
   }
 </script>
