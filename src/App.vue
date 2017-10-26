@@ -9,10 +9,12 @@
         <stock></stock>
       </div>
     </div>
+    <modal></modal>
   </div>
 </template>
 
 <script>
+  import modal from '@/components/Modal'
   import navbar from '@/components/Navbar'
   import index from '@/components/Index'
   import stock from '@/components/Stock'
@@ -20,6 +22,7 @@
   export default {
     name: 'app',
     components: {
+      modal,
       navbar,
       index,
       stock
