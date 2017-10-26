@@ -1,18 +1,13 @@
 <template>
   <div id="modal" @click="closeModal" v-show="getIsModalOpen">
-    <modalBox @click.stop></modalBox>
+    <slot></slot>
   </div>
 </template>
 
 <script>
-  import modalBox from '@/components/ModalBox'
   import { mapActions, mapGetters } from 'vuex'
 
-
   export default {
-    components: {
-      modalBox
-    },
     computed: {
       ...mapGetters([
         'getIsModalOpen'

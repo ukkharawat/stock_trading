@@ -9,7 +9,9 @@
         <stock></stock>
       </div>
     </div>
-    <modal></modal>
+    <modal>
+      <logInModal @click.stop></logInModal>
+    </modal>
   </div>
 </template>
 
@@ -18,6 +20,7 @@
   import navbar from '@/components/Navbar'
   import index from '@/components/Index'
   import stock from '@/components/Stock'
+  import logInModal from '@/components/LogInModal'
 
   export default {
     name: 'app',
@@ -25,7 +28,8 @@
       modal,
       navbar,
       index,
-      stock
+      stock,
+      logInModal
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="modal-box-content">
+  <div id="log-in-modal-content">
     <div class="row">
       <div class="col-sm-3"></div>
       <div class="col-sm-6">
@@ -30,7 +30,7 @@
 
 <style>
 
-  #modal-box-content {
+  #log-in-modal-content {
     width: 100%;
     margin-top: 24px;
     padding-bottom: 24px;

@@ -1,11 +1,11 @@
 <template>
-  <div id="modal-box-header">
-    <h1 class="modal-box-text-header">Log in</h1>
+  <div id="log-in-modal-header">
+    <h1 class="log-in-modal-text-header">Log in</h1>
   </div>
 </template>
 
 <style>
-  #modal-box-header {
+  #log-in-modal-header {
     width: 100%;
     height: 20%;
     background-color : #ffc400;
@@ -15,7 +15,7 @@
     align-items: center;
   }
 
-  .modal-box-text-header {
+  .log-in-modal-text-header {
     text-align: left;
     font-size: 40px;
     margin: 8px 16px !important;
