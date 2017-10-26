@@ -9,20 +9,27 @@
         <stock></stock>
       </div>
     </div>
+    <modal>
+      <logInModal @click.stop></logInModal>
+    </modal>
   </div>
 </template>
 
 <script>
+  import modal from '@/components/Modal'
   import navbar from '@/components/Navbar'
   import index from '@/components/Index'
   import stock from '@/components/Stock'
+  import logInModal from '@/components/LogInModal'
 
   export default {
     name: 'app',
     components: {
+      modal,
       navbar,
       index,
-      stock
+      stock,
+      logInModal
     }
   }
 </script>
