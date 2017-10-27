@@ -1,6 +1,7 @@
 <template>
   <div id="text-input">
     <baseInput :inputType="'text'"
+               @valueChange="valueChange"
                :placeholder="placeholder">
     </baseInput>
   </div>
@@ -17,6 +18,11 @@
     },
     components: {
       baseInput
+    },
+    methods: {
+      valueChange(event) {
+        this.$emit('valueChange', event)
+      }
     }
   }
 </script>

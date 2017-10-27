@@ -8,7 +8,9 @@
           <amChart></amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <textInput :placeholder="'Amount'"></textInput>
+          <textInput :placeholder="'Amount'"
+                      @valueChange="amountChange">
+          </textInput>
           <actionButton :message="'buy'" @onClick="onClick"
                       :buttonClass="'buy-button'">
           </actionButton>
@@ -28,6 +30,11 @@
   import actionButton from '@/components/ActionButton'
 
   export default {
+    data() {
+      return {
+        amount: null
+      }
+    },
     components: {
       stockHeader,
       amChart,
@@ -42,6 +49,9 @@
       ]),
       onClick(event) {
         console.log(event)
+      },
+      amountChange(event) {
+        this.amount = event
       }
     }
   }

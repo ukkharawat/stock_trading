@@ -2,6 +2,7 @@
   <div id="base-input">
     <div class="form-group">
         <input class="form-control" name="textInput"
+               v-model="value" @change="valueChange"
                :type="inputType" :placeholder="placeholder">
     </div>
   </div>
@@ -9,12 +10,22 @@
 
 <script>
   export default {
+    data() {
+      return {
+        value: null
+      }
+    },
     props: {
       placeholder: {
         type: String
       },
       inputType: {
         type: String
+      }
+    },
+    methods: {
+      valueChange() {
+        this.$emit('valueChange', this.value)
       }
     }
   }
