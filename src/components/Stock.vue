@@ -9,10 +9,10 @@
         </div>
         <div class="col-sm-2 vertical-center">
           <textInput :placeholder="'Amount'"></textInput>
-          <actionButton :message="'buy'"
+          <actionButton :message="'buy'" @onClick="onClick"
                       :buttonClass="'buy-button'">
           </actionButton>
-          <actionButton :message="'sell'"
+          <actionButton :message="'sell'" @onClick="onClick"
                       :buttonClass="'sell-button'">
           </actionButton>
         </div>
@@ -39,7 +39,10 @@
     methods: {
       ...mapGetters([
         'getCategory'
-      ])
+      ]),
+      onClick(event) {
+        console.log(event)
+      }
     }
   }
 </script>

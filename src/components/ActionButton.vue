@@ -1,7 +1,9 @@
 <template>
   <div id="action-button">
     <div class="form-group">
-      <button type="submit" class="btn" :class="buttonClass">{{message}}</button>
+      <button type="submit" class="btn"
+              @click="eventClick"
+              :class="buttonClass">{{message}}</button>
     </div>
   </div>
 </template>
@@ -17,6 +19,11 @@
       buttonClass: {
         type: String,
         required: true
+      }
+    },
+    methods: {
+      eventClick() {
+        this.$emit('onClick', this.message)
       }
     }
   }
