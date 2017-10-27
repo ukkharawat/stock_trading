@@ -8,11 +8,13 @@
           <amChart></amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <textInput :placeholder="'Amount'"></textInput>
-          <actionButton :message="'buy'"
+          <textInput :placeholder="'Amount'"
+                      @handleValueChange="amountChange">
+          </textInput>
+          <actionButton :message="'buy'" @onClick="onClick"
                       :buttonClass="'buy-button'">
           </actionButton>
-          <actionButton :message="'sell'"
+          <actionButton :message="'sell'" @onClick="onClick"
                       :buttonClass="'sell-button'">
           </actionButton>
         </div>
@@ -28,6 +30,11 @@
   import actionButton from '@/components/ActionButton'
 
   export default {
+    data() {
+      return {
+        amount: null
+      }
+    },
     components: {
       stockHeader,
       amChart,
@@ -39,7 +46,13 @@
     methods: {
       ...mapGetters([
         'getCategory'
-      ])
+      ]),
+      onClick(event) {
+        console.log(event)
+      },
+      amountChange(event) {
+        this.amount = event
+      }
     }
   }
 </script>
