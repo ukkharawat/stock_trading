@@ -33,9 +33,7 @@
           "compared": false,
           "categoryField": "Date",
 
-          /**
-           * data loader for data set data
-           */
+
           "dataLoader": {
             "url": "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/JSP.BK.csv",
             "format": "csv",
@@ -68,9 +66,10 @@
             "comparedGraphLineThickness": 2,
             "columnWidth": 0.7,
             "useDataSetColors": false,
+            "balloonText": "open:<b>[[open]]</b><br>close:<b>[[close]]</b><br>low:<b>[[low]]</b><br>high:<b>[[high]]</b>",
             "comparable": true,
             "compareField": "close",
-            "showBalloon": false,
+            "showBalloon": true,
             "proCandlesticks": true
           }],
 
@@ -85,7 +84,6 @@
             "title": "Volume",
             "percentHeight": 30,
             "marginTop": 1,
-            "columnWidth": 0.6,
             "showCategoryAxis": false,
 
             "stockGraphs": [{
@@ -115,10 +113,9 @@
         ],
 
         "panelsSettings": {
-          //    "color": "#fff",
           "plotAreaFillColors": "#333",
           "plotAreaFillAlphas": 1,
-          "marginLeft": 60,
+          "marginLeft": 76,
           "marginTop": 5,
           "marginBottom": 5
         },
@@ -126,20 +123,7 @@
         "chartScrollbarSettings": {
           "graph": "g1",
           "graphType": "line",
-          "usePeriod": "WW",
-          "backgroundColor": "#333",
-          "graphFillColor": "#666",
-          "graphFillAlpha": 0.5,
-          "gridColor": "#555",
-          "gridAlpha": 1,
-          "selectedBackgroundColor": "#444",
-          "selectedGraphFillAlpha": 1
-        },
-
-        "categoryAxesSettings": {
-          "equalSpacing": true,
-          "gridColor": "#555",
-          "gridAlpha": 1
+          "usePeriod": "WW"
         },
 
         "valueAxesSettings": {
@@ -199,6 +183,6 @@
   #chartdiv {
     width: calc(100% - 16px);
     height:calc(50vw * 0.5125);
-    margin: 16px;
+    margin: 16px 16px 16px 0;
   }
 </style>
