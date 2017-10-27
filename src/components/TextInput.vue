@@ -1,7 +1,7 @@
 <template>
   <div id="text-input">
     <baseInput :inputType="'text'"
-               @valueChange="valueChange"
+               @handleValueChange="handleValueChange"
                :placeholder="placeholder">
     </baseInput>
   </div>
@@ -20,8 +20,8 @@
       baseInput
     },
     methods: {
-      valueChange(event) {
-        this.$emit('valueChange', event)
+      handleValueChange(event) {
+        this.$emit('handleValueChange', event)
       }
     }
   }

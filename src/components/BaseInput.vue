@@ -2,7 +2,7 @@
   <div id="base-input">
     <div class="form-group">
         <input class="form-control" name="textInput"
-               v-model="value" @change="valueChange"
+               v-model="value" @change="handleValueChange"
                :type="inputType" :placeholder="placeholder">
     </div>
   </div>
@@ -24,8 +24,8 @@
       }
     },
     methods: {
-      valueChange() {
-        this.$emit('valueChange', this.value)
+      handleValueChange() {
+        this.$emit('handleValueChange', this.value)
       }
     }
   }

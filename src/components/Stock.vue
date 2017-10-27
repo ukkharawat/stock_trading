@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-2 vertical-center">
           <textInput :placeholder="'Amount'"
-                      @valueChange="amountChange">
+                      @handleValueChange="amountChange">
           </textInput>
           <actionButton :message="'buy'" @onClick="onClick"
                       :buttonClass="'buy-button'">

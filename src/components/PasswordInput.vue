@@ -1,7 +1,8 @@
 <template>
   <div id="password-input">
     <baseInput :inputType="'password'"
-      :placeholder="placeholder">
+               @handleValueChange="handleValueChange"
+               :placeholder="placeholder">
     </baseInput>
   </div>
 </template>
@@ -17,6 +18,11 @@
     },
     components: {
       baseInput
+    },
+    methods: {
+      handleValueChange(event) {
+        this.$emit('handleValueChange', event)
+      }
     }
   }
 </script>
