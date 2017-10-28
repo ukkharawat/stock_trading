@@ -1,6 +1,8 @@
 <template>
   <div id="navbar-brand">
-    <a class="navbar-brand" href="#">{{brandTitle}}</a>
+    <router-link to="/">
+      <a class="navbar-brand">{{brandTitle}}</a>
+    </router-link>
   </div>
 </template>
 

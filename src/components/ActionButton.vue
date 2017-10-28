@@ -31,13 +31,16 @@
 
 
 <style>
+  .form-group {
+    margin-bottom: 0;
+  }
 
   .btn {
     border-radius: 8px;
     width: 100%;
     font-size: 18px;
     background-color: #fafafa;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
 
   .sell-button, .sell-button:hover {

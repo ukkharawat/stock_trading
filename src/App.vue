@@ -1,14 +1,7 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    <div class="row">
-      <div class="col-sm-2">
-        <index></index>
-      </div>
-      <div class="col-sm-10">
-        <stock></stock>
-      </div>
-    </div>
+    <router-view/>
     <modal>
       <logInModal @click.stop></logInModal>
     </modal>
@@ -18,8 +11,6 @@
 <script>
   import modal from '@/components/Modal'
   import navbar from '@/components/Navbar'
-  import index from '@/components/Index'
-  import stock from '@/components/Stock'
   import logInModal from '@/components/LogInModal'
 
   export default {
@@ -27,8 +18,6 @@
     components: {
       modal,
       navbar,
-      index,
-      stock,
       logInModal
     }
   }
