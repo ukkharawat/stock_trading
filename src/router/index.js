@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import mainPage from '@/components/MainPage'
+import portfolioPage from '@/components/PortfolioPage'
 
 Vue.use(Router)
 
@@ -10,6 +11,10 @@ export default new Router({
     {
       path: '/',
       component: mainPage
+    },
+    {
+      path: '/portfolio',
+      component: portfolioPage
     }
   ]
 })
