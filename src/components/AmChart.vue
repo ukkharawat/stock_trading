@@ -4,13 +4,24 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import stockService from '@/services/Stock.service'
+  import stockDataSource from '@/datasources/Stock.datasource'
 
   export default {
     name: 'app',
     created() {
-      AmCharts.makeChart("chartdiv", {
+      let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/JSP.BK.csv"
+
+      stockService.getStockDataFromURL(dataURL)
+        .then(csvData => {
+          stockDatas = stockDataSource.getStockJsonFromCSV(csvData)
+        })
+
+      let chart = AmCharts.makeChart("chartdiv", {
         "type": "stock",
         "theme": "light",
+        "glueToTheEnd": true,
 
         "dataSets": [{
           "title": "AH",
@@ -32,17 +43,7 @@
           }],
           "compared": false,
           "categoryField": "Date",
-
-
-          "dataLoader": {
-            "url": "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/JSP.BK.csv",
-            "format": "csv",
-            "showCurtain": true,
-            "showErrors": true,
-            "async": true,
-            "delimiter": ",",
-            "useColumnNames": true
-          },
+          "dataProvider": data
         }],
         "dataDateFormat": "YYYY-MM-DD",
 
@@ -133,12 +134,6 @@
           "showLastLabel": true
         },
 
-        "chartCursorSettings": {
-          "pan": true,
-          "valueLineEnabled": true,
-          "valueLineBalloonEnabled": true
-        },
-
         "balloon": {
           "textAlign": "left",
           "offsetY": 10
@@ -146,28 +141,24 @@
 
         "periodSelector": {
           "position": "bottom",
-          "periods": [{
-            "period": "DD",
-            "count": 10,
-            "label": "10D"
-          }, {
-            "period": "MM",
-            "count": 1,
-            "label": "1M"
-          }, {
-            "period": "MM",
-            "count": 6,
-            "label": "6M"
-          }, {
-            "period": "YYYY",
-            "count": 1,
-            "label": "1Y"
-          }, {
-            "period": "YYYY",
-            "count": 2,
-            "selected": true,
-            "label": "2Y"
-          },
+          "periods": [
+            {
+              "period": "DD",
+              "count": 10,
+              "label": "10D"
+            }, {
+              "period": "MM",
+              "count": 1,
+              "label": "1M"
+            }, {
+              "period": "MM",
+              "count": 6,
+              "label": "6M"
+            }, {
+              "period": "YYYY",
+              "count": 1,
+              "label": "1Y"
+            },
             {
               "period": "MAX",
               "label": "MAX"
@@ -175,6 +166,19 @@
           ]
         }
       })
+
+      let index = 0
+
+      let interval = setInterval(function() {
+        if(index < stockDatas.length) {
+          chart.dataSets[0].dataProvider.push(stockDatas[index])
+
+          chart.validateData()
+        } else {
+          clearInterval(interval)
+        }
+        index++
+      }, 500)
     }
   }
 </script>
