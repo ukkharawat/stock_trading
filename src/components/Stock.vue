@@ -8,11 +8,14 @@
           <amChart></amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <textInput :placeholder="'Amount'"></textInput>
-          <actionButton :message="'buy'"
+          <holdingInfo></holdingInfo>
+          <textInput :placeholder="'Amount'"
+                      @handleValueChange="amountChange">
+          </textInput>
+          <actionButton :message="'buy'" @onClick="onClick"
                       :buttonClass="'buy-button'">
           </actionButton>
-          <actionButton :message="'sell'"
+          <actionButton :message="'sell'" @onClick="onClick"
                       :buttonClass="'sell-button'">
           </actionButton>
         </div>
@@ -24,22 +27,35 @@
   import { mapGetters } from 'vuex'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
+  import holdingInfo from '@/components/HoldingInfo'
   import textInput from '@/components/TextInput'
   import actionButton from '@/components/ActionButton'
 
   export default {
+    data() {
+      return {
+        amount: null
+      }
+    },
     components: {
       stockHeader,
       amChart,
       textInput,
-      actionButton
+      actionButton,
+      holdingInfo
     },
     computed: {
     },
     methods: {
       ...mapGetters([
         'getCategory'
-      ])
+      ]),
+      onClick(event) {
+        console.log(event)
+      },
+      amountChange(event) {
+        this.amount = event
+      }
     }
   }
 </script>

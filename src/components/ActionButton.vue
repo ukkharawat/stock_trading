@@ -1,7 +1,9 @@
 <template>
   <div id="action-button">
     <div class="form-group">
-      <button type="submit" class="btn" :class="buttonClass">{{message}}</button>
+      <button type="submit" class="btn"
+              @click="eventClick"
+              :class="buttonClass">{{message}}</button>
     </div>
   </div>
 </template>
@@ -18,19 +20,27 @@
         type: String,
         required: true
       }
+    },
+    methods: {
+      eventClick() {
+        this.$emit('onClick', this.message)
+      }
     }
   }
 </script>
 
 
 <style>
+  .form-group {
+    margin-bottom: 0;
+  }
 
   .btn {
     border-radius: 8px;
     width: 100%;
     font-size: 18px;
     background-color: #fafafa;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
 
   .sell-button, .sell-button:hover {
