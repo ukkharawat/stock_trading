@@ -8,6 +8,7 @@
           <amChart></amChart>
         </div>
         <div class="col-sm-2 vertical-center">
+          <holdingInfo></holdingInfo>
           <textInput :placeholder="'Amount'"
                       @handleValueChange="amountChange">
           </textInput>
@@ -26,6 +27,7 @@
   import { mapGetters } from 'vuex'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
+  import holdingInfo from '@/components/HoldingInfo'
   import textInput from '@/components/TextInput'
   import actionButton from '@/components/ActionButton'
 
@@ -39,7 +41,8 @@
       stockHeader,
       amChart,
       textInput,
-      actionButton
+      actionButton,
+      holdingInfo
     },
     computed: {
     },
