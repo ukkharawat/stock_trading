@@ -24,7 +24,7 @@ const mutations = {
       return holdingStock.name === stock.name
     })
 
-    if(stockIndex !== undefined) {
+    if(stockIndex >= 0) {
       state.holdingStocks[stockIndex].amount += stock.amount
     } else {
       state.holdingStocks.push(stock)
