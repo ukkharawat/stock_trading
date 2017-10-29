@@ -10,8 +10,13 @@
 
   export default {
     name: 'app',
+    props: {
+      stockName: {
+        type: String
+      }
+    },
     created() {
-      let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/JSP.BK.csv"
+      let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/"+ this.stockName +".BK.csv"
       let stockDatas = []
       stockService.getStockDataFromURL(dataURL)
         .then(csvData => {

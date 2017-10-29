@@ -1,11 +1,11 @@
 <template>
   <div id="stock">
-      <stockHeader :corpShortName="'AH'"
-        :corpFullThaiName="'บริษัท อาปิโก ไฮเทค จำกัด (มหาชน)'">
+      <stockHeader :corpShortName="stock.shortName"
+        :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div class="col-sm-10">
-          <amChart></amChart>
+          <amChart :stockName="stock.shortName"></amChart>
         </div>
         <div class="col-sm-2 vertical-center">
           <holdingInfo></holdingInfo>
@@ -32,6 +32,11 @@
   import actionButton from '@/components/ActionButton'
 
   export default {
+    props: {
+      stock: {
+        type: Object
+      }
+    },
     data() {
       return {
         amount: null
@@ -43,8 +48,6 @@
       textInput,
       actionButton,
       holdingInfo
-    },
-    computed: {
     },
     methods: {
       ...mapGetters([
