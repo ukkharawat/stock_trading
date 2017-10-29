@@ -61,7 +61,8 @@
         stocks: [
           {
             shortName: "CHOTI",
-            fullName: "test"
+            fullName: "test",
+            amount: 0
           }
         ]
       }
