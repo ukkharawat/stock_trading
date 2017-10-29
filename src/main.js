@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import axios from 'axios'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import store from './vuex/store'
@@ -9,7 +10,8 @@ import store from './vuex/store'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-Vue.use(BootstrapVue);
+Vue.use(BootstrapVue)
+Vue.use(axios)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

@@ -11,7 +11,7 @@
       </index>
     </div>
     <div class="col-sm-10">
-      <stock></stock>
+      <stock v-for="stock in stocks" :key="stock.shortName" :stock="stock"></stock>
     </div>
   </div>
 </template>
@@ -56,6 +56,13 @@
           {
             mainMenuTitle: "TECH",
             subMenuTitles: ["ETRON", "ICT"]
+          }
+        ],
+        stocks: [
+          {
+            shortName: "CHOTI",
+            fullName: "test",
+            amount: 0
           }
         ]
       }
