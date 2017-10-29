@@ -2,6 +2,9 @@
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
       <li>
+        <router-link to="/portfolio">
+          <a class="disable-hover">portfolio</a>
+        </router-link>
         <a class="disable-hover" @click="openModal">Log in</a>
       </li>
     </ul>
