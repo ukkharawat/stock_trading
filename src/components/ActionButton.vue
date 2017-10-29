@@ -39,7 +39,7 @@
     border-radius: 8px;
     width: 100%;
     font-size: 18px;
-    background-color: #fafafa;
+    background-color: #fdfdfd;
     margin-bottom: 16px;
   }
 
