@@ -12,7 +12,7 @@
     name: 'app',
     created() {
       let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/JSP.BK.csv"
-
+      let stockDatas = []
       stockService.getStockDataFromURL(dataURL)
         .then(csvData => {
           stockDatas = stockDataSource.getStockJsonFromCSV(csvData)
@@ -43,7 +43,7 @@
           }],
           "compared": false,
           "categoryField": "Date",
-          "dataProvider": data
+          "dataProvider": stockDatas
         }],
         "dataDateFormat": "YYYY-MM-DD",
 
@@ -178,7 +178,7 @@
           clearInterval(interval)
         }
         index++
-      }, 500)
+      }, 3000)
     }
   }
 </script>
