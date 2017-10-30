@@ -6,6 +6,7 @@
 <script>
   import stockService from '@/services/Stock.service'
   import stockDataSource from '@/datasources/Stock.datasource'
+  import { mapActions } from 'vuex'
 
   function sleep() {
     return new Promise(resolve => setTimeout(resolve , 3000))
@@ -38,10 +39,19 @@
       }
     },
     methods: {
+      ...mapActions([
+        'updateCapital',
+        'updatePrice'
+      ]),
       updateChartData(data) {
         this.chart.dataSets[0].dataProvider.push(data)
 
-        this.$emit("dateChange", data["Date"])
+        this.$emit("dataChange", data)
+        this.updatePrice({
+          "shortName": this.stockName,
+          "price": data["Close"]
+        })
+        this.updateCapital()
         this.chart.validateData()
       },
       async getStockData(stockName) {
@@ -59,7 +69,7 @@
           "glueToTheEnd": true,
 
           "dataSets": [{
-            "title": "AH",
+            "title": this.stockName,
             "fieldMappings": [{
               "fromField": "Open",
               "toField": "open"
