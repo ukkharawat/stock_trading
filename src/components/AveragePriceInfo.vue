@@ -1,13 +1,13 @@
 <template>
   <div id="average-price-info">
-    <infoBase :title="'Average Buy Price'"
-              :amount="price"></infoBase>
+    <baseInfo :title="'Average Buy Price'"
+              :amount="price"></baseInfo>
   </div>
 </template>
 
 <script>
 
-  import infoBase from '@/components/InfoBase'
+  import baseInfo from '@/components/BaseInfo'
 
   export default {
     props: {
@@ -16,7 +16,7 @@
       }
     },
     components: {
-      infoBase
+      baseInfo
     }
   }
 </script>
