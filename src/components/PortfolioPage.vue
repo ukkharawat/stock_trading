@@ -37,7 +37,7 @@
       ]),
       getStocksName() {
         return this.getHoldingStock.map(holdingStock => {
-          return holdingStock.name
+          return holdingStock.shortName
         })
       }
     }
