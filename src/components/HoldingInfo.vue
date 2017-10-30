@@ -1,13 +1,13 @@
 <template>
   <div id="holding-info">
-    <infoBase :title="'Holding'"
-      :amount="amount"></infoBase>
+    <baseInfo :title="'Holding'"
+      :amount="amount"></baseInfo>
   </div>
 </template>
 
 <script>
 
-  import infoBase from '@/components/InfoBase'
+  import baseInfo from '@/components/BaseInfo'
 
   export default {
     props: {
@@ -16,7 +16,7 @@
       }
     },
     components: {
-      infoBase
+      baseInfo
     }
   }
 </script>
