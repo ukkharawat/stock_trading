@@ -1,17 +1,17 @@
 <template>
   <div id="stock">
-    {{getHoldingStock}}
       <stockHeader :corpShortName="stock.shortName"
         :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div class="col-sm-10">
           <amChart :stockName="stock.shortName"
-            @dateChange="dateChange">
+            @dataChange="dataChange">
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <holdingInfo :amount="stock.amount"></holdingInfo>
+          <holdingInfo :amount="Number(stock.amount)"></holdingInfo>
+          <averagePriceInfo :price="Number(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
                       @handleValueChange="amountChange">
           </textInput>
@@ -31,6 +31,7 @@
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
   import holdingInfo from '@/components/HoldingInfo'
+  import averagePriceInfo from '@/components/AveragePriceInfo'
   import textInput from '@/components/TextInput'
   import actionButton from '@/components/ActionButton'
 
@@ -43,7 +44,7 @@
     data() {
       return {
         amount: null,
-        date: null
+        currentPrice: null
       }
     },
     components: {
@@ -51,53 +52,60 @@
       amChart,
       textInput,
       actionButton,
-      holdingInfo
+      holdingInfo,
+      averagePriceInfo
     },
     computed: {
       ...mapGetters([
         'getCategory',
-        'getHoldingStock'
+        'getHoldingStock',
+        'getCash'
       ])
     },
     methods: {
       ...mapActions([
         "buyStock",
-        "sellStock"
+        "sellStock",
+        "updateCapital"
       ]),
       onClick(event) {
         if(event === "buy") {
-          this.buy(this.stock.shortName, this.stock.fullName, this.amount)
+          if(this.amount * this.currentPrice < this.getCash) {
+            this.sendBuyStockRequest(this.stock.shortName, this.stock.fullName, this.amount)
+          }
         } else {
-          if(this.amount < this.getHoldingStock.find(holdingStock => {
-            return holdingStock.name === this.stock.shortName
-            }).amount) {
-            this.sell(this.stock.shortName, this.stock.fullName, this.amount)
+          let currentAmount = this.stock.amount
+
+          if(this.amount <= currentAmount) {
+            this.sendSellStockRequest(this.stock.shortName, this.stock.fullName, this.amount)
           }
         }
       },
-      buy(name, fullname, amount) {
-        let stock = {
-          "shortName": name,
-          "fullName": fullname,
-          "amount": Number(amount)
-        }
+      sendBuyStockRequest(name, fullname, amount) {
+        let stock = this.createStockObject(name, fullname, amount, this.currentPrice)
 
         this.buyStock(stock)
+        this.updateCapital()
       },
-      sell(name, fullname, amount) {
-        let stock = {
-          "shortName": name,
-          "fullName": fullname,
-          "amount": Number(amount)
-        }
+      sendSellStockRequest(name, fullname, amount) {
+        let stock = this.createStockObject(name, fullname, amount, this.currentPrice)
 
         this.sellStock(stock)
+        this.updateCapital()
+      },
+      createStockObject(name, fullname, amount, price) {
+        return {
+          "shortName": name,
+          "fullName": fullname,
+          "amount": Number(amount),
+          "price": Number(price)
+        }
       },
       amountChange(event) {
         this.amount = event
       },
-      dateChange(event) {
-        this.date = event
+      dataChange(event) {
+        this.currentPrice = event["Close"]
       }
     }
   }

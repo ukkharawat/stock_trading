@@ -11,7 +11,7 @@
       </index>
     </div>
     <div class="col-sm-10">
-      <stock v-for="stock in stocks" :key="stock.shortName" :stock="stock"></stock>
+      <stock v-for="stock in getStock" :key="stock.shortName" :stock="stock"></stock>
     </div>
   </div>
 </template>
@@ -20,6 +20,7 @@
   import index from '@/components/Index'
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
+  import { mapGetters } from 'vuex'
 
   export default {
     data() {
@@ -57,13 +58,6 @@
             mainMenuTitle: "TECH",
             subMenuTitles: ["ETRON", "ICT"]
           }
-        ],
-        stocks: [
-          {
-            shortName: "CHOTI",
-            fullName: "test",
-            amount: 0
-          }
         ]
       }
     },
@@ -71,6 +65,11 @@
       index,
       stock,
       indexMenu
+    },
+    computed: {
+      ...mapGetters([
+        'getStock'
+      ])
     }
   }
 </script>

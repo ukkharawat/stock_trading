@@ -1,7 +1,7 @@
 <template>
-  <div id="holding-info">
-    <infoBase :title="'Holding'"
-      :amount="amount"></infoBase>
+  <div id="average-price-info">
+    <infoBase :title="'Average Buy Price'"
+              :amount="price"></infoBase>
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 
   export default {
     props: {
-      amount: {
+      price: {
         type: Number
       }
     },

@@ -1,9 +1,10 @@
 <template>
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
-      <li>
+      <li class="list-menu">
+        <a class="disable-hover menu-padding">Capital: {{getCapital}} ({{getCash}})</a>
         <router-link to="/portfolio">
-          <a class="disable-hover">portfolio</a>
+          <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
         <a class="disable-hover" @click="openModal">Log in</a>
       </li>
@@ -12,12 +13,18 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   export default {
     props: {
       menuObjects : {
         type: Array
       }
+    },
+    computed: {
+      ...mapGetters([
+        'getCapital',
+        'getCash'
+      ])
     },
     methods: {
       ...mapActions([
@@ -30,6 +37,19 @@
 <style>
   .disable-hover {
     cursor: pointer;
+  }
+
+  .list-menu a {
+    text-decoration: none;
+  }
+
+  .menu-padding {
+    padding-right: 16px;
+  }
+
+  .portfolio-link, .portfolio-link:hover {
+    color: #424242 !important;
+    text-decoration: none;
   }
 
   a.disable-hover:hover {
