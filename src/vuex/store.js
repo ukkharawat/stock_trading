@@ -6,7 +6,9 @@ Vue.use(Vuex)
 const state = {
   category: "",
   isModalOpen: false,
-  holdingStocks: []
+  holdingStocks: [],
+  capital: 10000,
+  cash: 10000
 }
 
 const mutations = {
@@ -55,7 +57,9 @@ const actions = {
 const getters = {
   getCategory: state => state.category,
   getIsModalOpen: state => state.isModalOpen,
-  getHoldingStock: state => state.holdingStocks
+  getHoldingStock: state => state.holdingStocks,
+  getCapital: state => state.capital,
+  getCash: state=> state.cash
 }
 
 export default new Vuex.Store({
