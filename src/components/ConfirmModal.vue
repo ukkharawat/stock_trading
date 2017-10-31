@@ -1,8 +1,7 @@
 <template>
   <div id="confirm-modal">
     <modalHeader :message="message"></modalHeader>
-    <confirmModalContent
-        :actionInfo="getNextActionInfo">
+    <confirmModalContent :actionInfo="getNextActionInfo">
     </confirmModalContent>
   </div>
 </template>
