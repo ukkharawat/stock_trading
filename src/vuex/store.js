@@ -13,6 +13,7 @@ const state = {
   category: "",
   isLogInModal: false,
   isConfirmModal: false,
+  confirmInfo: null,
   stocks: [ {
     "shortName": "CHOTI",
     "fullName": "Kiang Huat Sea Gull Trading Frozen Food",
@@ -35,8 +36,9 @@ const mutations = {
   OPEN_LOG_IN_MODAL(state) {
     state.isLogInModal = true
   },
-  OPEN_CONFIRM_MODAL(state) {
+  OPEN_CONFIRM_MODAL(state, actionInfo) {
     state.isConfirmModal = true
+    state.confirmInfo = actionInfo
   },
   BUY_STOCK(state, stock) {
     let stockIndex = findIndexOfStocks(stock.shortName)
@@ -73,7 +75,7 @@ const actions = {
   setCategory: ({ commit }, current) => commit('SET_CATEGORY', current),
   closeModal: ({ commit }) => commit('CLOSE_MODAL'),
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
-  openConfirmModal: ({ commit }) => commit('OPEN_CONFIRM_MODAL'),
+  openConfirmModal: ({ commit }, actionInfo) => commit('OPEN_CONFIRM_MODAL', actionInfo),
   buyStock: ({ commit }, stock) => commit('BUY_STOCK', stock),
   sellStock: ({ commit }, stock) => commit('SELL_STOCK', stock),
   updateCapital: ({ commit }, stock) => commit('UPDATE_CAPITAL'),
@@ -82,12 +84,14 @@ const actions = {
 
 const getters = {
   getCategory: state => state.category,
+  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal}
   getIsLogInModal: state => state.isLogInModal,
   getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
   getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getCapital: state => state.capital,
-  getCash: state=> state.cash
+  getCash: state=> state.cash,
+  getConfirmInfo: state => state.confirmInfo
 }
 
 export default new Vuex.Store({

@@ -1,5 +1,5 @@
 <template>
-  <div id="modal" @click="closeModal" v-show="getIsLogInModal || getIsConfirmModal">
+  <div id="modal" @click="closeModal" v-show="getIsModalOpen">
     <slot></slot>
   </div>
 </template>
@@ -10,8 +10,7 @@
   export default {
     computed: {
       ...mapGetters([
-        'getIsLogInModal',
-        'getIsConfirmModal'
+        'getIsModalOpen'
       ])
     },
     methods: {
