@@ -3,7 +3,8 @@
     <navbar></navbar>
     <router-view/>
     <modal>
-      <logInModal @click.stop></logInModal>
+      <logInModal v-show="getIsLogInModal" @click.stop></logInModal>
+      <confirmModal v-show="getIsConfirmModal" @click.stop></confirmModal>
     </modal>
   </div>
 </template>
@@ -12,13 +13,22 @@
   import modal from '@/components/Modal'
   import navbar from '@/components/Navbar'
   import logInModal from '@/components/LogInModal'
+  import confirmModal from '@/components/ConfirmModal'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'app',
     components: {
       modal,
       navbar,
-      logInModal
+      logInModal,
+      confirmModal
+    },
+    computed: {
+      ...mapGetters([
+        'getIsLogInModal',
+        'getIsConfirmModal'
+      ])
     }
   }
 </script>
