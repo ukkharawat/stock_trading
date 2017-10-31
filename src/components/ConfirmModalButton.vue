@@ -1,7 +1,8 @@
 <template>
   <div id="action-button">
     <div class="form-group">
-      <button class="btn" @click.stop.prevent="handleClick"
+      <button class="btn"
+              @click.stop.prevent="handleClick"
               :class="buttonClass">{{message}}</button>
     </div>
   </div>
