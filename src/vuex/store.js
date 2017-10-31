@@ -84,7 +84,7 @@ const actions = {
 
 const getters = {
   getCategory: state => state.category,
-  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal}
+  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal},
   getIsLogInModal: state => state.isLogInModal,
   getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
