@@ -1,25 +1,27 @@
 <template>
   <div id="stock">
       <stockHeader :corpShortName="stock.shortName"
-        :corpFullThaiName="stock.fullName">
+                   :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div class="col-sm-10">
           <amChart :stockName="stock.shortName"
-            @dataChange="dataChange">
+                   @dataChange="dataChange">
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center">
           <holdingInfo :amount="Number(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="Number(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
-                      @handleValueChange="amountChange">
+                     @handleValueChange="amountChange">
           </textInput>
-          <actionButton :message="'buy'" @onClick="onClick"
-                      :buttonClass="'buy-button'">
+          <actionButton :message="'buy'"
+                        @onClick="onClick"
+                        :buttonClass="'buy-button'">
           </actionButton>
-          <actionButton :message="'sell'" @onClick="onClick"
-                      :buttonClass="'sell-button'">
+          <actionButton :message="'sell'"
+                        @onClick="onClick"
+                        :buttonClass="'sell-button'">
           </actionButton>
         </div>
       </div>

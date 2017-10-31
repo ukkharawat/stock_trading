@@ -11,7 +11,9 @@
       </index>
     </div>
     <div class="col-sm-10">
-      <stock v-for="stock in getStock" :key="stock.shortName" :stock="stock"></stock>
+      <stock v-for="stock in getStock"
+             :key="stock.shortName"
+             :stock="stock"></stock>
     </div>
   </div>
 </template>

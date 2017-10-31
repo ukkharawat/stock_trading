@@ -4,13 +4,13 @@
       <div class="col-sm-3"></div>
       <div class="col-sm-6">
         <textInput :placeholder="'Username'"
-                    @handleValueChange="handleUsernameChange">
+                   @handleValueChange="handleUsernameChange">
         </textInput>
         <passwordInput :placeholder="'Password'"
                        @handleValueChange="handlePasswordChange">
         </passwordInput>
         <actionButton :buttonClass="'log-in-button'"
-          :message="'Log in'">
+                      :message="'Log in'">
         </actionButton>
       </div>
       <div class="col-sm-3"></div>
