@@ -1,7 +1,7 @@
 <template>
   <div id="holding-info">
     <baseInfo :title="'Holding'"
-      :amount="amount"></baseInfo>
+              :amount="amount"></baseInfo>
   </div>
 </template>
 
