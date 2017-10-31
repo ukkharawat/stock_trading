@@ -1,29 +1,36 @@
 <template>
-  <div id="log-in-modal">
+  <div id="confirm-modal">
     <modalHeader :message="message"></modalHeader>
-    <logInModalContent></logInModalContent>
+    <confirmModalContent :actionInfo="getNextActionInfo">
+    </confirmModalContent>
   </div>
 </template>
 
 <script>
   import modalHeader from '@/components/ModalHeader'
-  import logInModalContent from '@/components/LogInModalContent'
+  import confirmModalContent from '@/components/ConfirmModalContent'
+  import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
-        message: "Log In"
+        message: "Confirmation"
       }
     },
     components: {
       modalHeader,
-      logInModalContent
+      confirmModalContent
+    },
+    computed: {
+      ...mapGetters([
+        'getNextActionInfo'
+      ])
     }
   }
 </script>
 
 <style>
-  #log-in-modal {
+  #confirm-modal {
     background-color: #fafafa;
     width: 50%;
     height: auto;

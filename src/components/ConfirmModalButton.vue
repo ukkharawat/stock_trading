@@ -1,15 +1,14 @@
 <template>
   <div id="action-button">
     <div class="form-group">
-      <button type="submit" class="btn"
-              @click.stop.prevent="eventClick"
+      <button class="btn"
+              @click.stop.prevent="handleClick"
               :class="buttonClass">{{message}}</button>
     </div>
   </div>
 </template>
 
 <script>
-
   export default {
     props: {
       message: {
@@ -22,8 +21,8 @@
       }
     },
     methods: {
-      eventClick() {
-        this.$emit('onClick', this.message)
+      handleClick() {
+        this.$emit("onClickEvent", this.message)
       }
     }
   }
@@ -43,19 +42,13 @@
     margin-bottom: 16px;
   }
 
-  .sell-button, .sell-button:hover {
+  .no-button, .no-button:hover {
     border: #ff0000 solid 1px;
     color: #ff0000;
   }
 
-  .buy-button, .buy-button:hover {
+  .yes-button, .yes-button:hover {
     border: #0288d1 solid 1px;
     color: #0288d1;
-  }
-
-  .log-in-button, .log-in-button:hover {
-    border: #ffd740 solid 1px;
-    color: #212121;
-    background-color: #ffd740;
   }
 </style>

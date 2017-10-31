@@ -1,11 +1,21 @@
 <template>
-  <div id="log-in-modal-header">
-    <h1 class="log-in-modal-text-header">Log in</h1>
+  <div id="modal-header">
+    <h1 class="modal-text-header">{{message}}</h1>
   </div>
 </template>
 
+<script>
+  export default {
+    props: {
+      message: {
+        type: String
+      }
+    }
+  }
+</script>
+
 <style>
-  #log-in-modal-header {
+  #modal-header {
     width: 100%;
     height: 20%;
     background-color : #ffc400;
@@ -15,7 +25,7 @@
     align-items: center;
   }
 
-  .log-in-modal-text-header {
+  .modal-text-header {
     text-align: left;
     font-size: 40px;
     margin: 8px 16px !important;

@@ -6,7 +6,7 @@
         <router-link to="/portfolio">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
-        <a class="disable-hover" @click="openModal">Log in</a>
+        <a class="disable-hover" @click="openLogInModal">Log in</a>
       </li>
     </ul>
   </div>
@@ -28,7 +28,7 @@
     },
     methods: {
       ...mapActions([
-        'openModal'
+        'openLogInModal'
       ])
     }
   }

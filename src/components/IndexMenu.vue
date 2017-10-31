@@ -2,7 +2,7 @@
   <div id="index-menu">
     <a class="main-menu" @click="setCategory(mainMenuTitle)">{{mainMenuTitle}}</a>
     <a class="sub-menu" v-for="subMenuTitle in subMenuTitles"
-        @click="setCategory(subMenuTitle)">{{subMenuTitle}}</a>
+       @click="setCategory(subMenuTitle)">{{subMenuTitle}}</a>
   </div>
 </template>
 

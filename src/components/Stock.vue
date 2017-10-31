@@ -1,25 +1,27 @@
 <template>
   <div id="stock">
       <stockHeader :corpShortName="stock.shortName"
-        :corpFullThaiName="stock.fullName">
+                   :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div class="col-sm-10">
           <amChart :stockName="stock.shortName"
-            @dataChange="dataChange">
+                   @dataChange="dataChange">
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center">
           <holdingInfo :amount="Number(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="Number(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
-                      @handleValueChange="amountChange">
+                     @handleValueChange="amountChange">
           </textInput>
-          <actionButton :message="'buy'" @onClick="onClick"
-                      :buttonClass="'buy-button'">
+          <actionButton :message="'buy'"
+                        @onClick="onClick"
+                        :buttonClass="'buy-button'">
           </actionButton>
-          <actionButton :message="'sell'" @onClick="onClick"
-                      :buttonClass="'sell-button'">
+          <actionButton :message="'sell'"
+                        @onClick="onClick"
+                        :buttonClass="'sell-button'">
           </actionButton>
         </div>
       </div>
@@ -64,37 +66,27 @@
     },
     methods: {
       ...mapActions([
-        "buyStock",
-        "sellStock",
-        "updateCapital"
+        "openConfirmModal"
       ]),
       onClick(event) {
+        let nextActionInfo = this.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
+
         if(event === "buy") {
           if(this.amount * this.currentPrice < this.getCash) {
-            this.sendBuyStockRequest(this.stock.shortName, this.stock.fullName, this.amount)
+
+            this.openConfirmModal(nextActionInfo)
           }
         } else {
           let currentAmount = this.stock.amount
 
           if(this.amount <= currentAmount) {
-            this.sendSellStockRequest(this.stock.shortName, this.stock.fullName, this.amount)
+            this.openConfirmModal(nextActionInfo)
           }
         }
       },
-      sendBuyStockRequest(name, fullname, amount) {
-        let stock = this.createStockObject(name, fullname, amount, this.currentPrice)
-
-        this.buyStock(stock)
-        this.updateCapital()
-      },
-      sendSellStockRequest(name, fullname, amount) {
-        let stock = this.createStockObject(name, fullname, amount, this.currentPrice)
-
-        this.sellStock(stock)
-        this.updateCapital()
-      },
-      createStockObject(name, fullname, amount, price) {
+      createStockObject(action, name, fullname, amount, price) {
         return {
+          "action": action,
           "shortName": name,
           "fullName": fullname,
           "amount": Number(amount),
