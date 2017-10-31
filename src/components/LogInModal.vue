@@ -1,17 +1,22 @@
 <template>
   <div id="log-in-modal">
-    <logInModalHeader></logInModalHeader>
+    <modalHeader :message="message"></modalHeader>
     <logInModalContent></logInModalContent>
   </div>
 </template>
 
 <script>
-  import logInModalHeader from '@/components/LogInModalHeader'
+  import modalHeader from '@/components/ModalHeader'
   import logInModalContent from '@/components/LogInModalContent'
 
   export default {
+    data() {
+      return {
+        message: "Log In"
+      }
+    },
     components: {
-      logInModalHeader,
+      modalHeader,
       logInModalContent
     }
   }
