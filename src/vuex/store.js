@@ -11,7 +11,9 @@ function findIndexOfStocks(stockName) {
 
 const state = {
   category: "",
-  isModalOpen: false,
+  isLogInModal: false,
+  isConfirmModal: false,
+  nextActionInfo: null,
   stocks: [ {
     "shortName": "CHOTI",
     "fullName": "Kiang Huat Sea Gull Trading Frozen Food",
@@ -27,11 +29,16 @@ const mutations = {
   SET_CATEGORY(state, current) {
     state.category = current
   },
-  OPEN_MODAL(state) {
-    state.isModalOpen = true
-  },
   CLOSE_MODAL(state) {
-    state.isModalOpen = false
+    state.isLogInModal = false
+    state.isConfirmModal = false
+  },
+  OPEN_LOG_IN_MODAL(state) {
+    state.isLogInModal = true
+  },
+  OPEN_CONFIRM_MODAL(state, nextActionInfo) {
+    state.isConfirmModal = true
+    state.nextActionInfo = nextActionInfo
   },
   BUY_STOCK(state, stock) {
     let stockIndex = findIndexOfStocks(stock.shortName)
@@ -66,8 +73,9 @@ const mutations = {
 
 const actions = {
   setCategory: ({ commit }, current) => commit('SET_CATEGORY', current),
-  openModal: ({ commit }) => commit('OPEN_MODAL'),
   closeModal: ({ commit }) => commit('CLOSE_MODAL'),
+  openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
+  openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   buyStock: ({ commit }, stock) => commit('BUY_STOCK', stock),
   sellStock: ({ commit }, stock) => commit('SELL_STOCK', stock),
   updateCapital: ({ commit }, stock) => commit('UPDATE_CAPITAL'),
@@ -76,11 +84,14 @@ const actions = {
 
 const getters = {
   getCategory: state => state.category,
-  getIsModalOpen: state => state.isModalOpen,
+  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal},
+  getIsLogInModal: state => state.isLogInModal,
+  getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
   getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getCapital: state => state.capital,
-  getCash: state=> state.cash
+  getCash: state=> state.cash,
+  getNextActionInfo: state => state.nextActionInfo
 }
 
 export default new Vuex.Store({

@@ -64,37 +64,27 @@
     },
     methods: {
       ...mapActions([
-        "buyStock",
-        "sellStock",
-        "updateCapital"
+        "openConfirmModal"
       ]),
       onClick(event) {
+        let nextActionInfo = this.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
+
         if(event === "buy") {
           if(this.amount * this.currentPrice < this.getCash) {
-            this.sendBuyStockRequest(this.stock.shortName, this.stock.fullName, this.amount)
+
+            this.openConfirmModal(nextActionInfo)
           }
         } else {
           let currentAmount = this.stock.amount
 
           if(this.amount <= currentAmount) {
-            this.sendSellStockRequest(this.stock.shortName, this.stock.fullName, this.amount)
+            this.openConfirmModal(nextActionInfo)
           }
         }
       },
-      sendBuyStockRequest(name, fullname, amount) {
-        let stock = this.createStockObject(name, fullname, amount, this.currentPrice)
-
-        this.buyStock(stock)
-        this.updateCapital()
-      },
-      sendSellStockRequest(name, fullname, amount) {
-        let stock = this.createStockObject(name, fullname, amount, this.currentPrice)
-
-        this.sellStock(stock)
-        this.updateCapital()
-      },
-      createStockObject(name, fullname, amount, price) {
+      createStockObject(action, name, fullname, amount, price) {
         return {
+          "action": action,
           "shortName": name,
           "fullName": fullname,
           "amount": Number(amount),
