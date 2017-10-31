@@ -2,7 +2,7 @@
   <div id="action-button">
     <div class="form-group">
       <button type="submit" class="btn"
-              @click="eventClick"
+              @click.stop.prevent="eventClick"
               :class="buttonClass">{{message}}</button>
     </div>
   </div>
