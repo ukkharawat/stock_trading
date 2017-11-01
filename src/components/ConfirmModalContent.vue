@@ -42,38 +42,66 @@
     },
     computed: {
       ...mapGetters([
-        'getNextActionInfo'
+        'getNextActionInfo',
+        'getStock'
       ])
     },
     methods: {
       ...mapActions([
         'closeModal',
-        'buyStock',
-        'sellStock',
+        'updateCash',
+        'updateStock',
         'updateCapital'
       ]),
       handleClickYes() {
         let action = this.getNextActionInfo.action
-        let actionObject = this.createActionObject()
 
         if(action === "buy") {
-          this.buyStock(actionObject)
+          this.buyStock(this.getNextActionInfo)
         } else {
-          this.sellStock(actionObject)
+          this.sellStock(this.getNextActionInfo)
         }
-
-        this.updateCapital()
-        this.closeModal()
       },
       handleClickNo() {
         this.closeModal()
       },
-      createActionObject() {
+      createNewStock(shortName, amount, averagePrice) {
         return {
-          "shortName": this.getNextActionInfo.shortName,
-          "amount": this.getNextActionInfo.amount,
-          "price": this.getNextActionInfo.price
+          "shortName": shortName,
+          "amount": amount,
+          "averageBuyPrice": averagePrice
         }
+      },
+      buyStock(stock) {
+        let cost = stock.amount * stock.price
+        let stocks = this.getCurrentStock(stock.shortName)
+        let averagePrice = ((stocks.averageBuyPrice * stocks.amount) + (cost)) / (stocks.amount + stock.amount)
+        let amount = stocks.amount + stock.amount
+        let stockObject = this.createNewStock(stock.shortName, amount, averagePrice)
+
+        this.updateVuex(-Math.abs(cost), stockObject)
+      },
+      sellStock(stock) {
+        let cost = stock.amount * stock.price
+        let stocks = this.getCurrentStock(stock.shortName)
+        let amount = stocks.amount - stock.amount
+        let stockObject = this.createNewStock(stock.shortName, amount, stocks.averageBuyPrice)
+
+        this.updateVuex(Math.abs(cost), stockObject)
+      },
+      getCurrentStock(shortName) {
+        let stocks = this.getStock
+        let stockIndex = stocks.findIndex(stock => {
+          return stock.shortName === shortName
+        })
+
+        return stocks[stockIndex]
+      },
+      updateVuex(cost, stock) {
+        this.updateCash(cost)
+        this.updateStock(stock)
+        this.updateCapital()
+        this.closeModal()
       }
     }
   }
