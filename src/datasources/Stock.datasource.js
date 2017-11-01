@@ -31,4 +31,12 @@ export default class StockService {
       "price": Number(price)
     }
   }
+
+  static createChangedStockObject(shortName, amount, averageBuyPrice) {
+    return {
+      "shortName": shortName,
+      "amount": amount,
+      "averageBuyPrice": averageBuyPrice
+    }
+  }
 }

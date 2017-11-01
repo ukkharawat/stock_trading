@@ -11,4 +11,21 @@ export default class StockService {
         return stockDataSource.getStockJsonFromCSV(csvData)
       })
   }
+
+  static findStockTradingCost(tradingAction) {
+    return tradingAction.amount * tradingAction.price
+  }
+
+  static buyStock(stock, tradingAction) {
+    let amount = stock.amount + tradingAction.amount
+    let averagePrice = ((stock.averageBuyPrice * stock.amount) + (this.findStockTradingCost(tradingAction))) / (amount)
+
+    return stockDataSource.createChangedStockObject(stock.shortName, amount, averagePrice)
+  }
+
+  static sellStock(stock, tradingAction) {
+    let amount = stock.amount - tradingAction.amount
+
+    return stockDataSource.createChangedStockObject(stock.shortName, amount, stock.averageBuyPrice)
+  }
 }

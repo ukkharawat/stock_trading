@@ -29,6 +29,7 @@
 
 <script>
   import confirmModalButton from '@/components/ConfirmModalButton'
+  import stockController from '@/controllers/Stock.controller'
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
@@ -65,27 +66,17 @@
       handleClickNo() {
         this.closeModal()
       },
-      createNewStock(shortName, amount, averagePrice) {
-        return {
-          "shortName": shortName,
-          "amount": amount,
-          "averageBuyPrice": averagePrice
-        }
-      },
-      buyStock(stock) {
-        let cost = stock.amount * stock.price
-        let stocks = this.getCurrentStock(stock.shortName)
-        let averagePrice = ((stocks.averageBuyPrice * stocks.amount) + (cost)) / (stocks.amount + stock.amount)
-        let amount = stocks.amount + stock.amount
-        let stockObject = this.createNewStock(stock.shortName, amount, averagePrice)
+      buyStock(tradingAction) {
+        let cost = stockController.findStockTradingCost(tradingAction)
+        let stock = this.getCurrentStock(tradingAction.shortName)
+        let stockObject = stockController.buyStock(stock, tradingAction)
 
         this.updateVuex(-Math.abs(cost), stockObject)
       },
-      sellStock(stock) {
-        let cost = stock.amount * stock.price
-        let stocks = this.getCurrentStock(stock.shortName)
-        let amount = stocks.amount - stock.amount
-        let stockObject = this.createNewStock(stock.shortName, amount, stocks.averageBuyPrice)
+      sellStock(tradingAction) {
+        let cost = stockController.findStockTradingCost(tradingAction)
+        let stock = this.getCurrentStock(tradingAction.shortName)
+        let stockObject = stockController.sellStock(stock, tradingAction)
 
         this.updateVuex(Math.abs(cost), stockObject)
       },
