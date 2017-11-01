@@ -4,8 +4,7 @@
 </template>
 
 <script>
-  import stockService from '@/services/Stock.service'
-  import stockDataSource from '@/datasources/Stock.datasource'
+  import stockController from '@/controllers/Stock.controller'
   import { mapActions } from 'vuex'
 
   function sleep() {
@@ -55,12 +54,7 @@
         this.chart.validateData()
       },
       async getStockData(stockName) {
-        let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/"+ stockName +".BK.csv"
-
-        return stockService.getStockDataFromURL(dataURL)
-          .then(csvData => {
-            return stockDataSource.getStockJsonFromCSV(csvData)
-          })
+        return stockController.getStockData(stockName)
       },
       createChart() {
         this.chart = AmCharts.makeChart("chartdiv", {
