@@ -30,7 +30,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import stockDatasource from '@/datasource/Stock.datasource'
+  import stockDatasource from '@/datasources/Stock.datasource'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
   import holdingInfo from '@/components/HoldingInfo'
