@@ -30,6 +30,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import stockDatasource from '@/datasource/Stock.datasource'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
   import holdingInfo from '@/components/HoldingInfo'
@@ -69,7 +70,7 @@
         "openConfirmModal"
       ]),
       onClick(event) {
-        let nextActionInfo = this.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
+        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
 
         if(event === "buy") {
           if(this.amount * this.currentPrice < this.getCash) {
@@ -82,15 +83,6 @@
           if(this.amount <= currentAmount) {
             this.openConfirmModal(nextActionInfo)
           }
-        }
-      },
-      createStockObject(action, name, fullname, amount, price) {
-        return {
-          "action": action,
-          "shortName": name,
-          "fullName": fullname,
-          "amount": Number(amount),
-          "price": Number(price)
         }
       },
       amountChange(event) {

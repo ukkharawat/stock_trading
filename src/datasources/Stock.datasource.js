@@ -21,4 +21,14 @@ export default class StockService {
 
     return stockJson
   }
+
+  static createStockObject(action, name, fullname, amount, price) {
+    return {
+      "action": action,
+      "shortName": name,
+      "fullName": fullname,
+      "amount": Number(amount),
+      "price": Number(price)
+    }
+  }
 }
