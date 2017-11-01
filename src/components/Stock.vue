@@ -10,8 +10,8 @@
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <holdingInfo :amount="Number(stock.amount)"></holdingInfo>
-          <averagePriceInfo :price="Number(stock.averageBuyPrice)"></averagePriceInfo>
+          <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
+          <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
                      @handleValueChange="amountChange">
           </textInput>
@@ -90,6 +90,19 @@
       },
       dataChange(event) {
         this.currentPrice = event["Close"]
+      },
+      formatAverageBuyPrice(price) {
+        if(!price)
+          return '0'
+        price = price.toFixed(2).toString()
+
+        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
+      },
+      formatAmount(amount) {
+        if(!amount)
+          return '0'
+
+        return amount.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " shares"
       }
     }
   }

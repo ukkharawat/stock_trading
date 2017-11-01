@@ -12,7 +12,7 @@
   export default {
     props: {
       price: {
-        type: Number
+        type: String
       }
     },
     components: {

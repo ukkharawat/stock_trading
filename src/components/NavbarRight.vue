@@ -2,7 +2,7 @@
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
       <li class="list-menu">
-        <a class="disable-hover menu-padding">Capital: {{getCapital}} ({{getCash}})</a>
+        <a class="disable-hover menu-padding">Capital: {{getCapital | currency}} ({{getCash | currency}})</a>
         <router-link to="/portfolio">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
@@ -30,6 +30,13 @@
       ...mapActions([
         'openLogInModal'
       ])
+    },
+    filters: {
+      currency(value) {
+        if (!value) return ''
+        value = value.toFixed(2).toString()
+        return value.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
+      }
     }
   }
 </script>
