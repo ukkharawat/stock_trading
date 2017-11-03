@@ -22,7 +22,8 @@ const state = {
     "averageBuyPrice": 0
   } ],
   capital: 10000,
-  cash: 10000
+  cash: 10000,
+  currentStep: 0
 }
 
 const mutations = {
@@ -59,6 +60,9 @@ const mutations = {
 
     state.stocks[stockIndex].amount = stock.amount
     state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+  },
+  INCREASE_STEP(state) {
+    state.currentStep++
   }
 }
 
@@ -70,7 +74,8 @@ const actions = {
   updateCapital: ({ commit }, stock) => commit('UPDATE_CAPITAL'),
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
   updateCash: ({ commit }, amount) => commit('UPDATE_CASH', amount),
-  updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock)
+  updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
+  increaseStep: ({ commit }) => commit('INCREASE_STEP')
 }
 
 const getters = {
@@ -82,7 +87,8 @@ const getters = {
   getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getCapital: state => state.capital,
   getCash: state=> state.cash,
-  getNextActionInfo: state => state.nextActionInfo
+  getNextActionInfo: state => state.nextActionInfo,
+  getCurrentStep: state => state.currentStep
 }
 
 export default new Vuex.Store({
