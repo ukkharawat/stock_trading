@@ -5,7 +5,7 @@
 
 <script>
   import stockController from '@/controllers/Stock.controller'
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   function sleep() {
     return new Promise(resolve => setTimeout(resolve , 3000))
@@ -24,25 +24,35 @@
         displayData: []
       }
     },
+    computed: {
+      ...mapGetters([
+        'getCurrentStep'
+      ])
+    },
     async created() {
       let stockData = []
       await this.getStockData(this.stockName)
         .then(response => {
           stockData = response
+          if(this.getCurrentStep > 0) {
+            this.displayData = stockData.slice(0, this.getCurrentStep)
+          }
+
           this.createChart()
         })
 
-      for(let i = 0 ; i < stockData.length ; i++) {
-        this.updateChartData(stockData[i])
+      for(let i = this.getCurrentStep ; i < stockData.length ; i++) {
+        this.updateChartData(stockData[i], i)
         await sleep()
       }
     },
     methods: {
       ...mapActions([
         'updateCapital',
-        'updatePrice'
+        'updatePrice',
+        'increaseStep'
       ]),
-      updateChartData(data) {
+      updateChartData(data, index) {
         this.chart.dataSets[0].dataProvider.push(data)
 
         this.$emit("dataChange", data)
@@ -50,6 +60,9 @@
           "shortName": this.stockName,
           "price": data["Close"]
         })
+        if(index === this.getCurrentStep) {
+          this.increaseStep()
+        }
         this.updateCapital()
         this.chart.validateData()
       },
