@@ -72,12 +72,12 @@
       onClick(event) {
         let nextActionInfo = stockDatasource.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
 
-        if(event === "buy") {
+        if(event === "buy" && this.amount) {
           if(this.amount * this.currentPrice < this.getCash) {
 
             this.openConfirmModal(nextActionInfo)
           }
-        } else {
+        } else if((event === "sell" && this.amount)) {
           let currentAmount = this.stock.amount
 
           if(this.amount <= currentAmount) {
@@ -102,7 +102,7 @@
         if(!amount)
           return '0'
 
-        return amount.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " shares"
+        return String(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " shares"
       }
     }
   }
