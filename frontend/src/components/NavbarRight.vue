@@ -6,7 +6,8 @@
         <router-link to="/portfolio">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
-        <a class="disable-hover" @click="openLogInModal">Log in</a>
+        <a class="disable-hover" @click="openLogInModal" v-show="!getUser" >Log in</a>
+        <a class="disable-hover" @click="openLogInModal" v-show="getUser" >{{ getUser }}</a>
       </li>
     </ul>
   </div>
@@ -23,7 +24,8 @@
     computed: {
       ...mapGetters([
         'getCapital',
-        'getCash'
+        'getCash',
+        'getUser'
       ])
     },
     methods: {

@@ -42,14 +42,16 @@ def register(request):
 def authentication(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
-
+        
         if data['username'] is not None and data['password'] is not None:
             try:
                 user = User.objects.get(username = data['username'])
                 
                 if user.check_password(data['password']):
+                    request.session['username'] = data['username']
                     response = {
-                        "message": "Authentication succesful"
+                        "message": "Authentication succesful",
+                        "username": data['username']
                     }
 
                     return JsonResponse(response, status = HttpStatus.OK)

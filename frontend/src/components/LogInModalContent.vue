@@ -24,6 +24,7 @@
   import passwordInput from '@/components/PasswordInput'
   import actionButton from '@/components/ActionButton'
   import userController from '@/controllers/User.controller'
+  import { mapActions } from 'vuex'
 
   export default {
     data() {
@@ -38,6 +39,10 @@
       passwordInput
     },
     methods: {
+      ...mapActions([
+        'setUser',
+        'closeModal'
+      ]),
       handleUsernameChange(event) {
         this.username = event
       },
@@ -46,6 +51,10 @@
       },
       login() {
         userController.login(this.username, this.password)
+          .then(response => {
+            this.setUser(response.username)
+            this.closeModal()
+          })
       }
     }
   }
