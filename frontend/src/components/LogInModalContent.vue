@@ -10,6 +10,7 @@
                        @handleValueChange="handlePasswordChange">
         </passwordInput>
         <actionButton :buttonClass="'log-in-button'"
+                      @onClick="login"
                       :message="'Log in'">
         </actionButton>
       </div>
@@ -22,6 +23,7 @@
   import textInput from '@/components/TextInput'
   import passwordInput from '@/components/PasswordInput'
   import actionButton from '@/components/ActionButton'
+  import userController from '@/controllers/User.controller'
 
   export default {
     data() {
@@ -41,6 +43,9 @@
       },
       handlePasswordChange(event) {
         this.password = event
+      },
+      login() {
+        userController.login(this.username, this.password)
       }
     }
   }

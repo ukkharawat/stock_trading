@@ -3,8 +3,8 @@
     <navbar></navbar>
     <router-view/>
     <modal>
-      <logInModal v-show="getIsLogInModal" @click.stop></logInModal>
-      <confirmModal v-show="getIsConfirmModal" @click.stop></confirmModal>
+      <logInModal v-show="getIsLogInModal"></logInModal>
+      <confirmModal v-show="getIsConfirmModal"></confirmModal>
     </modal>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div id="confirm-modal">
+  <div id="confirm-modal" @click.stop>
     <modalHeader :message="message"></modalHeader>
     <confirmModalContent :actionInfo="getNextActionInfo">
     </confirmModalContent>

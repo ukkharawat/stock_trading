@@ -1,4 +1,4 @@
-export default class StockService {
+export default class StockDatasource {
 
   static getStockJsonFromCSV(csvData) {
     let csvDataEachLines = csvData.split("\n")
