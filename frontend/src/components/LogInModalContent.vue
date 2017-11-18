@@ -40,8 +40,8 @@
     },
     methods: {
       ...mapActions([
-        'setUser',
-        'closeModal'
+        'closeModal',
+        'setUsername'
       ]),
       handleUsernameChange(event) {
         this.username = event
@@ -52,7 +52,8 @@
       login() {
         userController.login(this.username, this.password)
           .then(response => {
-            this.setUser(response.username)
+            userController.setUserCache(response.username)
+            this.setUsername(response.username)
             this.closeModal()
           })
       }

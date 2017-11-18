@@ -14,4 +14,11 @@ export default class UserService {
             return response.data
         })
   }
+
+  static async logout(apiURL) {
+      return axios.get(apiURL)
+        .then(response => {
+            return response.data
+        })
+  }
 }

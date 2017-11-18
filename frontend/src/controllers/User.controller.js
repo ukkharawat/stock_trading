@@ -9,4 +9,26 @@ export default class UserController {
 
         return userService.login(loggedInUser, loginURL)
     }
+
+    static logout() {
+        let logoutURL = "http://localhost:8000/user/logout"
+
+        return userService.logout(logoutURL)
+    }
+
+    static setUserCache(username) {
+        localStorage.setItem("username", username)
+    }
+
+    static isLoggedIn() {
+        return localStorage.getItem("username") != null && localStorage.getItem("username") != undefined 
+    }
+
+    static getUsername() {
+        return localStorage.getItem("username")
+    }
+
+    static clearUserCache() {
+        localStorage.clear()
+    }
 }
