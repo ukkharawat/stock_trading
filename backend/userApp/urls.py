@@ -4,7 +4,8 @@ from userApp import views
 
 urlpatterns = [
     url(r'^register', views.register),
-    url(r'^authentication', views.authentication)
+    url(r'^authentication', views.authentication),
+    url(r'^logout', views.logOut)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
