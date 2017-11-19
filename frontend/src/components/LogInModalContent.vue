@@ -10,6 +10,7 @@
                        @handleValueChange="handlePasswordChange">
         </passwordInput>
         <actionButton :buttonClass="'log-in-button'"
+                      @onClick="login"
                       :message="'Log in'">
         </actionButton>
       </div>
@@ -22,6 +23,8 @@
   import textInput from '@/components/TextInput'
   import passwordInput from '@/components/PasswordInput'
   import actionButton from '@/components/ActionButton'
+  import userController from '@/controllers/User.controller'
+  import { mapActions } from 'vuex'
 
   export default {
     data() {
@@ -36,11 +39,23 @@
       passwordInput
     },
     methods: {
+      ...mapActions([
+        'closeModal',
+        'setUsername'
+      ]),
       handleUsernameChange(event) {
         this.username = event
       },
       handlePasswordChange(event) {
         this.password = event
+      },
+      login() {
+        userController.login(this.username, this.password)
+          .then(response => {
+            userController.setUserCache(response.username)
+            this.setUsername(response.username)
+            this.closeModal()
+          })
       }
     }
   }

@@ -6,7 +6,8 @@
         <router-link to="/portfolio">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
-        <a class="disable-hover" @click="openLogInModal">Log in</a>
+        <a class="disable-hover" @click="openLogInModal" v-show="!isLoggedIn" >Log in</a>
+        <a class="disable-hover" @click="logout" v-show="isLoggedIn" >{{ getUsername }} (Log out)</a>
       </li>
     </ul>
   </div>
@@ -14,6 +15,8 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import userController from '@/controllers/User.controller'
+
   export default {
     props: {
       menuObjects : {
@@ -23,13 +26,25 @@
     computed: {
       ...mapGetters([
         'getCapital',
-        'getCash'
-      ])
+        'getCash',
+        'getUsername'
+      ]),
+      isLoggedIn() {
+        return this.getUsername !== null
+      }
     },
     methods: {
       ...mapActions([
-        'openLogInModal'
-      ])
+        'openLogInModal',
+        'setUsername'
+      ]),
+      logout() {
+        userController.logout()
+          .then(response => {
+              userController.clearUserCache()
+              this.setUsername(null)
+          })
+      }
     },
     filters: {
       currency(value) {

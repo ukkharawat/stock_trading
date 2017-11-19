@@ -23,7 +23,8 @@ const state = {
   } ],
   capital: 10000,
   cash: 10000,
-  currentStep: 0
+  currentStep: 0,
+  username: null
 }
 
 const mutations = {
@@ -63,6 +64,9 @@ const mutations = {
   },
   INCREASE_STEP(state) {
     state.currentStep++
+  },
+  SET_USERNAME(state, username) {
+    state.username = username
   }
 }
 
@@ -75,7 +79,8 @@ const actions = {
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
   updateCash: ({ commit }, amount) => commit('UPDATE_CASH', amount),
   updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
-  increaseStep: ({ commit }) => commit('INCREASE_STEP')
+  increaseStep: ({ commit }) => commit('INCREASE_STEP'),
+  setUsername: ({ commit }, username) => commit('SET_USERNAME', username)
 }
 
 const getters = {
@@ -88,7 +93,8 @@ const getters = {
   getCapital: state => state.capital,
   getCash: state=> state.cash,
   getNextActionInfo: state => state.nextActionInfo,
-  getCurrentStep: state => state.currentStep
+  getCurrentStep: state => state.currentStep,
+  getUsername: state => state.username
 }
 
 export default new Vuex.Store({

@@ -3,8 +3,8 @@
     <navbar></navbar>
     <router-view/>
     <modal>
-      <logInModal v-show="getIsLogInModal" @click.stop></logInModal>
-      <confirmModal v-show="getIsConfirmModal" @click.stop></confirmModal>
+      <logInModal v-show="getIsLogInModal"></logInModal>
+      <confirmModal v-show="getIsConfirmModal"></confirmModal>
     </modal>
   </div>
 </template>
@@ -14,7 +14,8 @@
   import navbar from '@/components/Navbar'
   import logInModal from '@/components/LogInModal'
   import confirmModal from '@/components/ConfirmModal'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
+  import userController from '@/controllers/User.controller'
 
   export default {
     name: 'app',
@@ -24,10 +25,18 @@
       logInModal,
       confirmModal
     },
+    created() {
+      this.setUsername(userController.getUsername())
+    },
     computed: {
       ...mapGetters([
         'getIsLogInModal',
         'getIsConfirmModal'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'setUsername'
       ])
     }
   }
