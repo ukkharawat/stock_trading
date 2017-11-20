@@ -61,8 +61,8 @@
       setUserCache(response) {
         userController.setUserCache(response.username, response.Token)
         this.setUsername(response.username)
-        this.setStep(response.setCount)
-        this.setCash(response.setCash)
+        this.setStep(response.stepCount)
+        this.setCash(response.cash)
       }
     }
   }
