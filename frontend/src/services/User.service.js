@@ -15,8 +15,14 @@ export default class UserService {
         })
   }
 
-  static async logout(apiURL) {
-      return axios.get(apiURL)
+  static async logout(apiURL, token) {
+    let header = {
+        'Authorization': 'Token ' + token
+    }
+    
+    return axios.get(apiURL, {
+            headers: header
+        })
         .then(response => {
             return response.data
         })
