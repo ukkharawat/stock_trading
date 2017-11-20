@@ -1,10 +1,12 @@
 class ResponseObject(object):
 
     @staticmethod
-    def createSuccessLoginResponse(username, key):
+    def createSuccessLoginResponse(userSerializer, key):
         return {
             "message": "Authentication success",
-            "username": username,
+            "username": userSerializer['username'],
+            "cash": userSerializer['cash'],
+            "stepCount": userSerializer['stepCount'],
             "Token": key,
             "success": True
         }
@@ -41,22 +43,6 @@ class ResponseObject(object):
     def createFailedLogoutResponse():
         return {
             "message": "You have to log in before log out",
-            "success": False
-        }
-
-    @staticmethod
-    def createSuccessGetUserDetailResponse(userSerializer):
-        return {
-            "username": userSerializer['username'],
-            "cash": userSerializer['cash'],
-            "stepCount": userSerializer['stepCount'],
-            "success": True
-        }
-
-    @staticmethod
-    def createFailedGetUserDetailResponse():
-        return {
-            "message": "You have to log in",
             "success": False
         }
 

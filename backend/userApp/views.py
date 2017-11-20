@@ -59,12 +59,14 @@ def logIn(request):
                                     password = data['password'])
                 if user is not None:
                     token, _ = Token.objects.get_or_create(user=user)
-
-                    response = ResponseObject.createSuccessLoginResponse(user.username, token.key)
+                    userData = UserDetail.objects.get(pk = data['username'])
+                    userSerializer = UserDetailSerializer(userData)
+                    response = ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
 
                     return JsonResponse(response, status = status.HTTP_200_OK)
 
-            except:
+            except Exception, e:
+                print str(e)
                 response = ResponseObject.createFailedLoginResponse()
 
                 return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
@@ -75,17 +77,6 @@ def logOut(request):
     if request.method == 'GET':
 
         response = ResponseObject.createSuccessLogoutResponse()
-
-        return JsonResponse(response, status = status.HTTP_200_OK)
-
-@api_view(['GET'])
-@permission_classes((IsAuthenticated, ))
-def getUserDetail(request):
-    if request.method == 'GET':
-
-        user = UserDetail.objects.get(pk = request.user)
-        userSerializer = UserDetailSerializer(user)
-        response = ResponseObject.createSuccessGetUserDetailResponse(userSerializer.data)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
 
