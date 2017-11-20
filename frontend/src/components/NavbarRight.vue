@@ -2,8 +2,10 @@
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
       <li class="list-menu">
-        <a class="disable-hover menu-padding">Capital: {{getCapital | currency}} ({{getCash | currency}})</a>
-        <router-link to="/portfolio">
+        <a class="disable-hover menu-padding" v-if="isLoggedIn">
+          Capital: {{getCapital | currency}} ({{getCash | currency}})
+          </a>
+        <router-link to="/portfolio" v-show="isLoggedIn">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
         <a class="disable-hover" @click="openLogInModal" v-show="!isLoggedIn" >Log in</a>
@@ -36,14 +38,23 @@
     methods: {
       ...mapActions([
         'openLogInModal',
-        'setUsername'
+        'setUsername',
+        'setCash',
+        'setStep'
       ]),
       logout() {
         userController.logout()
           .then(response => {
+            if(response.success) {
               userController.clearUserCache()
-              this.setUsername(null)
+              this.clearVuex()
+            }
           })
+      },
+      clearVuex() {
+        this.setUsername(null)
+        this.setCash(null)
+        this.setStep(null)
       }
     },
     filters: {

@@ -41,7 +41,9 @@
     methods: {
       ...mapActions([
         'closeModal',
-        'setUsername'
+        'setUsername',
+        'setCash',
+        'setStep'
       ]),
       handleUsernameChange(event) {
         this.username = event
@@ -52,10 +54,15 @@
       login() {
         userController.login(this.username, this.password)
           .then(response => {
-            userController.setUserCache(response.username)
-            this.setUsername(response.username)
+            this.setUserCache(response)
             this.closeModal()
           })
+      },
+      setUserCache(response) {
+        userController.setUserCache(response.username, response.Token)
+        this.setUsername(response.username)
+        this.setStep(response.setCount)
+        this.setCash(response.setCash)
       }
     }
   }
