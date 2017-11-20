@@ -1,10 +1,11 @@
 class ResponseObject(object):
 
     @staticmethod
-    def createSuccessLoginResponse(username):
+    def createSuccessLoginResponse(username, key):
         return {
             "message": "Authentication success",
             "username": username,
+            "Token": key,
             "success": True
         }
 
@@ -56,5 +57,19 @@ class ResponseObject(object):
     def createFailedGetUserDetailResponse():
         return {
             "message": "You have to log in",
+            "success": False
+        }
+
+    @staticmethod
+    def createSuccessNextStepResponse():
+        return {
+            "message": "Next step success",
+            "success": True
+        }
+
+    @staticmethod
+    def createFailedNextStepResponse():
+        return {
+            "message": "Next step failed, check your authentication",
             "success": False
         }
