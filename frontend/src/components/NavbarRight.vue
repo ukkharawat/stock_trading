@@ -53,7 +53,7 @@
       clearVuex() {
         this.setUsername(null)
         this.setCash(null)
-        this.setStep(null)
+        this.setStep(1)
       }
     },
     filters: {
