@@ -29,11 +29,9 @@
       ...mapGetters([
         'getCapital',
         'getCash',
-        'getUsername'
-      ]),
-      isLoggedIn() {
-        return this.getUsername !== null
-      }
+        'getUsername',
+        'isLoggedIn'
+      ])
     },
     methods: {
       ...mapActions([

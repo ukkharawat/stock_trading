@@ -67,6 +67,7 @@ const mutations = {
   },
   SET_CASH(state, cash) {
     state.cash = cash
+    state.capital = cash
   }
 }
 
@@ -94,7 +95,8 @@ const getters = {
   getNextActionInfo: state => state.nextActionInfo,
   getUsername: state => state.username,
   getCash: state => state.cash,
-  getStep: state => state.step
+  getStep: state => state.step,
+  isLoggedIn: state => state.username !== null
 }
 
 export default new Vuex.Store({
