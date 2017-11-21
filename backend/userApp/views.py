@@ -59,15 +59,22 @@ def logIn(request):
         
         if data['username'] is not None and data['password'] is not None:
             try:
-                user = authenticate(username = data['username'], 
-                                    password = data['password'])
+                username = data['username']
+                password = data['password']
+
+                user = authenticate(username = username, password = password)
+
                 if user is not None:
                     token, _ = Token.objects.get_or_create(user=user)
-                    userData = UserDetail.objects.get(pk = data['username'])
+                    userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
                     response = ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
 
                     return JsonResponse(response, status = status.HTTP_200_OK)
+
+                response = ResponseObject.createFailedLoginResponse()
+
+                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
               
             except:
                 response = ResponseObject.createFailedLoginResponse()
