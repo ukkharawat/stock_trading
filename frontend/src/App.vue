@@ -3,9 +3,10 @@
     <navbar></navbar>
     <router-view/>
     <modal>
-      <logInModal v-show="getIsLogInModal" @click.stop></logInModal>
-      <confirmModal v-show="getIsConfirmModal" @click.stop></confirmModal>
+      <logInModal v-show="getIsLogInModal"></logInModal>
+      <confirmModal v-show="getIsConfirmModal"></confirmModal>
     </modal>
+    <nextDayButton></nextDayButton>
   </div>
 </template>
 
@@ -14,7 +15,9 @@
   import navbar from '@/components/Navbar'
   import logInModal from '@/components/LogInModal'
   import confirmModal from '@/components/ConfirmModal'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
+  import cacheController from '@/controllers/Cache.controller'
+  import nextDayButton from '@/components/NextDayButton'
 
   export default {
     name: 'app',
@@ -22,12 +25,26 @@
       modal,
       navbar,
       logInModal,
-      confirmModal
+      confirmModal,
+      nextDayButton
+    },
+    created() {
+      this.setUsername(cacheController.getUsername())
+      this.setCash(cacheController.getCash())
+      this.setStep(cacheController.getStep())
     },
     computed: {
       ...mapGetters([
         'getIsLogInModal',
-        'getIsConfirmModal'
+        'getIsConfirmModal',
+        'isLoggedIn'
+      ])
+    },
+    methods: {
+      ...mapActions([
+        'setUsername',
+        'setCash',
+        'setStep'
       ])
     }
   }

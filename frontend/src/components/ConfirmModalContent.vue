@@ -29,6 +29,7 @@
 
 <script>
   import confirmModalButton from '@/components/ConfirmModalButton'
+  import stockController from '@/controllers/Stock.controller'
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
@@ -42,38 +43,56 @@
     },
     computed: {
       ...mapGetters([
-        'getNextActionInfo'
+        'getNextActionInfo',
+        'getStock'
       ])
     },
     methods: {
       ...mapActions([
         'closeModal',
-        'buyStock',
-        'sellStock',
+        'updateCash',
+        'updateStock',
         'updateCapital'
       ]),
       handleClickYes() {
         let action = this.getNextActionInfo.action
-        let actionObject = this.createActionObject()
 
         if(action === "buy") {
-          this.buyStock(actionObject)
+          this.buyStock(this.getNextActionInfo)
         } else {
-          this.sellStock(actionObject)
+          this.sellStock(this.getNextActionInfo)
         }
-
-        this.updateCapital()
-        this.closeModal()
       },
       handleClickNo() {
         this.closeModal()
       },
-      createActionObject() {
-        return {
-          "shortName": this.getNextActionInfo.shortName,
-          "amount": this.getNextActionInfo.amount,
-          "price": this.getNextActionInfo.price
-        }
+      buyStock(tradingAction) {
+        let cost = stockController.findStockTradingCost(tradingAction)
+        let stock = this.getCurrentStock(tradingAction.shortName)
+        let stockObject = stockController.buyStock(stock, tradingAction)
+
+        this.updateVuex(-Math.abs(cost), stockObject)
+      },
+      sellStock(tradingAction) {
+        let cost = stockController.findStockTradingCost(tradingAction)
+        let stock = this.getCurrentStock(tradingAction.shortName)
+        let stockObject = stockController.sellStock(stock, tradingAction)
+
+        this.updateVuex(Math.abs(cost), stockObject)
+      },
+      getCurrentStock(shortName) {
+        let stocks = this.getStock
+        let stockIndex = stocks.findIndex(stock => {
+          return stock.shortName === shortName
+        })
+
+        return stocks[stockIndex]
+      },
+      updateVuex(cost, stock) {
+        this.updateCash(cost)
+        this.updateStock(stock)
+        this.updateCapital()
+        this.closeModal()
       }
     }
   }

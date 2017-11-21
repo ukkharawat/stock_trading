@@ -22,7 +22,9 @@ const state = {
     "averageBuyPrice": 0
   } ],
   capital: 10000,
-  cash: 10000
+  step: null,
+  cash: null,
+  username: null
 }
 
 const mutations = {
@@ -40,24 +42,6 @@ const mutations = {
     state.isConfirmModal = true
     state.nextActionInfo = nextActionInfo
   },
-  BUY_STOCK(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.shortName)
-
-    state.cash -= stock.amount * stock.price
-    state.stocks[stockIndex].averageBuyPrice = ((state.stocks[stockIndex].averageBuyPrice * state.stocks[stockIndex].amount)
-      + (stock.amount * stock.price))
-      /(state.stocks[stockIndex].amount + stock.amount)
-
-    state.stocks[stockIndex].amount += stock.amount
-  },
-  SELL_STOCK(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.shortName)
-
-    state.cash += stock.amount * stock.price
-    state.stocks[stockIndex].amount -= stock.amount
-    if(state.stocks[stockIndex].amount === 0)
-      state.stocks[stockIndex].averageBuyPrice = 0
-  },
   UPDATE_CAPITAL(state) {
     state.capital = state.cash
     state.capital += state.stocks.map(stock => stock.amount * stock.price).reduce((sum, value) => {
@@ -68,6 +52,22 @@ const mutations = {
     let stockIndex = findIndexOfStocks(stock.shortName)
 
     state.stocks[stockIndex].price = stock.price
+  },
+  UPDATE_STOCK(state, stock) {
+    let stockIndex = findIndexOfStocks(stock.shortName)
+
+    state.stocks[stockIndex].amount = stock.amount
+    state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+  },
+  SET_USERNAME(state, username) {
+    state.username = username
+  },
+  SET_STEP(state, step) {
+    state.step = step
+  },
+  SET_CASH(state, cash) {
+    state.cash = cash
+    state.capital = cash
   }
 }
 
@@ -76,10 +76,12 @@ const actions = {
   closeModal: ({ commit }) => commit('CLOSE_MODAL'),
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
-  buyStock: ({ commit }, stock) => commit('BUY_STOCK', stock),
-  sellStock: ({ commit }, stock) => commit('SELL_STOCK', stock),
   updateCapital: ({ commit }, stock) => commit('UPDATE_CAPITAL'),
-  updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock)
+  updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
+  updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
+  setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
+  setStep: ({ commit }, step) => commit('SET_STEP', step),
+  setCash: ({ commit }, cash) => commit('SET_CASH', cash),
 }
 
 const getters = {
@@ -90,8 +92,11 @@ const getters = {
   getStock: state => state.stocks,
   getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getCapital: state => state.capital,
-  getCash: state=> state.cash,
-  getNextActionInfo: state => state.nextActionInfo
+  getNextActionInfo: state => state.nextActionInfo,
+  getUsername: state => state.username,
+  getCash: state => state.cash,
+  getStep: state => state.step,
+  isLoggedIn: state => state.username !== null
 }
 
 export default new Vuex.Store({

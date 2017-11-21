@@ -10,6 +10,7 @@
                        @handleValueChange="handlePasswordChange">
         </passwordInput>
         <actionButton :buttonClass="'log-in-button'"
+                      @onClick="login"
                       :message="'Log in'">
         </actionButton>
       </div>
@@ -22,6 +23,9 @@
   import textInput from '@/components/TextInput'
   import passwordInput from '@/components/PasswordInput'
   import actionButton from '@/components/ActionButton'
+  import userController from '@/controllers/User.controller'
+  import cacheController from '@/controllers/Cache.controller'
+  import { mapActions } from 'vuex'
 
   export default {
     data() {
@@ -36,11 +40,38 @@
       passwordInput
     },
     methods: {
+      ...mapActions([
+        'closeModal',
+        'setUsername',
+        'setCash',
+        'setStep'
+      ]),
       handleUsernameChange(event) {
         this.username = event
       },
       handlePasswordChange(event) {
         this.password = event
+      },
+      login() {
+        userController.login(this.username, this.password)
+          .then(response => {
+            this.setUserCache(response)
+            this.closeModal()
+          })
+      },
+      setUserCache(response) {
+        this.setLocalStorage(response)
+        this.setVuex(response)
+      },
+      setVuex(data) {
+        this.setUsername(data.username)
+        this.setStep(data.stepCount)
+        this.setCash(data.cash)
+      },
+      setLocalStorage(data) {
+        cacheController.setUserCache(data.username, data.Token)
+        cacheController.setStep(data.stepCount)
+        cacheController.setCash(data.cash)
       }
     }
   }

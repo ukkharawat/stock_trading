@@ -1,5 +1,5 @@
 <template>
-  <div id="log-in-modal">
+  <div id="log-in-modal" @click.stop>
     <modalHeader :message="message"></modalHeader>
     <logInModalContent></logInModalContent>
   </div>

@@ -10,8 +10,8 @@
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center">
-          <holdingInfo :amount="Number(stock.amount)"></holdingInfo>
-          <averagePriceInfo :price="Number(stock.averageBuyPrice)"></averagePriceInfo>
+          <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
+          <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
                      @handleValueChange="amountChange">
           </textInput>
@@ -30,6 +30,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+  import stockDatasource from '@/datasources/Stock.datasource'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
   import holdingInfo from '@/components/HoldingInfo'
@@ -69,14 +70,14 @@
         "openConfirmModal"
       ]),
       onClick(event) {
-        let nextActionInfo = this.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
+        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
 
-        if(event === "buy") {
+        if(event === "buy" && this.amount) {
           if(this.amount * this.currentPrice < this.getCash) {
 
             this.openConfirmModal(nextActionInfo)
           }
-        } else {
+        } else if((event === "sell" && this.amount)) {
           let currentAmount = this.stock.amount
 
           if(this.amount <= currentAmount) {
@@ -84,20 +85,24 @@
           }
         }
       },
-      createStockObject(action, name, fullname, amount, price) {
-        return {
-          "action": action,
-          "shortName": name,
-          "fullName": fullname,
-          "amount": Number(amount),
-          "price": Number(price)
-        }
-      },
       amountChange(event) {
         this.amount = event
       },
       dataChange(event) {
         this.currentPrice = event["Close"]
+      },
+      formatAverageBuyPrice(price) {
+        if(!price)
+          return '0'
+        price = price.toFixed(2).toString()
+
+        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
+      },
+      formatAmount(amount) {
+        if(!amount)
+          return '0'
+
+        return String(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " shares"
       }
     }
   }

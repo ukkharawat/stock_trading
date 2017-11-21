@@ -4,9 +4,8 @@
 </template>
 
 <script>
-  import stockService from '@/services/Stock.service'
-  import stockDataSource from '@/datasources/Stock.datasource'
-  import { mapActions } from 'vuex'
+  import stockController from '@/controllers/Stock.controller'
+  import { mapActions, mapGetters } from 'vuex'
 
   function sleep() {
     return new Promise(resolve => setTimeout(resolve , 3000))
@@ -22,45 +21,43 @@
     data() {
       return {
         chart: null,
-        displayData: []
+        displayData: [],
+        stockData: []
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'getStep'
+      ])
+    },
+    watch: {
+      getStep: {
+        handler(val) {
+          this.displayData = this.stockData.slice(0, val)
+          this.chart.dataSets[0].dataProvider = this.displayData
+
+          this.chart.validateData()
+        },
+        deep: true
       }
     },
     async created() {
-      let stockData = []
       await this.getStockData(this.stockName)
         .then(response => {
-          stockData = response
+          this.stockData = response
+          let step = this.getStep | 1
+          
+          this.displayData = this.stockData.slice(0, step)
           this.createChart()
         })
-
-      for(let i = 0 ; i < stockData.length ; i++) {
-        this.updateChartData(stockData[i])
-        await sleep()
-      }
     },
     methods: {
       ...mapActions([
         'updateCapital',
         'updatePrice'
       ]),
-      updateChartData(data) {
-        this.chart.dataSets[0].dataProvider.push(data)
-
-        this.$emit("dataChange", data)
-        this.updatePrice({
-          "shortName": this.stockName,
-          "price": data["Close"]
-        })
-        this.updateCapital()
-        this.chart.validateData()
-      },
       async getStockData(stockName) {
-        let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/"+ stockName +".BK.csv"
-
-        return stockService.getStockDataFromURL(dataURL)
-          .then(csvData => {
-            return stockDataSource.getStockJsonFromCSV(csvData)
-          })
+        return stockController.getStockData(stockName)
       },
       createChart() {
         this.chart = AmCharts.makeChart("chartdiv", {
