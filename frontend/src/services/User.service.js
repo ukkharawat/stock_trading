@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default class UserService {
 
-  static async login(userObject, apiURL) {
+  static async login(apiURL, userObject) {
     let header =  {
         'Content-Type': 'application/json'
     }
@@ -21,6 +21,19 @@ export default class UserService {
     }
     
     return axios.get(apiURL, {
+            headers: header
+        })
+        .then(response => {
+            return response.data
+        })
+  }
+
+  static async nextDay(apiURL, nextDayObject, token) {
+    let header = {
+        'Authorization': 'Token ' + token
+    }
+    
+    return axios.put(apiURL, nextDayObject, {
             headers: header
         })
         .then(response => {
