@@ -2,7 +2,7 @@
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
       <li class="list-menu">
-        <a class="disable-hover menu-padding" v-if="isLoggedIn">
+        <a class="disable-hover menu-padding" v-show="isLoggedIn">
           Capital: {{getCapital | currency}} ({{getCash | currency}})
           </a>
         <router-link to="/portfolio" v-show="isLoggedIn">
@@ -18,6 +18,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import userController from '@/controllers/User.controller'
+  import cacheController from '@/controllers/Cache.controller'
 
   export default {
     props: {
@@ -44,7 +45,7 @@
         userController.logout()
           .then(response => {
             if(response.success) {
-              userController.clearUserCache()
+              cacheController.clearUserCache()
               this.clearVuex()
             }
           })
@@ -58,7 +59,7 @@
     filters: {
       currency(value) {
         if (!value) return ''
-        value = value.toFixed(2).toString()
+        value = parseFloat(value).toFixed(2).toString()
         return value.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
       }
     }

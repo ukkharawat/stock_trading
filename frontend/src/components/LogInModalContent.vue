@@ -24,6 +24,7 @@
   import passwordInput from '@/components/PasswordInput'
   import actionButton from '@/components/ActionButton'
   import userController from '@/controllers/User.controller'
+  import cacheController from '@/controllers/Cache.controller'
   import { mapActions } from 'vuex'
 
   export default {
@@ -59,10 +60,18 @@
           })
       },
       setUserCache(response) {
-        userController.setUserCache(response.username, response.Token)
-        this.setUsername(response.username)
-        this.setStep(response.stepCount)
-        this.setCash(response.cash)
+        this.setLocalStorage(response)
+        this.setVuex(response)
+      },
+      setVuex(data) {
+        this.setUsername(data.username)
+        this.setStep(data.stepCount)
+        this.setCash(data.cash)
+      },
+      setLocalStorage(data) {
+        cacheController.setUserCache(data.username, data.Token)
+        cacheController.setStep(data.stepCount)
+        cacheController.setCash(data.cash)
       }
     }
   }

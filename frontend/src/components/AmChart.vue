@@ -46,7 +46,7 @@
         .then(response => {
           this.stockData = response
           let step = this.getStep | 1
-
+          
           this.displayData = this.stockData.slice(0, step)
           this.createChart()
         })

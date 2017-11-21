@@ -1,5 +1,5 @@
 import userService from '@/services/User.service'
-import cacheController from '@/controller/Cache.controller'
+import cacheController from '@/controllers/Cache.controller'
 import userDataSource from '@/datasources/User.datasource'
 import apiURL from '@/utilities/ApiURL.utility'
 
