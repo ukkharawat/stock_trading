@@ -6,6 +6,7 @@
       <logInModal v-show="getIsLogInModal"></logInModal>
       <confirmModal v-show="getIsConfirmModal"></confirmModal>
     </modal>
+    <nextDayButton></nextDayButton>
   </div>
 </template>
 
@@ -16,6 +17,7 @@
   import confirmModal from '@/components/ConfirmModal'
   import { mapGetters, mapActions } from 'vuex'
   import userController from '@/controllers/User.controller'
+  import nextDayButton from '@/components/NextDayButton'
 
   export default {
     name: 'app',
@@ -23,7 +25,8 @@
       modal,
       navbar,
       logInModal,
-      confirmModal
+      confirmModal,
+      nextDayButton
     },
     created() {
       this.setUsername(userController.getUsername())
