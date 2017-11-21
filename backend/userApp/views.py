@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import status
 from userApp.responses import ResponseObject
+from userApp.datasource import Datasource
 
 from userApp.models import UserDetail
 from userApp.serializers import UserDetailSerializer
@@ -27,21 +28,24 @@ def register(request):
 
         if data['username'] is not None and data['password'] is not None:
             try:
-                userSerializer = UserDetailSerializer(data = {
-                    "username": data['username'],
-                    "cash": 10000,
-                    "stepCount": 0
-                })
+                username = data['username']
+                password = data['password']
+
+                userSerializer = UserDetailSerializer(data = Datasource.createUserDetailSerializer(username))
 
                 if userSerializer.is_valid():
-                    user = User.objects.create_user(username = data['username'])
+                    user = User.objects.create_user(username = username)
                     Token.objects.get_or_create(user = user)
-                    user.set_password(data['password'])
+                    user.set_password(password)
                     userSerializer.save()
                     user.save()
                     response = ResponseObject.createSuccessCreateUserResponse()
 
                     return JsonResponse(response, status = status.HTTP_201_CREATED)
+                
+                response = ResponseObject.createFailedCreateUserResponse()
+
+                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
             except:
                 response = ResponseObject.createFailedCreateUserResponse()
 
@@ -55,18 +59,24 @@ def logIn(request):
         
         if data['username'] is not None and data['password'] is not None:
             try:
-                user = authenticate(username = data['username'], 
-                                    password = data['password'])
+                username = data['username']
+                password = data['password']
+
+                user = authenticate(username = username, password = password)
+
                 if user is not None:
                     token, _ = Token.objects.get_or_create(user=user)
-                    userData = UserDetail.objects.get(pk = data['username'])
+                    userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
                     response = ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
 
                     return JsonResponse(response, status = status.HTTP_200_OK)
 
-            except Exception, e:
-                print str(e)
+                response = ResponseObject.createFailedLoginResponse()
+
+                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+              
+            except:
                 response = ResponseObject.createFailedLoginResponse()
 
                 return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
@@ -93,3 +103,7 @@ def nextStep(request):
             response = ResponseObject.createSuccessNextStepResponse()
 
             return JsonResponse(response, status = status.HTTP_200_OK)
+        
+        response = ResponseObject.createFailedNextStepResponse()
+
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
