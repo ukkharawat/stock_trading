@@ -103,3 +103,7 @@ def nextStep(request):
             response = ResponseObject.createSuccessNextStepResponse()
 
             return JsonResponse(response, status = status.HTTP_200_OK)
+        
+        response = ResponseObject.createFailedNextStepResponse()
+
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
