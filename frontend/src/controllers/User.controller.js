@@ -1,34 +1,26 @@
 import userService from '@/services/User.service'
+import cacheController from '@/controllers/Cache.controller'
 import userDataSource from '@/datasources/User.datasource'
+import apiURL from '@/utilities/ApiURL.utility'
 
 export default class UserController {
 
     static login(username, password) {
-        let loginURL = "http://localhost:8000/user/authentication"
-        let loggedInUser = userDataSource.createLoggedInUserObject(username, password)
+        let userForm = userDataSource.createLoggedInUserObject(username, password)
 
-        return userService.login(loggedInUser, loginURL)
+        return userService.login(apiURL.loginURL, userForm)
     }
 
     static logout() {
-        let logoutURL = "http://localhost:8000/user/logout"
+        let token = cacheController.getToken()
 
-        return userService.logout(logoutURL)
+        return userService.logout(apiURL.logoutURL, token)
     }
 
-    static setUserCache(username) {
-        localStorage.setItem("username", username)
-    }
+    static nextDay(cash, step) {
+        let token = cacheController.getToken()
+        let nextDayForm = userDataSource.createNextDayForm(cacheController.getUsername(), cash, step)
 
-    static isLoggedIn() {
-        return localStorage.getItem("username") != null && localStorage.getItem("username") != undefined 
-    }
-
-    static getUsername() {
-        return localStorage.getItem("username")
-    }
-
-    static clearUserCache() {
-        localStorage.clear()
+        return userService.nextDay(apiURL.nextDayURL, nextDayForm, token)
     }
 }

@@ -22,8 +22,8 @@ const state = {
     "averageBuyPrice": 0
   } ],
   capital: 10000,
-  cash: 10000,
-  currentStep: 0,
+  step: null,
+  cash: null,
   username: null
 }
 
@@ -53,20 +53,21 @@ const mutations = {
 
     state.stocks[stockIndex].price = stock.price
   },
-  UPDATE_CASH(state, amount) {
-    state.cash = state.cash + amount
-  },
   UPDATE_STOCK(state, stock) {
     let stockIndex = findIndexOfStocks(stock.shortName)
 
     state.stocks[stockIndex].amount = stock.amount
     state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
   },
-  INCREASE_STEP(state) {
-    state.currentStep++
-  },
   SET_USERNAME(state, username) {
     state.username = username
+  },
+  SET_STEP(state, step) {
+    state.step = step
+  },
+  SET_CASH(state, cash) {
+    state.cash = cash
+    state.capital = cash
   }
 }
 
@@ -77,10 +78,10 @@ const actions = {
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   updateCapital: ({ commit }, stock) => commit('UPDATE_CAPITAL'),
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
-  updateCash: ({ commit }, amount) => commit('UPDATE_CASH', amount),
   updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
-  increaseStep: ({ commit }) => commit('INCREASE_STEP'),
-  setUsername: ({ commit }, username) => commit('SET_USERNAME', username)
+  setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
+  setStep: ({ commit }, step) => commit('SET_STEP', step),
+  setCash: ({ commit }, cash) => commit('SET_CASH', cash),
 }
 
 const getters = {
@@ -91,10 +92,11 @@ const getters = {
   getStock: state => state.stocks,
   getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getCapital: state => state.capital,
-  getCash: state=> state.cash,
   getNextActionInfo: state => state.nextActionInfo,
-  getCurrentStep: state => state.currentStep,
-  getUsername: state => state.username
+  getUsername: state => state.username,
+  getCash: state => state.cash,
+  getStep: state => state.step,
+  isLoggedIn: state => state.username !== null
 }
 
 export default new Vuex.Store({

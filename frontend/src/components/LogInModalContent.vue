@@ -24,6 +24,7 @@
   import passwordInput from '@/components/PasswordInput'
   import actionButton from '@/components/ActionButton'
   import userController from '@/controllers/User.controller'
+  import cacheController from '@/controllers/Cache.controller'
   import { mapActions } from 'vuex'
 
   export default {
@@ -41,7 +42,9 @@
     methods: {
       ...mapActions([
         'closeModal',
-        'setUsername'
+        'setUsername',
+        'setCash',
+        'setStep'
       ]),
       handleUsernameChange(event) {
         this.username = event
@@ -52,10 +55,23 @@
       login() {
         userController.login(this.username, this.password)
           .then(response => {
-            userController.setUserCache(response.username)
-            this.setUsername(response.username)
+            this.setUserCache(response)
             this.closeModal()
           })
+      },
+      setUserCache(response) {
+        this.setLocalStorage(response)
+        this.setVuex(response)
+      },
+      setVuex(data) {
+        this.setUsername(data.username)
+        this.setStep(data.stepCount)
+        this.setCash(data.cash)
+      },
+      setLocalStorage(data) {
+        cacheController.setUserCache(data.username, data.Token)
+        cacheController.setStep(data.stepCount)
+        cacheController.setCash(data.cash)
       }
     }
   }

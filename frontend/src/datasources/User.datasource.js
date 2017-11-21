@@ -7,4 +7,11 @@ export default class UserDatasource {
         }
     }
 
+    static createNextDayForm(username, cash, step) {
+        return {
+            username: username,
+            cash: cash,
+            stepCount: step + 1
+        }
+    }
 }

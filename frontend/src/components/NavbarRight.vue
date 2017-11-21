@@ -2,8 +2,10 @@
   <div id="navbar-right">
     <ul class="nav navbar-nav navbar-right">
       <li class="list-menu">
-        <a class="disable-hover menu-padding">Capital: {{getCapital | currency}} ({{getCash | currency}})</a>
-        <router-link to="/portfolio">
+        <a class="disable-hover menu-padding" v-show="isLoggedIn">
+          Capital: {{getCapital | currency}} ({{getCash | currency}})
+          </a>
+        <router-link to="/portfolio" v-show="isLoggedIn">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
         <a class="disable-hover" @click="openLogInModal" v-show="!isLoggedIn" >Log in</a>
@@ -16,6 +18,7 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import userController from '@/controllers/User.controller'
+  import cacheController from '@/controllers/Cache.controller'
 
   export default {
     props: {
@@ -27,29 +30,36 @@
       ...mapGetters([
         'getCapital',
         'getCash',
-        'getUsername'
-      ]),
-      isLoggedIn() {
-        return this.getUsername !== null
-      }
+        'getUsername',
+        'isLoggedIn'
+      ])
     },
     methods: {
       ...mapActions([
         'openLogInModal',
-        'setUsername'
+        'setUsername',
+        'setCash',
+        'setStep'
       ]),
       logout() {
         userController.logout()
           .then(response => {
-              userController.clearUserCache()
-              this.setUsername(null)
+            if(response.success) {
+              cacheController.clearUserCache()
+              this.clearVuex()
+            }
           })
+      },
+      clearVuex() {
+        this.setUsername(null)
+        this.setCash(null)
+        this.setStep(1)
       }
     },
     filters: {
       currency(value) {
         if (!value) return ''
-        value = value.toFixed(2).toString()
+        value = parseFloat(value).toFixed(2).toString()
         return value.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
       }
     }

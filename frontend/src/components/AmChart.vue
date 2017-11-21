@@ -21,51 +21,41 @@
     data() {
       return {
         chart: null,
-        displayData: []
+        displayData: [],
+        stockData: []
       }
     },
     computed: {
       ...mapGetters([
-        'getCurrentStep'
+        'getStep'
       ])
     },
+    watch: {
+      getStep: {
+        handler(val) {
+          this.displayData = this.stockData.slice(0, val)
+          this.chart.dataSets[0].dataProvider = this.displayData
+
+          this.chart.validateData()
+        },
+        deep: true
+      }
+    },
     async created() {
-      let stockData = []
       await this.getStockData(this.stockName)
         .then(response => {
-          stockData = response
-          if(this.getCurrentStep > 0) {
-            this.displayData = stockData.slice(0, this.getCurrentStep)
-          }
-
+          this.stockData = response
+          let step = this.getStep | 1
+          
+          this.displayData = this.stockData.slice(0, step)
           this.createChart()
         })
-
-      for(let i = this.getCurrentStep ; i < stockData.length ; i++) {
-        this.updateChartData(stockData[i], i)
-        await sleep()
-      }
     },
     methods: {
       ...mapActions([
         'updateCapital',
-        'updatePrice',
-        'increaseStep'
+        'updatePrice'
       ]),
-      updateChartData(data, index) {
-        this.chart.dataSets[0].dataProvider.push(data)
-
-        this.$emit("dataChange", data)
-        this.updatePrice({
-          "shortName": this.stockName,
-          "price": data["Close"]
-        })
-        if(index === this.getCurrentStep) {
-          this.increaseStep()
-        }
-        this.updateCapital()
-        this.chart.validateData()
-      },
       async getStockData(stockName) {
         return stockController.getStockData(stockName)
       },

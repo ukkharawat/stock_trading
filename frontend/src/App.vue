@@ -6,6 +6,7 @@
       <logInModal v-show="getIsLogInModal"></logInModal>
       <confirmModal v-show="getIsConfirmModal"></confirmModal>
     </modal>
+    <nextDayButton></nextDayButton>
   </div>
 </template>
 
@@ -15,7 +16,8 @@
   import logInModal from '@/components/LogInModal'
   import confirmModal from '@/components/ConfirmModal'
   import { mapGetters, mapActions } from 'vuex'
-  import userController from '@/controllers/User.controller'
+  import cacheController from '@/controllers/Cache.controller'
+  import nextDayButton from '@/components/NextDayButton'
 
   export default {
     name: 'app',
@@ -23,20 +25,26 @@
       modal,
       navbar,
       logInModal,
-      confirmModal
+      confirmModal,
+      nextDayButton
     },
     created() {
-      this.setUsername(userController.getUsername())
+      this.setUsername(cacheController.getUsername())
+      this.setCash(cacheController.getCash())
+      this.setStep(cacheController.getStep())
     },
     computed: {
       ...mapGetters([
         'getIsLogInModal',
-        'getIsConfirmModal'
+        'getIsConfirmModal',
+        'isLoggedIn'
       ])
     },
     methods: {
       ...mapActions([
-        'setUsername'
+        'setUsername',
+        'setCash',
+        'setStep'
       ])
     }
   }
