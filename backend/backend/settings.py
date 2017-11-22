@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'userApp',
-    'corsheaders'
+    'stockApp',
+    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
@@ -57,9 +59,10 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
    'DEFAULT_AUTHENTICATION_CLASSES': (
        'rest_framework.authentication.TokenAuthentication',
+       'rest_framework.authentication.SessionAuthentication', #<---- champ add 
    ),
    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAdminUser'
+        'rest_framework.permissions.IsAdminUser',
    ),
 }
 
