@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from userApp.models import UserDetail
+from userApp.models import UserDetail , Portfolio
 
 class UserDetailSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only = True)
@@ -17,3 +17,8 @@ class UserDetailSerializer(serializers.Serializer):
         instance.save()
 
         return instance
+
+class PortfolioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Portfolio
+        fields = '__all__'
