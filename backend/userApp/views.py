@@ -86,6 +86,7 @@ def logIn(request):
 def logOut(request):
     if request.method == 'GET':
 
+        request.user.auth_token.delete()
         response = ResponseObject.createSuccessLogoutResponse()
 
         return JsonResponse(response, status = status.HTTP_200_OK)
