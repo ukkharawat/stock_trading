@@ -27,6 +27,10 @@ class Portfolio(models.Model):
     volume = models.IntegerField(blank=True, null = True)
     averagePrice = models.FloatField(blank=True, null = True)
 
+    class Meta:
+        ordering = ('username', 'symbol', )
+        default_related_name = 'portfolio'
+
     def __unicode__(self):
         return "%s"%(self.username)
 
