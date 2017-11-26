@@ -8,7 +8,8 @@ class Stock(models.Model):
     fullname = models.CharField(max_length = 1000)
    
     def __unicode__(self):
-		return "%s"%(self.name)
+      
+		  return "%s"%(self.name)
 
 class StockValue(models.Model):
     name = models.ForeignKey(Stock , on_delete = models.CASCADE)
@@ -21,4 +22,5 @@ class StockValue(models.Model):
     volume = models.FloatField(blank=True, null = True)
    
     def __unicode__(self):
-		return "%s"%(self.name)
+
+		  return "%s"%(self.name)
