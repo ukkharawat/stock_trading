@@ -1,7 +1,7 @@
 # Trading simulation platform using Deep learning
 ## features
-1. trading platform  
-2. Pedict stock price using Deep Learning
+1. Trading platform  
+2. Predict stock price using Deep Learning
 
 ### frontend
 ###### using VueJS javascript framework
