@@ -22,7 +22,6 @@ class UserDetail(models.Model):
 
 class Portfolio(models.Model):
     username = models.ForeignKey(UserDetail , on_delete = models.CASCADE)
-    date = models.DateField(blank=True)
     symbol = models.CharField(max_length = 10)
     volume = models.IntegerField(blank=True, null = True)
     averagePrice = models.FloatField(blank=True, null = True)
