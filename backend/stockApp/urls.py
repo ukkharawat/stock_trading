@@ -4,7 +4,7 @@ from stockApp import views
 
 urlpatterns = [
     url(r'^list', views.list),
-    
+    url(r'^stockFirstValue', views.getStockFirstValue)    
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

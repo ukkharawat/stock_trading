@@ -11,7 +11,7 @@ class Datasource(object):
     @staticmethod
     def createStockValueDict(stockValue):
         result = {
-            "update": {
+            "stocks": {
                 "shortname": str(stockValue.name),
                 "date": stockValue.date.strftime('%Y-%m-%d'),
                 "openPrice": stockValue.openPrice,
