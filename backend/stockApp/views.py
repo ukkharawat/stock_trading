@@ -10,7 +10,7 @@ from stockApp.serializers import StockSerializer
 from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from userApp.datasource import Datasource
+from stockApp.datasource import Datasource
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
@@ -24,8 +24,9 @@ def list(request):
 @permission_classes((AllowAny, ))
 def getStockFirstValue(request):
     if request.method == 'GET':
-        stockValue = StockValue.objects.all()[:1]
-        stockValueDict = Datasource.createStockValueDict(stockValue[0])
-
-        return JsonResponse(stockValueDict, status = status.HTTP_200_OK)
+		stockValue = StockValue.objects.all()[:1]
+		stock = Stock.objects.get(name = stockValue[0].name)
+		stockValueDict = Datasource.createStockDetail(stockValue[0], stock)
+		
+		return JsonResponse(stockValueDict, status = status.HTTP_200_OK)
 	
