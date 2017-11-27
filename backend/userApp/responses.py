@@ -47,11 +47,14 @@ class ResponseObject(object):
         }
 
     @staticmethod
-    def createSuccessNextStepResponse():
-        return {
+    def createSuccessNextStepResponse(stockValueJSON):
+        response = {
             "message": "Next step success",
             "success": True
         }
+        response.update(stockValueJSON)
+
+        return response
 
     @staticmethod
     def createFailedNextStepResponse():

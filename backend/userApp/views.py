@@ -19,6 +19,7 @@ from userApp.datasource import Datasource
 
 from userApp.models import UserDetail
 from userApp.serializers import UserDetailSerializer
+from stockApp.models import StockValue
 # Create your views here.
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -101,7 +102,9 @@ def nextStep(request):
 
         if userSerializer.is_valid():
             userSerializer.save()
-            response = ResponseObject.createSuccessNextStepResponse()
+            stockValue = StockValue.objects.all()[request.data["stepCount"]::1]
+            stockValueDict = Datasource.createStockValueDict(stockValue[0])
+            response = ResponseObject.createSuccessNextStepResponse(stockValueDict)
 
             return JsonResponse(response, status = status.HTTP_200_OK)
         
