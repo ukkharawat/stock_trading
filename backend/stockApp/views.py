@@ -46,25 +46,33 @@ def buyStock(request):
 			newAveragePrice = Utility.calculateAveragePrice(portfolio.averagePrice, 
 							portfolio.volume, data['averagePrice'], data['volume'])
 			newVolume = portfolio.volume + data['volume']
+			newCash = user.cash - (data['averagePrice'] * data['volume'])
 
 			newPortfolio = Controller.createNewPortfolio(portfolio.symbol, newAveragePrice, newVolume, user)
+			updateUser = Controller.createUpdateUser(user, newCash)
 			portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
+			userSerializer = UserDetailSerializer(user, data = updateUser)
 
-			if portfolioSerializer.is_valid():
+			if portfolioSerializer.is_valid() and userSerializer.is_valid() and newCash >= 0:
 				portfolioSerializer.save()
+				userSerializer.save()
 
-				return Response.createSuccessBuyStock(portfolio.symbol, newAveragePrice, newVolume)
+				return Response.createSuccessBuyStock(userSerializer.data, portfolio.symbol, newAveragePrice, newVolume)
 
 			return Response.createFailedBuyStock()
 
 		except Portfolio.DoesNotExist:
+			newCash = user.cash - (data['averagePrice'] * data['volume'])
 			portfolio = Datasource.createPortfolio(data, user)
 			portfolioSerializer = PortfolioSerializer(data = portfolio)
+			updateUser = Controller.createUpdateUser(user, newCash)
+			userSerializer = UserDetailSerializer(user, data = updateUser)
 
-			if portfolioSerializer.is_valid():
+			if portfolioSerializer.is_valid() and userSerializer.is_valid() and newCash >= 0:
 				portfolioSerializer.save()
+				userSerializer.save()
 
-				return Response.createSuccessBuyStock(data['symbol'], data['averagePrice'], data['volume'])
+				return Response.createSuccessBuyStock(userSerializer.data, data['symbol'], data['averagePrice'], data['volume'])
 
 			return Response.createFailedBuyStock()
 
@@ -77,27 +85,29 @@ def sellStock(request):
 		
 		try:
 			portfolio = Portfolio.objects.get(username = username, symbol = data['symbol'])
-			print portfolio.volume, data['volume']
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
-				newVolume = portfolio.volume - data['volume']
 				user = UserDetail.objects.get(pk = username)
+				newVolume = portfolio.volume - data['volume']
+				newCash = user.cash + (data['volume'] * data['averagePrice'])
+				
+				updateUser = Controller.createUpdateUser(user, newCash)
+				newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
+				userSerializer = UserDetailSerializer(user, data = updateUser)
+				portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
+						
+				if portfolioSerializer.is_valid() and userSerializer.is_valid():
+					userSerializer.save()
+					portfolioSerializer.save()
 
-				if Utility.isEmptyVolume(newVolume):
-					portfolio.delete()
-
-					return Response.createSuccessSellStock(data['symbol'], 0, 0)
-
+					return Response.createSuccessSellStock(userSerializer.data, data['symbol'], 0, 0)
 				else:
-					newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
-					portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
-
-					if portfolioSerializer.is_valid():
-						portfolioSerializer.save()
-
-						return Response.createSuccessSellStock(data['symbol'], portfolio.averagePrice, data['volume'])
+					return Response.createFailedSellStock()
+				
 			else:
 				return Response.createFailedSellStock()
 
 		except Portfolio.DoesNotExist:
-			
+
 			return Response.createFailedSellStock()
+
+# update cash
