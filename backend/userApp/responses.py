@@ -1,8 +1,11 @@
+from django.http import JsonResponse
+from rest_framework import status
+
 class ResponseObject(object):
 
     @staticmethod
     def createSuccessLoginResponse(userSerializer, key):
-        return {
+        response = {
             'message': 'Authentication success',
             'username': userSerializer['username'],
             'cash': userSerializer['cash'],
@@ -11,40 +14,52 @@ class ResponseObject(object):
             'success': True
         }
 
+        return JsonResponse(response, status = status.HTTP_200_OK)
+
     @staticmethod
     def createFailedLoginResponse():
-        return {
+        response = {
             'message': 'Authentication failed',
             'success': False
         }
 
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+
     @staticmethod
     def createSuccessCreateUserResponse():
-        return {
+        response = {
             'message': 'Creating user succesful',
             'success': True
         }
 
+        return JsonResponse(response, status = status.HTTP_201_CREATED)
+
     @staticmethod
     def createFailedCreateUserResponse():
-        return {
+        response = {
             'message': 'User\'s already exist',
             'success': False
         }
 
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+
     @staticmethod
     def createSuccessLogoutResponse():
-        return {
+        response = {
             'message': 'Log out success',
             'success': True
         }
 
+        return JsonResponse(response, status = status.HTTP_200_OK)
+
     @staticmethod
     def createFailedLogoutResponse():
-        return {
+        response = {
             'message': 'You have to log in before log out',
             'success': False
         }
+
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def createSuccessNextStepResponse(stockValueJSON):
@@ -54,11 +69,13 @@ class ResponseObject(object):
         }
         response.update(stockValueJSON)
 
-        return response
+        return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
     def createFailedNextStepResponse():
-        return {
+        response = {
             'message': 'Next step failed, check your authentication',
             'success': False
         }
+
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)

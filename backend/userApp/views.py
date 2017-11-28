@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import JSONRenderer
@@ -40,17 +38,12 @@ def register(request):
                     user.set_password(password)
                     userSerializer.save()
                     user.save()
-                    response = ResponseObject.createSuccessCreateUserResponse()
 
-                    return JsonResponse(response, status = status.HTTP_201_CREATED)
+                    return ResponseObject.createSuccessCreateUserResponse()
                 
-                response = ResponseObject.createFailedCreateUserResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedCreateUserResponse()
             except:
-                response = ResponseObject.createFailedCreateUserResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedCreateUserResponse()
                 
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -69,34 +62,26 @@ def logIn(request):
                     token, _ = Token.objects.get_or_create(user=user)
                     userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
-                    response = ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
 
-                    return JsonResponse(response, status = status.HTTP_200_OK)
+                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
 
-                response = ResponseObject.createFailedLoginResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedLoginResponse()
               
             except:
-                response = ResponseObject.createFailedLoginResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedLoginResponse()
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def logOut(request):
     if request.method == 'GET':
-
         request.user.auth_token.delete()
-        response = ResponseObject.createSuccessLogoutResponse()
 
-        return JsonResponse(response, status = status.HTTP_200_OK)
+        return ResponseObject.createSuccessLogoutResponse()
 
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, ))
 def nextStep(request):
     if request.method == 'PUT':
-
         user = UserDetail.objects.get(pk = request.user)
         userSerializer = UserDetailSerializer(user, data = request.data)
 
@@ -104,10 +89,7 @@ def nextStep(request):
             userSerializer.save()
             stockValue = StockValue.objects.all()[request.data['stepCount']::1]
             stockValueDict = Datasource.createStockValueDict(stockValue[0])
-            response = ResponseObject.createSuccessNextStepResponse(stockValueDict)
 
-            return JsonResponse(response, status = status.HTTP_200_OK)
+            return ResponseObject.createSuccessNextStepResponse(stockValueDict)
         
-        response = ResponseObject.createFailedNextStepResponse()
-
-        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+        return ResponseObject.createFailedNextStepResponse()
