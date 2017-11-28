@@ -3,10 +3,8 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.views import status
 from stockApp.models import Stock, StockValue
 from stockApp.serializers import StockSerializer
-from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import JSONParser
@@ -54,13 +52,10 @@ def buyStock(request):
 
 			if portfolioSerializer.is_valid():
 				portfolioSerializer.save()
-				response = Response.createSuccessBuyStock(portfolio.symbol, newAveragePrice, newVolume)
 
-				return JsonResponse(response, status = status.HTTP_200_OK)
+				return Response.createSuccessBuyStock(portfolio.symbol, newAveragePrice, newVolume)
 
-			response = Response.createFailedBuyStock()
-
-			return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+			return Response.createFailedBuyStock()
 
 		except Portfolio.DoesNotExist:
 			portfolio = Datasource.createPortfolio(data, user)
@@ -68,13 +63,10 @@ def buyStock(request):
 
 			if portfolioSerializer.is_valid():
 				portfolioSerializer.save()
-				response = Response.createSuccessBuyStock(data['symbol'], data['averagePrice'], data['volume'])
 
-				return JsonResponse(response, status = status.HTTP_200_OK)
+				return Response.createSuccessBuyStock(data['symbol'], data['averagePrice'], data['volume'])
 
-			response = Response.createFailedBuyStock()
-
-			return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+			return Response.createFailedBuyStock()
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -92,9 +84,8 @@ def sellStock(request):
 
 				if Utility.isEmptyVolume(newVolume):
 					portfolio.delete()
-					response = Response.createSuccessSellStock(data['symbol'], 0, 0)
 
-					return JsonResponse(response, status = status.HTTP_200_OK)
+					return Response.createSuccessSellStock(data['symbol'], 0, 0)
 
 				else:
 					newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
@@ -102,14 +93,11 @@ def sellStock(request):
 
 					if portfolioSerializer.is_valid():
 						portfolioSerializer.save()
-						response = Response.createSuccessSellStock(data['symbol'], portfolio.averagePrice, data['volume'])
 
-						return JsonResponse(response, status = status.HTTP_200_OK)
+						return Response.createSuccessSellStock(data['symbol'], portfolio.averagePrice, data['volume'])
 			else:
-				response = Response.createFailedSellStock()
+				return Response.createFailedSellStock()
 
-				return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 		except Portfolio.DoesNotExist:
-			response = Response.createFailedSellStock()
-
-			return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+			
+			return Response.createFailedSellStock()
