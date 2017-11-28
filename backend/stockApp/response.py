@@ -4,38 +4,40 @@ from rest_framework.views import status
 class Response(object):
 
     @staticmethod
-    def createSuccessBuyStock(symbol, averagePrice, volume):
+    def createSuccessBuyStock(user, symbol, averagePrice, volume):
         action = 'buy'
-        response = Response.createSuccessActionWithStockResponse(action, symbol, averagePrice, volume)
+        response = Response.createSuccessActionWithStockResponse(user, action, symbol, averagePrice, volume)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
     def createFailedBuyStock():
-        respones = {
+        response = {
             'success': False
         }
 
         return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def createSuccessSellStock(symbol, averagePrice, volume):
+    def createSuccessSellStock(user, symbol, averagePrice, volume):
         action = 'sell'
-        response = Response.createSuccessActionWithStockResponse(action, symbol, averagePrice, volume)
+        response = Response.createSuccessActionWithStockResponse(user, action, symbol, averagePrice, volume)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
     
     @staticmethod
     def craeteFailedSellStock():
-        respones = {
+        response = {
             'success': False
         }
 
         return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def createSuccessActionWithStockResponse(action, symbol, averagePrice, volume):
+    def createSuccessActionWithStockResponse(userDetail, action, symbol, averagePrice, volume):
         return {
+            'username': userDetail['username'],
+            'cash': userDetail['cash'],
             'action': action,
             'success': True,
             'symbol': symbol,
