@@ -48,7 +48,7 @@ def buyStock(request):
 							portfolio.volume, data['averagePrice'], data['volume'])
 			newVolume = portfolio.volume + data["volume"]
 
-			actionDetail = Datasource.createActionDetail(portfolio.symbol, newVolume, newAveragePrice)
+			portfolioDetail = Datasource.createPortfolioDetail(portfolio.symbol, newVolume, newAveragePrice)
 			newPortfolio = Datasource.createPortfolio(actionDetail, user)
 			portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 

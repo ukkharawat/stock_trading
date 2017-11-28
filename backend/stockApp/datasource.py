@@ -24,7 +24,7 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createActionDetail(symbol, volume, averagePrice):
+    def createPortfolioDetail(symbol, volume, averagePrice):
         return {
             "symbol": symbol,
             "volume": volume,
