@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import JSONParser
 from stockApp.datasource import Datasource
 from stockApp.utility import Utility
+from stockApp.controller import Controller
 from stockApp.response import Response
 from userApp.models import Portfolio, UserDetail
 from userApp.serializers import PortfolioSerializer, UserDetailSerializer
@@ -48,9 +49,7 @@ def buyStock(request):
 							portfolio.volume, data['averagePrice'], data['volume'])
 			newVolume = portfolio.volume + data['volume']
 
-			newData = Datasource.createDataDetail(portfolio.symbol, newAveragePrice, newVolume)
-			portfolioDetail = Datasource.createPortfolioDetail(newData)
-			newPortfolio = Datasource.createPortfolio(portfolioDetail, user)
+			newPortfolio = Controller.createNewPortfolio(portfolio.symbol, newAveragePrice, newVolume, user)
 			portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 
 			if portfolioSerializer.is_valid():
@@ -98,9 +97,7 @@ def sellStock(request):
 					return JsonResponse(response, status = status.HTTP_200_OK)
 
 				else:
-					dataDetail = Datasource.createDataDetail(data['symbol'], portfolio.averagePrice, newVolume)
-					portfolioDetail = Datasource.createPortfolioDetail(dataDetail)
-					newPortfolio = Datasource.createPortfolio(portfolioDetail, user)
+					newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
 					portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 
 					if portfolioSerializer.is_valid():
