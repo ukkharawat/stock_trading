@@ -22,3 +22,15 @@ class PortfolioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Portfolio
         fields = '__all__'
+
+    def update(self, instance, validate_data):
+        if validate_data.get('volume', instance.volume) == 0:
+            instance.delete()
+
+        else:
+            instance.volume = validate_data.get('volume', instance.volume)
+            instance.averagePrice = validate_data.get('cash', instance.averagePrice)
+
+            instance.save()
+
+        return instance
