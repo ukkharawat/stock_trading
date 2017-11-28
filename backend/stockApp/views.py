@@ -89,7 +89,7 @@ def sellStock(request):
 				user = UserDetail.objects.get(pk = username)
 				newVolume = portfolio.volume - data['volume']
 				newCash = user.cash + (data['volume'] * data['averagePrice'])
-				
+
 				updateUser = Controller.createUpdateUser(user, newCash)
 				newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
 				userSerializer = UserDetailSerializer(user, data = updateUser)
@@ -109,5 +109,3 @@ def sellStock(request):
 		except Portfolio.DoesNotExist:
 
 			return Response.createFailedSellStock()
-
-# update cash
