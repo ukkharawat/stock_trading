@@ -34,7 +34,6 @@ def register(request):
 
                 if userSerializer.is_valid():
                     user = User.objects.create_user(username = username)
-                    Token.objects.get_or_create(user = user)
                     user.set_password(password)
                     userSerializer.save()
                     user.save()
