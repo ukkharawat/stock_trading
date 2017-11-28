@@ -29,7 +29,7 @@ class PortfolioSerializer(serializers.ModelSerializer):
 
         else:
             instance.volume = validate_data.get('volume', instance.volume)
-            instance.averagePrice = validate_data.get('cash', instance.averagePrice)
+            instance.averagePrice = validate_data.get('averagePrice', instance.averagePrice)
 
             instance.save()
 
