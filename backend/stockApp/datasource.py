@@ -38,3 +38,11 @@ class Datasource(object):
             'averagePrice': averagePrice,
             'volume': volume
         }
+
+    @staticmethod
+    def createUserDetail(username, stepCount, cash):
+        return {
+            'username': username,
+            'cash': cash,
+            'stepCount': stepCount
+        }
