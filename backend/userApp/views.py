@@ -102,7 +102,7 @@ def nextStep(request):
 
         if userSerializer.is_valid():
             userSerializer.save()
-            stockValue = StockValue.objects.all()[request.data["stepCount"]::1]
+            stockValue = StockValue.objects.all()[request.data['stepCount']::1]
             stockValueDict = Datasource.createStockValueDict(stockValue[0])
             response = ResponseObject.createSuccessNextStepResponse(stockValueDict)
 
