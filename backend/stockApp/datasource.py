@@ -19,14 +19,22 @@ class Datasource(object):
         return {
             'username': username,
             'symbol': actionData['symbol'],
-            'volume': actionData['volume'],
-            'averagePrice': actionData['averagePrice']
+            'averagePrice': actionData['averagePrice'],
+            'volume': actionData['volume']
         }
 
     @staticmethod
     def createPortfolioDetail(data):
         return {
             'symbol': data['symbol'],
-            'volume': data['volume'],
-            'averagePrice': data['averagePrice']
+            'averagePrice': data['averagePrice'],
+            'volume': data['volume']
+        }
+
+    @staticmethod
+    def createDataDetail(symbol, averagePrice, volume):
+        return {
+            'symbol': symbol,
+            'averagePrice': averagePrice,
+            'volume': volume
         }
