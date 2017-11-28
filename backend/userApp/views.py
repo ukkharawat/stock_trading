@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
 
 from django.contrib.auth.models import User
 from rest_framework import status
 from userApp.responses import ResponseObject
 from userApp.datasource import Datasource
 
-from userApp.models import UserDetail
+from userApp.models import UserDetail, Portfolio
 from userApp.serializers import UserDetailSerializer
 from stockApp.models import StockValue, Stock
 # Create your views here.
@@ -79,6 +78,15 @@ def logOut(request):
 
         return ResponseObject.createSuccessLogoutResponse()
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def getUserDetail(request):
+    if request.method == 'GET':
+        user = UserDetail.objects.get(pk = request.user)
+        portfolio = Portfolio.objects.get(username = user)
+
+        return ResponseObject.createUserDetailResponse(portfolio, user)
+        
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, ))
 def nextStep(request):

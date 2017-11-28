@@ -31,5 +31,5 @@ class Datasource(object):
             temp = Datasource.createStockValueDict(stockValues[i])
 
             result.append(temp['stocks'])
-        print result
+
         return result

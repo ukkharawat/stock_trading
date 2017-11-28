@@ -54,3 +54,16 @@ class ResponseObject(object):
         response.update(stockValueJSON)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
+
+    @staticmethod
+    def createUserDetailResponse(portfolio, user):
+        response = {
+            'username': str(user.username),
+            'cash': user.cash,
+            'stepCount': user.stepCount,
+            'symbol': portfolio.symbol,
+            'volume': portfolio.volume,
+            'averagePrice': portfolio.averagePrice
+        }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)
