@@ -43,8 +43,7 @@ def buyStock(request):
 
 		try:
 			portfolio = Portfolio.objects.get(username = username, symbol = data['symbol'])
-			newAveragePrice = Utility.calculateAveragePrice(portfolio.averagePrice, 
-							portfolio.volume, data['averagePrice'], data['volume'])
+			newAveragePrice = Utility.calculateAveragePrice(portfolio, data)
 			newVolume = portfolio.volume + data['volume']
 			newCash = user.cash - (data['averagePrice'] * data['volume'])
 
@@ -57,7 +56,7 @@ def buyStock(request):
 				portfolioSerializer.save()
 				userSerializer.save()
 
-				return Response.createSuccessBuyStock(userSerializer.data, portfolio.symbol, newAveragePrice, newVolume)
+				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
 
 			return Response.createFailedBuyStock()
 
@@ -72,7 +71,7 @@ def buyStock(request):
 				portfolioSerializer.save()
 				userSerializer.save()
 
-				return Response.createSuccessBuyStock(userSerializer.data, data['symbol'], data['averagePrice'], data['volume'])
+				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
 
 			return Response.createFailedBuyStock()
 
@@ -98,8 +97,12 @@ def sellStock(request):
 				if portfolioSerializer.is_valid() and userSerializer.is_valid():
 					userSerializer.save()
 					portfolioSerializer.save()
-
-					return Response.createSuccessSellStock(userSerializer.data, data['symbol'], 0, 0)
+					
+					if newVolume == 0:
+						return Response.createSuccessSellStock(userSerializer.data, data['symbol'], 0, 0)
+					else:
+						return Response.createSuccessSellStock(userSerializer.data, data['symbol']
+										, portfolioSerializer.data['averagePrice'], portfolioSerializer.data['volume'])
 				else:
 					return Response.createFailedSellStock()
 				
