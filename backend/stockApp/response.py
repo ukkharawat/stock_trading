@@ -4,8 +4,11 @@ from rest_framework.views import status
 class Response(object):
 
     @staticmethod
-    def createSuccessBuyStock(user, symbol, averagePrice, volume):
+    def createSuccessBuyStock(user, portfolio):
         action = 'buy'
+        symbol = portfolio['symbol']
+        averagePrice = portfolio['averagePrice']
+        volume = portfolio['volume']
         response = Response.createSuccessActionWithStockResponse(user, action, symbol, averagePrice, volume)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
