@@ -9,3 +9,9 @@ class Controller(object):
         newPortfolio = Datasource.createPortfolio(portfolioDetail, user)
 
         return newPortfolio
+
+    @staticmethod
+    def createUpdateUser(user, updateCash):
+        updateUser = Datasource.createUserDetail(user.username, user.stepCount, updateCash)
+
+        return updateUser
