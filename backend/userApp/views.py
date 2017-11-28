@@ -17,7 +17,7 @@ from userApp.datasource import Datasource
 
 from userApp.models import UserDetail
 from userApp.serializers import UserDetailSerializer
-from stockApp.models import StockValue
+from stockApp.models import StockValue, Stock
 # Create your views here.
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -40,9 +40,9 @@ def register(request):
 
                     return ResponseObject.createSuccessCreateUserResponse()
                 
-                return ResponseObject.createFailedCreateUserResponse()
+                return ResponseObject.createFailedResponse()
             except:
-                return ResponseObject.createFailedCreateUserResponse()
+                return ResponseObject.createFailedResponse()
                 
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -61,13 +61,15 @@ def logIn(request):
                     token, _ = Token.objects.get_or_create(user=user)
                     userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
+                    stock = Stock.objects.get(name = 'PTT')
+                    stockValue = StockValue.objects.filter(name = stock).order_by('date')[:userData.stepCount]
 
-                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
+                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, stockValue)
 
-                return ResponseObject.createFailedLoginResponse()
+                return ResponseObject.createFailedResponse()
               
             except:
-                return ResponseObject.createFailedLoginResponse()
+                return ResponseObject.createFailedResponse()
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
@@ -91,4 +93,4 @@ def nextStep(request):
 
             return ResponseObject.createSuccessNextStepResponse(stockValueDict)
         
-        return ResponseObject.createFailedNextStepResponse()
+        return ResponseObject.createFailedResponse()
