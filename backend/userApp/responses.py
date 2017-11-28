@@ -28,7 +28,7 @@ class ResponseObject(object):
     @staticmethod
     def createFailedCreateUserResponse():
         return {
-            'message': 'User's already exist',
+            'message': 'User\'s already exist',
             'success': False
         }
 
