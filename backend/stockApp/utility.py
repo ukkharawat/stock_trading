@@ -1,11 +1,11 @@
 class Utility(object):
 
     @staticmethod
-    def calculateAveragePrice(oldAveragePrice, oldVolume, newAveragePrice, newVolume):
-        oldAmount = oldAveragePrice * oldVolume
-        newAmount = newAveragePrice * newVolume
+    def calculateAveragePrice(portfolio, current):
+        oldAmount = portfolio.averagePrice * portfolio.volume
+        newAmount = current['averagePrice'] * current['volume']
         amountSum = oldAmount + newAmount
-        volumeSum = oldVolume + newVolume
+        volumeSum = portfolio.volume + current['volume']
 
         newAveragePrice = amountSum / volumeSum
 
