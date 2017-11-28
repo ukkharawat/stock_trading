@@ -5,7 +5,7 @@ class Datasource(object):
         return {
             'username': username,
             'cash': 10000,
-            'stepCount': 0
+            'stepCount': 1
         }
 
     @staticmethod
@@ -22,4 +22,14 @@ class Datasource(object):
                 'volume': stockValue.volume
             }
         }
+        return result
+
+    @staticmethod
+    def createStockArray(stockValues):
+        result = []
+        for i in range(stockValues.count()):
+            temp = Datasource.createStockValueDict(stockValues[i])
+
+            result.append(temp['stocks'])
+        print result
         return result
