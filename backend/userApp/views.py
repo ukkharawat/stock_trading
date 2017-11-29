@@ -60,9 +60,8 @@ def logIn(request):
                     token, _ = Token.objects.get_or_create(user=user)
                     userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
-                    user = UserDetail.objects.get(pk = username)
-                    portfolio = Portfolio.objects.filter(username = user)
-                    stockValue = Utility.getStockValueFromName('PTT', 1, userData.stepCount)
+                    portfolio = Portfolio.objects.filter(username = userSerializer.data)
+                    stockValue = Utility.getStockValueFromName('PTT', 1, userSerializer.data['stepCount'])
 
                     return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, stockValue, portfolio)
 
