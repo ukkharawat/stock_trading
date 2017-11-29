@@ -6,7 +6,6 @@
 
 <script>
 import userController from '@/controllers/User.controller'
-import cacheController from '@/controllers/Cache.controller'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -25,14 +24,10 @@ export default {
             userController.nextDay(this.getCash, this.getStep)
                 .then(response => {
                     this.increaseStep()
-                    this.setNewStep()
                 })
         },
         increaseStep() {
             this.setStep(parseInt(this.getStep) + 1)
-        },
-        setNewStep() {
-            cacheController.setStep(this.getStep)
         }
     }
 }
