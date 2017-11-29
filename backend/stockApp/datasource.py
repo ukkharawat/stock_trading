@@ -53,12 +53,13 @@ class Datasource(object):
         
         for i in range(stockValues.count()):
             temp = {
+                'Date': stockValues[i].date.strftime('%Y-%m-%d'),
                 'shortname': str(stockValues[i].name),
                 'Open': stockValues[i].openPrice,
                 'Close': stockValues[i].closePrice,
                 'High': stockValues[i].high,
                 'Low': stockValues[i].low,
-                'AdjClose': stockValues[i].adjClose,
+                'Adj': stockValues[i].adjClose,
                 'Volume': stockValues[i].volume,
             }
 
