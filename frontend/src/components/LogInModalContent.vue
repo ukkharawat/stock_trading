@@ -66,7 +66,15 @@
       setVuex(data) {
         this.setUsername(data.username)
         this.setStep(data.stepCount)
-        this.setCash(data.cash)
+        
+        let stock = {
+              'shortName': response.portfolio[0].symbol,
+              'amount': response.portfolio[0].volume,
+              'averageBuyPrice': response.portfolio[0].averagePrice,
+              'cash': response.cash
+            }
+            
+        this.updateStock(stock)
       },
       setLocalStorage(data) {
         cacheController.setUserCache(data.username, data.Token)

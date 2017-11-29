@@ -37,9 +37,9 @@
             this.setStep(response.stepCount)
 
             let stock = {
-              'shortName': response.symbol,
-              'amount': response.volume,
-              'averageBuyPrice': response.averagePrice,
+              'shortName': response.portfolio[0].symbol,
+              'amount': response.portfolio[0].volume,
+              'averageBuyPrice': response.portfolio[0].averagePrice,
               'cash': response.cash
             }
 
