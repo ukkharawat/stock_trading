@@ -32,7 +32,6 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessCreateUserResponse():
         response = {
-            'message': 'Creating user succesful',
             'success': True
         }
 
@@ -41,7 +40,6 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessLogoutResponse():
         response = {
-            'message': 'Log out success',
             'success': True
         }
 
@@ -50,10 +48,9 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessNextStepResponse(stockValueJSON):
         response = {
-            'message': 'Next step success',
-            'success': True
+            'success': True,
+            'stockValue': stockValueJSON
         }
-        response.update(stockValueJSON)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
 
