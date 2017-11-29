@@ -5,8 +5,7 @@ from userApp.datasource import Datasource
 class ResponseObject(object):
 
     @staticmethod
-    def createSuccessLoginResponse(userSerializer, key, stockValues, portfolio):
-        stocks = Datasource.createStockArray(stockValues)
+    def createSuccessLoginResponse(userSerializer, key,  portfolio):
         portfolioList = Datasource.createUserPortfolio(portfolio)
 
         response = {
@@ -15,7 +14,6 @@ class ResponseObject(object):
             'stepCount': userSerializer['stepCount'],
             'Token': key,
             'success': True,
-            'stocks': stocks,
             'portfolio': portfolioList
         }
 
@@ -46,25 +44,23 @@ class ResponseObject(object):
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
-    def createSuccessNextStepResponse(stockValueJSON):
+    def createSuccessNextStepResponse():
         response = {
-            'success': True,
-            'stockValue': stockValueJSON
+            'success': True
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
-    def createUserDetailResponse(portfolio, user, stockValue):
+    def createUserDetailResponse(portfolio, user):
         portfolioList = Datasource.createUserPortfolio(portfolio)
-        stockValueList = Datasource.createStockValueList(stockValue)
 
         response = {
             'username': str(user.username),
             'cash': user.cash,
             'stepCount': user.stepCount,
             'portfolio': portfolioList,
-            'stockValue': stockValueList
+            'success': True
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)

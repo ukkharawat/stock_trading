@@ -60,10 +60,9 @@ def logIn(request):
                     token, _ = Token.objects.get_or_create(user=user)
                     userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
-                    portfolio = Portfolio.objects.filter(username = userSerializer.data)
-                    stockValue = Utility.getStockValueFromName('PTT', 1, userSerializer.data['stepCount'])
+                    portfolio = Portfolio.objects.filter(username = userData)
 
-                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, stockValue, portfolio)
+                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, portfolio)
 
                 return ResponseObject.createFailedResponse()
               
@@ -84,9 +83,8 @@ def getUserDetail(request):
     if request.method == 'GET':
         user = UserDetail.objects.get(pk = request.user)
         portfolio = Portfolio.objects.filter(username = user)
-        stockValue = Utility.getStockValueFromName('PTT', 1, user.stepCount)
 
-        return ResponseObject.createUserDetailResponse(portfolio, user, stockValue)
+        return ResponseObject.createUserDetailResponse(portfolio, user)
         
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, ))
@@ -99,9 +97,7 @@ def nextStep(request):
 
         if userSerializer.is_valid():
             userSerializer.save()
-            stockValue = Utility.getStockValueFromName('PTT', newStepCount - 1, newStepCount)
-            stockValueDict = Datasource.createStockValueDict(stockValue[0])
             
-            return ResponseObject.createSuccessNextStepResponse(stockValueDict)
+            return ResponseObject.createSuccessNextStepResponse()
         
         return ResponseObject.createFailedResponse()
