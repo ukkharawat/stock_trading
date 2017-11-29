@@ -1,6 +1,6 @@
 <template>
-    <div class="next-day" v-show="isLoggedIn">
-        <a class="next-day-button" @click="nextDay">Next day</a>
+    <div class="next-day" v-show="isLoggedIn" @click="nextDay">
+        <a class="next-day-button">Next day</a>
     </div>
 </template>
 
