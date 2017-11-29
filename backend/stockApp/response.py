@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from rest_framework.views import status
+from stockApp.datasource import Datasource
 
 class Response(object):
 
@@ -47,3 +48,16 @@ class Response(object):
             'averagePrice': averagePrice,
             'volume': volume
         }
+
+    @staticmethod
+    def createStockList(data):
+        return JsonResponse(data, status = status.HTTP_200_OK)
+
+    @staticmethod
+    def createStockValueList(stockValue):
+        stockValueList = Datasource.createStockValueList(stockValue)
+        response = {
+            'stockValue': stockValueList
+        }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)

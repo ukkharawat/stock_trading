@@ -5,8 +5,8 @@ from userApp.datasource import Datasource
 class ResponseObject(object):
 
     @staticmethod
-    def createSuccessLoginResponse(userSerializer, key, stockValues):
-        stocks = Datasource.createStockArray(stockValues)
+    def createSuccessLoginResponse(userSerializer, key,  portfolio):
+        portfolioList = Datasource.createUserPortfolio(portfolio)
 
         response = {
             'username': userSerializer['username'],
@@ -14,7 +14,7 @@ class ResponseObject(object):
             'stepCount': userSerializer['stepCount'],
             'Token': key,
             'success': True,
-            'stocks': stocks
+            'portfolio': portfolioList
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
@@ -30,7 +30,6 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessCreateUserResponse():
         response = {
-            'message': 'Creating user succesful',
             'success': True
         }
 
@@ -39,31 +38,29 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessLogoutResponse():
         response = {
-            'message': 'Log out success',
             'success': True
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
-    def createSuccessNextStepResponse(stockValueJSON):
+    def createSuccessNextStepResponse():
         response = {
-            'message': 'Next step success',
             'success': True
         }
-        response.update(stockValueJSON)
 
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
     def createUserDetailResponse(portfolio, user):
+        portfolioList = Datasource.createUserPortfolio(portfolio)
+
         response = {
             'username': str(user.username),
             'cash': user.cash,
             'stepCount': user.stepCount,
-            'symbol': portfolio.symbol,
-            'volume': portfolio.volume,
-            'averagePrice': portfolio.averagePrice
+            'portfolio': portfolioList,
+            'success': True
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)

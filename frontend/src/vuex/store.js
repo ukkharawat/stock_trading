@@ -21,7 +21,7 @@ const state = {
     "price": 0,
     "averageBuyPrice": 0
   } ],
-  step: null,
+  step: 1,
   cash: null,
   username: null
 }
