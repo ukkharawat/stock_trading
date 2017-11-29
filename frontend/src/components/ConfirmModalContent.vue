@@ -44,7 +44,8 @@
     computed: {
       ...mapGetters([
         'getNextActionInfo',
-        'getStock'
+        'getStock',
+        'getCash'
       ])
     },
     methods: {
@@ -67,32 +68,45 @@
         this.closeModal()
       },
       buyStock(tradingAction) {
-        let cost = stockController.findStockTradingCost(tradingAction)
-        let stock = this.getCurrentStock(tradingAction.shortName)
-        let stockObject = stockController.buyStock(stock, tradingAction)
+        let tradingObject = this.createTradingObject(tradingAction)
 
-        this.updateVuex(-Math.abs(cost), stockObject)
+        stockController.buyStock(tradingObject)
+          .then(response => {
+            let updateData = {
+              'shortName': response.symbol,
+              'amount': response.volume,
+              'averageBuyPrice': response.averagePrice,
+              'cash': response.cash
+            }
+
+            this.updateVuex(updateData)
+          })
       },
       sellStock(tradingAction) {
-        let cost = stockController.findStockTradingCost(tradingAction)
-        let stock = this.getCurrentStock(tradingAction.shortName)
-        let stockObject = stockController.sellStock(stock, tradingAction)
+        let tradingObject = this.createTradingObject(tradingAction)
 
-        this.updateVuex(Math.abs(cost), stockObject)
-      },
-      getCurrentStock(shortName) {
-        let stocks = this.getStock
-        let stockIndex = stocks.findIndex(stock => {
-          return stock.shortName === shortName
-        })
+        stockController.sellStock(tradingObject)
+          .then(response => {
+            let updateData = {
+              'shortName': response.symbol,
+              'amount': response.volume,
+              'averageBuyPrice': response.averagePrice,
+              'cash': response.cash
+            }
 
-        return stocks[stockIndex]
+            this.updateVuex(updateData)
+          })
       },
-      updateVuex(cost, stock) {
-        this.updateCash(cost)
-        this.updateStock(stock)
-        this.updateCapital()
+      updateVuex(updateData) {
+        this.updateStock(updateData)
         this.closeModal()
+      },
+      createTradingObject(tradingAction) {
+        return {
+          'symbol': tradingAction.shortName,
+          'volume': tradingAction.amount,
+          'averagePrice': tradingAction.price
+        }
       }
     }
   }

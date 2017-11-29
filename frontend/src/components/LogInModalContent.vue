@@ -70,8 +70,6 @@
       },
       setLocalStorage(data) {
         cacheController.setUserCache(data.username, data.Token)
-        cacheController.setStep(data.stepCount)
-        cacheController.setCash(data.cash)
       }
     }
   }

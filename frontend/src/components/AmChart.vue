@@ -22,7 +22,8 @@
       return {
         chart: null,
         displayData: [],
-        stockData: []
+        stockData: [],
+        isChartCreate: false
       }
     },
     computed: {
@@ -33,10 +34,12 @@
     watch: {
       getStep: {
         handler(val) {
-          this.displayData = this.stockData.slice(0, val)
-          this.chart.dataSets[0].dataProvider = this.displayData
+          if(this.isChartCreate) {
+            this.displayData = this.stockData.slice(0, val)
+            this.chart.dataSets[0].dataProvider = this.displayData
 
-          this.chart.validateData()
+            this.chart.validateData()
+          }
         },
         deep: true
       }
@@ -49,6 +52,8 @@
           
           this.displayData = this.stockData.slice(0, step)
           this.createChart()
+          this.isChartCreate = true
+          this.$emit("dataChange", this.displayData[this.displayData.length - 1])
         })
     },
     methods: {

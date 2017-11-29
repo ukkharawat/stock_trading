@@ -3,7 +3,7 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="list-menu">
         <a class="disable-hover menu-padding" v-show="isLoggedIn">
-          Capital: {{getCapital | currency}} ({{getCash | currency}})
+          Capital: {{capital | currency}} ({{getCash | currency}})
           </a>
         <router-link to="/portfolio" v-show="isLoggedIn">
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
@@ -26,13 +26,26 @@
         type: Array
       }
     },
+    data() {
+      return {
+        'capital': null
+      }
+    },
     computed: {
       ...mapGetters([
-        'getCapital',
         'getCash',
         'getUsername',
-        'isLoggedIn'
+        'isLoggedIn',
+        'getStock'
       ])
+    },
+    watch: {
+      getStock: {
+        handler(val) {
+          this.capital = this.getCash + this.getStock.map(stock => stock.amount * stock.price).reduce((sum, current) => sum + current)
+        },
+        deep: true
+      }
     },
     methods: {
       ...mapActions([

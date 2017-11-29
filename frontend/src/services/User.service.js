@@ -10,9 +10,7 @@ export default class UserService {
     return axios.post(apiURL, userObject, {
             headers: header
         })
-        .then(response => {
-            return response.data
-        })
+        .then(response => response.data)
   }
 
   static async logout(apiURL, token) {
@@ -23,9 +21,7 @@ export default class UserService {
     return axios.get(apiURL, {
             headers: header
         })
-        .then(response => {
-            return response.data
-        })
+        .then(response => response.data)
   }
 
   static async nextDay(apiURL, nextDayObject, token) {
@@ -36,8 +32,14 @@ export default class UserService {
     return axios.put(apiURL, nextDayObject, {
             headers: header
         })
-        .then(response => {
-            return response.data
-        })
+        .then(response => response.data)
+  }
+
+  static async getUserDetail(apiURL, token) {
+      let header = {
+          'Authorization': 'Token ' + token
+      }
+
+      return axios.get(apiURL, {headers: header}).then(response => response.data)
   }
 }

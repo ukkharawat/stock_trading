@@ -4,18 +4,18 @@
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
-        <div class="col-sm-10">
+        <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
           <amChart :stockName="stock.shortName"
                    @dataChange="dataChange">
           </amChart>
         </div>
-        <div class="col-sm-2 vertical-center">
+        <div class="col-sm-2 vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
                      @handleValueChange="amountChange">
           </textInput>
-          <actionButton :message="'buy'"
+          <actionButton :message="'buy'" 
                         @onClick="onClick"
                         :buttonClass="'buy-button'">
           </actionButton>
@@ -62,12 +62,14 @@
       ...mapGetters([
         'getCategory',
         'getHoldingStock',
-        'getCash'
+        'getCash',
+        'isLoggedIn'
       ])
     },
     methods: {
       ...mapActions([
-        "openConfirmModal"
+        'openConfirmModal',
+        'updatePrice'
       ]),
       onClick(event) {
         let nextActionInfo = stockDatasource.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
@@ -89,7 +91,14 @@
         this.amount = event
       },
       dataChange(event) {
-        this.currentPrice = event["Close"]
+        this.currentPrice = (Number(event["Close"]) + Number(event["Open"]))/2
+        
+        let stock = {
+          'shortName': this.stock.shortName,
+          'price': this.currentPrice
+        }
+        
+        this.updatePrice(stock)
       },
       formatAverageBuyPrice(price) {
         if(!price)

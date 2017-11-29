@@ -23,4 +23,10 @@ export default class UserController {
 
         return userService.nextDay(apiURL.nextDayURL, nextDayForm, token)
     }
+
+    static getUserDetail() {
+        let token = cacheController.getToken()
+        
+        return userService.getUserDetail(apiURL.getUserDetailURL, token)
+    }
 }
