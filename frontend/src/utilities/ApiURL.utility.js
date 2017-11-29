@@ -8,5 +8,6 @@ export default class ApiURL {
     static getUserDetailURL = `${baseURL}/user/detail`
     static buyStockURL = `${baseURL}/stock/buy`
     static sellStockURL = `${baseURL}/stock/sell`
+    static getStockValueURL = `${baseURL}/stock/stockValue`
 
 }

@@ -33,3 +33,25 @@ class Datasource(object):
             result.append(temp['stocks'])
 
         return result
+
+    @staticmethod
+    def createUpdateUser(user, newStepCount):
+        return {
+            "username": user.username,
+            "cash": user.cash,
+            "stepCount": newStepCount
+        }
+
+    @staticmethod
+    def createUserPortfolio(portfolio):
+        result = []
+        for i in range(portfolio.count()):
+            temp = {
+                'symbol': portfolio[i].symbol,
+                'volume': portfolio[i].volume,
+                'averagePrice': portfolio[i].averagePrice
+            }
+
+            result.append(temp)
+
+        return result

@@ -21,17 +21,20 @@ def list(request):
 	if request.method == 'GET':
 		stocks = Stock.objects.all()
 		serializer = StockSerializer(stocks, many=True)
-		return Response(serializer.data)
+
+		return Response.createStockList(serializer.data)
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
-def getStockFirstValue(request):
+def getStockValue(request):
     if request.method == 'GET':
-		stockValue = StockValue.objects.all()[:1]
-		stock = Stock.objects.get(name = stockValue[0].name)
-		stockValueDict = Datasource.createStockDetail(stockValue[0], stock)
-		
-		return JsonResponse(stockValueDict, status = status.HTTP_200_OK)
+		symbol = request.GET['symbol']
+		start = request.GET['start']
+		end = request.GET['end']
+		stock = Stock.objects.get(name = symbol)
+		stockValue = StockValue.objects.filter(name = stock)[start:end]
+
+		return Response.createStockValueList(stockValue)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))

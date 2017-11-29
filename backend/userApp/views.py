@@ -16,7 +16,7 @@ from userApp.datasource import Datasource
 
 from userApp.models import UserDetail, Portfolio
 from userApp.serializers import UserDetailSerializer
-from stockApp.models import StockValue, Stock
+from userApp.utility import Utility
 # Create your views here.
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -60,10 +60,9 @@ def logIn(request):
                     token, _ = Token.objects.get_or_create(user=user)
                     userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
-                    stock = Stock.objects.get(name = 'PTT')
-                    stockValue = StockValue.objects.filter(name = stock).order_by('date')[:userData.stepCount]
+                    portfolio = Portfolio.objects.filter(username = userData)
 
-                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, stockValue)
+                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, portfolio)
 
                 return ResponseObject.createFailedResponse()
               
@@ -83,7 +82,7 @@ def logOut(request):
 def getUserDetail(request):
     if request.method == 'GET':
         user = UserDetail.objects.get(pk = request.user)
-        portfolio = Portfolio.objects.get(username = user)
+        portfolio = Portfolio.objects.filter(username = user)
 
         return ResponseObject.createUserDetailResponse(portfolio, user)
         
@@ -92,13 +91,13 @@ def getUserDetail(request):
 def nextStep(request):
     if request.method == 'PUT':
         user = UserDetail.objects.get(pk = request.user)
-        userSerializer = UserDetailSerializer(user, data = request.data)
+        newStepCount = request.data['stepCount']
+        updateUser = Datasource.createUpdateUser(user, newStepCount)
+        userSerializer = UserDetailSerializer(user, data = updateUser)
 
         if userSerializer.is_valid():
             userSerializer.save()
-            stockValue = StockValue.objects.all()[request.data['stepCount']::1]
-            stockValueDict = Datasource.createStockValueDict(stockValue[0])
-
-            return ResponseObject.createSuccessNextStepResponse(stockValueDict)
+            
+            return ResponseObject.createSuccessNextStepResponse()
         
         return ResponseObject.createFailedResponse()

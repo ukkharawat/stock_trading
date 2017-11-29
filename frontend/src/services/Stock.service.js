@@ -2,11 +2,9 @@ import axios from 'axios'
 
 export default class StockService {
 
-  static async getStockDataFromURL(dataURL) {
-    return axios.get(dataURL)
-        .then(response => {
-          return response.data
-        })
+  static async getStockValue(URL, params) {
+    return axios.get(URL, {params: params})
+        .then(response => response.data)
   }
 
   static async buyStock(URL, tradingDetail, token) {
@@ -15,9 +13,7 @@ export default class StockService {
     }
     
     return axios.post(URL, tradingDetail, {headers: header})
-      .then(response => {
-        return response.data
-      })
+        .then(response => response.data)
   }
 
   static async sellStock(URL, tradingDetail, token) {
@@ -26,8 +22,6 @@ export default class StockService {
     }
     
     return axios.post(URL, tradingDetail, {headers: header})
-      .then(response => {
-        return response.data
-      })
+        .then(response => response.data)
   }
 }

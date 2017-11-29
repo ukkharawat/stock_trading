@@ -4,7 +4,7 @@ from stockApp import views
 
 urlpatterns = [
     url(r'^list', views.list),
-    url(r'^stockFirstValue', views.getStockFirstValue),
+    url(r'^stockValue', views.getStockValue),
     url(r'^buy', views.buyStock),
     url(r'^sell', views.sellStock)
 ]
