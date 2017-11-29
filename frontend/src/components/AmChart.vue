@@ -39,6 +39,7 @@
             this.chart.dataSets[0].dataProvider = this.displayData
 
             this.chart.validateData()
+            this.$emit("dataChange", this.displayData[this.displayData.length - 1])
           }
         },
         deep: true
