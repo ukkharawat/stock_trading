@@ -18,6 +18,7 @@
   import { mapGetters, mapActions } from 'vuex'
   import cacheController from '@/controllers/Cache.controller'
   import nextDayButton from '@/components/NextDayButton'
+  import userController from '@/controllers/User.controller'
 
   export default {
     name: 'app',
@@ -29,9 +30,22 @@
       nextDayButton
     },
     created() {
-      this.setUsername(cacheController.getUsername())
-      this.setCash(cacheController.getCash())
-      this.setStep(cacheController.getStep())
+      if(cacheController.isLoggedIn()) {
+        this.setUsername(cacheController.getUsername())
+        userController.getUserDetail()
+          .then(response => {
+            this.setStep(response.stepCount)
+
+            let stock = {
+              'shortName': response.symbol,
+              'amount': response.volume,
+              'averageBuyPrice': response.averagePrice,
+              'cash': response.cash
+            }
+
+            this.updateStock(stock)
+          })
+      }
     },
     computed: {
       ...mapGetters([
@@ -43,8 +57,8 @@
     methods: {
       ...mapActions([
         'setUsername',
-        'setCash',
-        'setStep'
+        'setStep',
+        'updateStock'
       ])
     }
   }

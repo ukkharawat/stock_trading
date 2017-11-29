@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
 
 from django.contrib.auth.models import User
 from rest_framework import status
 from userApp.responses import ResponseObject
 from userApp.datasource import Datasource
 
-from userApp.models import UserDetail
+from userApp.models import UserDetail, Portfolio
 from userApp.serializers import UserDetailSerializer
+from stockApp.models import StockValue, Stock
 # Create your views here.
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -35,21 +33,15 @@ def register(request):
 
                 if userSerializer.is_valid():
                     user = User.objects.create_user(username = username)
-                    Token.objects.get_or_create(user = user)
                     user.set_password(password)
                     userSerializer.save()
                     user.save()
-                    response = ResponseObject.createSuccessCreateUserResponse()
 
-                    return JsonResponse(response, status = status.HTTP_201_CREATED)
+                    return ResponseObject.createSuccessCreateUserResponse()
                 
-                response = ResponseObject.createFailedCreateUserResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedResponse()
             except:
-                response = ResponseObject.createFailedCreateUserResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedResponse()
                 
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
@@ -68,43 +60,45 @@ def logIn(request):
                     token, _ = Token.objects.get_or_create(user=user)
                     userData = UserDetail.objects.get(pk = username)
                     userSerializer = UserDetailSerializer(userData)
-                    response = ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key)
+                    stock = Stock.objects.get(name = 'PTT')
+                    stockValue = StockValue.objects.filter(name = stock).order_by('date')[:userData.stepCount]
 
-                    return JsonResponse(response, status = status.HTTP_200_OK)
+                    return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, stockValue)
 
-                response = ResponseObject.createFailedLoginResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedResponse()
               
             except:
-                response = ResponseObject.createFailedLoginResponse()
-
-                return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+                return ResponseObject.createFailedResponse()
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def logOut(request):
     if request.method == 'GET':
-
         request.user.auth_token.delete()
-        response = ResponseObject.createSuccessLogoutResponse()
 
-        return JsonResponse(response, status = status.HTTP_200_OK)
+        return ResponseObject.createSuccessLogoutResponse()
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def getUserDetail(request):
+    if request.method == 'GET':
+        user = UserDetail.objects.get(pk = request.user)
+        portfolio = Portfolio.objects.get(username = user)
+
+        return ResponseObject.createUserDetailResponse(portfolio, user)
+        
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, ))
 def nextStep(request):
     if request.method == 'PUT':
-
         user = UserDetail.objects.get(pk = request.user)
         userSerializer = UserDetailSerializer(user, data = request.data)
 
         if userSerializer.is_valid():
             userSerializer.save()
-            response = ResponseObject.createSuccessNextStepResponse()
+            stockValue = StockValue.objects.all()[request.data['stepCount']::1]
+            stockValueDict = Datasource.createStockValueDict(stockValue[0])
 
-            return JsonResponse(response, status = status.HTTP_200_OK)
+            return ResponseObject.createSuccessNextStepResponse(stockValueDict)
         
-        response = ResponseObject.createFailedNextStepResponse()
-
-        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
+        return ResponseObject.createFailedResponse()

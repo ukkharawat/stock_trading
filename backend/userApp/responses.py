@@ -1,61 +1,69 @@
+from django.http import JsonResponse
+from rest_framework import status
+from userApp.datasource import Datasource
+
 class ResponseObject(object):
 
     @staticmethod
-    def createSuccessLoginResponse(userSerializer, key):
-        return {
-            "message": "Authentication success",
-            "username": userSerializer['username'],
-            "cash": userSerializer['cash'],
-            "stepCount": userSerializer['stepCount'],
-            "Token": key,
-            "success": True
+    def createSuccessLoginResponse(userSerializer, key, stockValues):
+        stocks = Datasource.createStockArray(stockValues)
+
+        response = {
+            'username': userSerializer['username'],
+            'cash': userSerializer['cash'],
+            'stepCount': userSerializer['stepCount'],
+            'Token': key,
+            'success': True,
+            'stocks': stocks
         }
 
+        return JsonResponse(response, status = status.HTTP_200_OK)
+
     @staticmethod
-    def createFailedLoginResponse():
-        return {
-            "message": "Authentication failed",
-            "success": False
+    def createFailedResponse():
+        response = {
+            'success': False
         }
+
+        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def createSuccessCreateUserResponse():
-        return {
-            "message": "Creating user succesful",
-            "success": True
+        response = {
+            'message': 'Creating user succesful',
+            'success': True
         }
 
-    @staticmethod
-    def createFailedCreateUserResponse():
-        return {
-            "message": "User's already exist",
-            "success": False
-        }
+        return JsonResponse(response, status = status.HTTP_201_CREATED)
 
     @staticmethod
     def createSuccessLogoutResponse():
-        return {
-            "message": "Log out success",
-            "success": True
+        response = {
+            'message': 'Log out success',
+            'success': True
         }
 
-    @staticmethod
-    def createFailedLogoutResponse():
-        return {
-            "message": "You have to log in before log out",
-            "success": False
-        }
+        return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
-    def createSuccessNextStepResponse():
-        return {
-            "message": "Next step success",
-            "success": True
+    def createSuccessNextStepResponse(stockValueJSON):
+        response = {
+            'message': 'Next step success',
+            'success': True
         }
+        response.update(stockValueJSON)
+
+        return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
-    def createFailedNextStepResponse():
-        return {
-            "message": "Next step failed, check your authentication",
-            "success": False
+    def createUserDetailResponse(portfolio, user):
+        response = {
+            'username': str(user.username),
+            'cash': user.cash,
+            'stepCount': user.stepCount,
+            'symbol': portfolio.symbol,
+            'volume': portfolio.volume,
+            'averagePrice': portfolio.averagePrice
         }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)

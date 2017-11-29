@@ -1,5 +1,8 @@
 import stockService from '@/services/Stock.service'
 import stockDataSource from '@/datasources/Stock.datasource'
+import cacheController from '@/controllers/Cache.controller'
+import apiURL from '@/utilities/ApiURL.utility'
+import ApiURL from '../utilities/ApiURL.utility';
 
 export default class StockService {
 
@@ -16,16 +19,15 @@ export default class StockService {
     return tradingAction.amount * tradingAction.price
   }
 
-  static buyStock(stock, tradingAction) {
-    let amount = stock.amount + tradingAction.amount
-    let averagePrice = ((stock.averageBuyPrice * stock.amount) + (this.findStockTradingCost(tradingAction))) / (amount)
-
-    return stockDataSource.createChangedStockObject(stock.shortName, amount, averagePrice)
+  static buyStock(tradingAction) {
+    let token = cacheController.getToken()
+    
+    return stockService.buyStock(ApiURL.buyStockURL, tradingAction, token)
   }
 
-  static sellStock(stock, tradingAction) {
-    let amount = stock.amount - tradingAction.amount
+  static sellStock(tradingAction) {
+    let token = cacheController.getToken()
 
-    return stockDataSource.createChangedStockObject(stock.shortName, amount, stock.averageBuyPrice)
+    return stockService.sellStock(ApiURL.sellStockURL, tradingAction, token)
   }
 }

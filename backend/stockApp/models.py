@@ -20,6 +20,10 @@ class StockValue(models.Model):
     low = models.FloatField(blank=True, null = True)
     adjClose = models.FloatField(blank=True, null = True)
     volume = models.FloatField(blank=True, null = True)
+
+    class Meta:
+        ordering = ('name', 'date', )
+        default_related_name = 'stockValue'
    
     def __unicode__(self):
 
