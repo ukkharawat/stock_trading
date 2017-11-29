@@ -22,8 +22,7 @@
       return {
         chart: null,
         displayData: [],
-        stockData: [],
-        isChartCreate: false
+        stockData: []
       }
     },
     computed: {
@@ -33,27 +32,29 @@
     },
     watch: {
       getStep: {
-        handler(val) {
-          if(this.isChartCreate) {
-            this.displayData = this.stockData.slice(0, val)
-            this.chart.dataSets[0].dataProvider = this.displayData
-
-            this.chart.validateData()
-            this.$emit("dataChange", this.displayData[this.displayData.length - 1])
-          }
+        handler(val, oldVal) {
+          stockController.getStockValue(this.stockName, oldVal, val)
+            .then(response => response.stockValue)
+            .then(stockValue => {
+              this.displayData = this.displayData.concat(stockValue)
+              this.chart.dataSets[0].dataProvider = this.displayData
+              this.chart.validateData()
+              
+              this.$emit("dataChange", this.displayData[this.displayData.length - 1])
+            })
         },
         deep: true
       }
     },
     async created() {
-      await this.getStockData(this.stockName)
-        .then(response => {
-          this.stockData = response
-          let step = this.getStep | 1
-          
-          this.displayData = this.stockData.slice(0, step)
+      let end = this.getStep
+
+      await stockController.getStockValue(this.stockName, 0, end)
+        .then(response => response.stockValue)
+        .then(stockValue => {
+          this.displayData = stockValue
           this.createChart()
-          this.isChartCreate = true
+
           this.$emit("dataChange", this.displayData[this.displayData.length - 1])
         })
     },
@@ -62,9 +63,6 @@
         'updateCapital',
         'updatePrice'
       ]),
-      async getStockData(stockName) {
-        return stockController.getStockData(stockName)
-      },
       createChart() {
         this.chart = AmCharts.makeChart("chartdiv", {
           "type": "stock",

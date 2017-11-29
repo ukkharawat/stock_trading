@@ -4,15 +4,16 @@ import cacheController from '@/controllers/Cache.controller'
 import apiURL from '@/utilities/ApiURL.utility'
 import ApiURL from '../utilities/ApiURL.utility';
 
-export default class StockService {
+export default class StockController {
 
-  static getStockData(stockName) {
-    let dataURL = "https://raw.githubusercontent.com/wasit7/data_analytics/master/demo/data_set/"+ stockName +".BK.csv"
+  static getStockValue(shortname, start, end) {
+    let params = {
+      'symbol': shortname,
+      'start': start,
+      'end': end
+    }
 
-    return stockService.getStockDataFromURL(dataURL)
-      .then(csvData => {
-        return stockDataSource.getStockJsonFromCSV(csvData)
-      })
+    return stockService.getStockValue(ApiURL.getStockValueURL, params)
   }
 
   static findStockTradingCost(tradingAction) {
