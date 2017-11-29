@@ -60,11 +60,14 @@ class ResponseObject(object):
     @staticmethod
     def createUserDetailResponse(portfolio, user, stockValue):
         portfolioList = Datasource.createUserPortfolio(portfolio)
+        stockValueList = Datasource.createStockValueList(stockValue)
+
         response = {
             'username': str(user.username),
             'cash': user.cash,
             'stepCount': user.stepCount,
-            'portfolio': portfolioList
+            'portfolio': portfolioList,
+            'stockValue': stockValueList
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)

@@ -84,8 +84,10 @@ def logOut(request):
 def getUserDetail(request):
     if request.method == 'GET':
         user = UserDetail.objects.get(pk = request.user)
-        
-        return ResponseObject.createUserDetailResponse(portfolio, user)
+        portfolio = Portfolio.objects.filter(username = user)
+        stockValue = Utility.getStockValueFromName('PTT', 1, user.stepCount)
+
+        return ResponseObject.createUserDetailResponse(portfolio, user, stockValue)
         
 @api_view(['PUT'])
 @permission_classes((IsAuthenticated, ))

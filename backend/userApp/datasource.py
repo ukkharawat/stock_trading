@@ -55,3 +55,22 @@ class Datasource(object):
             result.append(temp)
 
         return result
+
+    @staticmethod
+    def createStockValueList(stockValue):
+        result = []
+        for i in range(stockValue.count()):
+            temp = {
+                'shortname': str(stockValue[i].name),
+                "Date": stockValue[i].date.strftime('%Y-%m-%d'),
+                "Open": stockValue[i].openPrice,
+                "High": stockValue[i].high,
+                "Low": stockValue[i].low,
+                "Close": stockValue[i].closePrice,
+                "Adj": stockValue[i].adjClose,
+                "Volume": stockValue[i].volume
+            }
+
+            result.append(temp)
+        
+        return result
