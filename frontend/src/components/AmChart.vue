@@ -36,6 +36,12 @@
           stockController.getStockValue(this.stockName, oldVal, val)
             .then(response => response.stockValue)
             .then(stockValue => {
+              for(let i = 0; i < stockValue.length; i++) {
+                stockValue[i]['BuyPrice'] = (stockValue[i]['Open'] + stockValue[i]['Close'])/2
+              }
+              return stockValue
+            })
+            .then(stockValue => {
               this.displayData = this.displayData.concat(stockValue)
               this.chart.dataSets[0].dataProvider = this.displayData
               this.chart.validateData()
@@ -51,6 +57,12 @@
 
       await stockController.getStockValue(this.stockName, 0, end)
         .then(response => response.stockValue)
+        .then(stockValue => {
+          for(let i = 0; i < stockValue.length; i++) {
+            stockValue[i]['BuyPrice'] = (stockValue[i]['Open'] + stockValue[i]['Close'])/2
+          }
+          return stockValue
+        })
         .then(stockValue => {
           this.displayData = stockValue
           this.createChart()
@@ -86,6 +98,9 @@
             }, {
               "fromField": "Volume",
               "toField": "volume"
+            }, {
+              "fromField": "BuyPrice",
+              "toField": "buyPrice"
             }],
             "compared": false,
             "categoryField": "Date",
@@ -104,7 +119,7 @@
               "closeField": "close",
               "highField": "high",
               "lowField": "low",
-              "valueField": "close",
+              "valueField": "buyPrice",
               "lineColor": "#0f0",
               "fillColors": "#0f0",
               "negativeLineColor": "#db4c3c",
