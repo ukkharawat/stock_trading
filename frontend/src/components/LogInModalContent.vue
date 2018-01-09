@@ -70,10 +70,10 @@
         let stock = {
               'shortName': response.portfolio[0].symbol,
               'amount': response.portfolio[0].volume,
-              'averageBuyPrice': response.portfolio[0].averagePrice,
-              'cash': response.cash
+              'averageBuyPrice': response.portfolio[0].averagePrice
             }
             
+        this.setCash(response.cash)
         this.updateStock(stock)
       },
       setLocalStorage(data) {

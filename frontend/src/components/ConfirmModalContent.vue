@@ -51,7 +51,7 @@
     methods: {
       ...mapActions([
         'closeModal',
-        'updateCash',
+        'setCash',
         'updateStock',
         'updateCapital'
       ]),
@@ -75,10 +75,10 @@
             let updateData = {
               'shortName': response.symbol,
               'amount': response.volume,
-              'averageBuyPrice': response.averagePrice,
-              'cash': response.cash
+              'averageBuyPrice': response.averagePrice
             }
 
+            this.setCash(response.cash)
             this.updateVuex(updateData)
           })
       },
@@ -90,10 +90,10 @@
             let updateData = {
               'shortName': response.symbol,
               'amount': response.volume,
-              'averageBuyPrice': response.averagePrice,
-              'cash': response.cash
+              'averageBuyPrice': response.averagePrice
             }
 
+            this.setCash(response.cash)
             this.updateVuex(updateData)
           })
       },
