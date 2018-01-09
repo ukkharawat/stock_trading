@@ -51,7 +51,6 @@ const mutations = {
 
     state.stocks[stockIndex].amount = stock.amount
     state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
-    state.cash = stock.cash
   },
   SET_USERNAME(state, username) {
     state.username = username
