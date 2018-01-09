@@ -19,6 +19,7 @@
   import cacheController from '@/controllers/Cache.controller'
   import nextDayButton from '@/components/NextDayButton'
   import userController from '@/controllers/User.controller'
+  import stockDatasource from '@/datasources/Stock.datasource'
 
   export default {
     name: 'app',
@@ -36,14 +37,14 @@
           .then(response => {
             this.setStep(response.stepCount)
 
-            let stock = {
-              'shortName': response.portfolio[0].symbol,
-              'amount': response.portfolio[0].volume,
-              'averageBuyPrice': response.portfolio[0].averagePrice,
-              'cash': response.cash
-            }
+            let stock = stockDatasource.createChangedStockObject(
+              response.portfolio[0].symbol,
+              response.portfolio[0].volume,
+              response.portfolio[0].averagePrice
+            )
 
             this.updateStock(stock)
+            this.setCash(response.cash)
           })
       }
     },
@@ -58,7 +59,8 @@
       ...mapActions([
         'setUsername',
         'setStep',
-        'updateStock'
+        'updateStock',
+        'setCash'
       ])
     }
   }

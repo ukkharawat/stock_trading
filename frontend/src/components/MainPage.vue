@@ -2,7 +2,7 @@
   <div id="main-page" class="row">
     <div class="col-sm-2">
       <index>
-        <div v-for="menuItem in menuItems">
+        <div v-for="menuItem in menuItems" v-bind:key="menuItem">
           <indexMenu
             :mainMenuTitle="menuItem.mainMenuTitle"
             :subMenuTitles="menuItem.subMenuTitles">
