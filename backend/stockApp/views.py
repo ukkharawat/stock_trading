@@ -33,8 +33,10 @@ def getStockValue(request):
 		end = request.GET['end']
 		stock = Stock.objects.get(name = symbol)
 		stockValue = StockValue.objects.filter(name = stock)[start:end]
-
-		return Response.createStockValueList(stockValue)
+		if stockValue.exists():
+			return Response.createStockValueList(stockValue)
+		else:
+			return Response.createNotFoundStock()
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
