@@ -1,19 +1,20 @@
 <template>
-  <div id="stock">
+  <div id="stock" v-show="isDisplay">
       <stockHeader :corpShortName="stock.shortName"
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
           <amChart :stockName="stock.shortName"
-                   @dataChange="dataChange">
+                  @displayChange="displayHandle"
+                  @dataChange="dataChange">
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
-                     @handleValueChange="amountChange">
+                    @handleValueChange="amountChange">
           </textInput>
           <actionButton :message="'buy'" 
                         @onClick="onClick"
@@ -47,7 +48,8 @@
     data() {
       return {
         amount: null,
-        currentPrice: null
+        currentPrice: null,
+        isDisplay: true
       }
     },
     components: {
@@ -99,6 +101,9 @@
         }
         
         this.updatePrice(stock)
+      },
+      displayHandle(event) {
+        this.isDisplay = false
       },
       formatAverageBuyPrice(price) {
         if(!price)

@@ -65,6 +65,9 @@
 
           this.$emit("dataChange", this.displayData[this.displayData.length - 1])
         })
+        .catch(error => {
+          this.$emit("displayChange", false)
+        })
     },
     methods: {
       ...mapActions([
