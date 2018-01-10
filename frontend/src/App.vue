@@ -16,8 +16,9 @@
   import logInModal from '@/components/LogInModal'
   import confirmModal from '@/components/ConfirmModal'
   import { mapGetters, mapActions } from 'vuex'
-  import cacheController from '@/controllers/Cache.controller'
   import nextDayButton from '@/components/NextDayButton'
+  import cacheController from '@/controllers/Cache.controller'
+  import stockController from '@/controllers/Stock.controller'
   import userController from '@/controllers/User.controller'
   import stockDatasource from '@/datasources/Stock.datasource'
 
@@ -31,21 +32,11 @@
       nextDayButton
     },
     created() {
+      this.setStockList()
+
       if(cacheController.isLoggedIn()) {
         this.setUsername(cacheController.getUsername())
-        userController.getUserDetail()
-          .then(response => {
-            this.setStep(response.stepCount)
-
-            let stock = stockDatasource.createChangedStockObject(
-              response.portfolio[0].symbol,
-              response.portfolio[0].volume,
-              response.portfolio[0].averagePrice
-            )
-
-            this.updateStock(stock)
-            this.setCash(response.cash)
-          })
+        this.updateUserDetail()
       }
     },
     computed: {
@@ -60,8 +51,34 @@
         'setUsername',
         'setStep',
         'updateStock',
+        'setStock',
         'setCash'
-      ])
+      ]),
+      updateUserDetail() {
+        userController.getUserDetail()
+          .then(response => {
+            this.setStep(response.stepCount)
+
+            let stock = stockDatasource.createChangedStockObject(
+              response.portfolio[0].symbol,
+              response.portfolio[0].volume,
+              response.portfolio[0].averagePrice
+            )
+
+            this.updateStock(stock)
+            this.setCash(response.cash)
+          })
+      },
+      setStockList() {
+        stockController.getStockList()
+          .then(response => {
+            let defaultStockList = response.stockList.map(stock => {
+              return stockDatasource.createDefaultStockList(stock.name, stock.fullname)
+            })
+
+            this.setStock(defaultStockList)
+          })
+      }
     }
   }
 </script>

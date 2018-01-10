@@ -17,4 +17,14 @@ export default class StockDatasource {
       "averageBuyPrice": averageBuyPrice
     }
   }
+
+  static createDefaultStockList(shortName, fullname) {
+    return {
+      "shortName": shortName,
+      "fullName": fullname,
+      "amount": 0,
+      "price": 0,
+      "averageBuyPrice": 0
+    }
+  }
 }
