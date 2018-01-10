@@ -31,4 +31,8 @@ export default class StockController {
 
     return stockService.sellStock(ApiURL.sellStockURL, tradingAction, token)
   }
+
+  static getStockList() {
+    return stockService.getStockList(ApiURL.getStockListURL)
+  }
 }
