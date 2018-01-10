@@ -14,13 +14,7 @@ const state = {
   isLogInModal: false,
   isConfirmModal: false,
   nextActionInfo: null,
-  stocks: [ {
-    "shortName": "PTT",
-    "fullName": "PTT Public company limited",
-    "amount": 0,
-    "price": 0,
-    "averageBuyPrice": 0
-  } ],
+  stocks: null,
   step: 1,
   cash: null,
   username: null
@@ -52,6 +46,9 @@ const mutations = {
     state.stocks[stockIndex].amount = stock.amount
     state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
   },
+  SET_STOCK(state, stocks) {
+    state.stocks = stocks
+  },
   SET_USERNAME(state, username) {
     state.username = username
   },
@@ -70,6 +67,7 @@ const actions = {
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
   updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
+  setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
   setStep: ({ commit }, step) => commit('SET_STEP', step),
   setCash: ({ commit }, cash) => commit('SET_CASH', cash),
