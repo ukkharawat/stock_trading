@@ -1,15 +1,11 @@
 <template>
-  <div id="chartdiv">
+  <div :id="stockName" class="chartdiv">
   </div>
 </template>
 
 <script>
   import stockController from '@/controllers/Stock.controller'
   import { mapActions, mapGetters } from 'vuex'
-
-  function sleep() {
-    return new Promise(resolve => setTimeout(resolve , 3000))
-  }
 
   export default {
     name: 'app',
@@ -76,7 +72,7 @@
         'updatePrice'
       ]),
       createChart() {
-        this.chart = AmCharts.makeChart("chartdiv", {
+        this.chart = AmCharts.makeChart(this.stockName, {
           "type": "stock",
           "theme": "light",
           "glueToTheEnd": true,
@@ -233,7 +229,7 @@
 </script>
 
 <style>
-  #chartdiv {
+  .chartdiv {
     width: calc(100% - 16px);
     height:calc(50vw * 0.5125);
     margin: 16px 16px 16px 0;
