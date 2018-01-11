@@ -18,10 +18,12 @@ export default class StockDatasource {
     }
   }
 
-  static createDefaultStockList(shortName, fullname) {
+  static createDefaultStockList(stock) {
     return {
-      "shortName": shortName,
-      "fullName": fullname,
+      "shortName": stock.name,
+      "fullName": stock.fullname,
+      "industry": stock.industry,
+      "sector": stock.sector,
       "amount": 0,
       "price": 0,
       "averageBuyPrice": 0
