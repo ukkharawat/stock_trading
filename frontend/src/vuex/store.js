@@ -10,7 +10,6 @@ function findIndexOfStocks(stockName) {
 }
 
 const state = {
-  category: "",
   isLogInModal: false,
   isConfirmModal: false,
   nextActionInfo: null,
@@ -21,9 +20,6 @@ const state = {
 }
 
 const mutations = {
-  SET_CATEGORY(state, current) {
-    state.category = current
-  },
   CLOSE_MODAL(state) {
     state.isLogInModal = false
     state.isConfirmModal = false
@@ -61,7 +57,6 @@ const mutations = {
 }
 
 const actions = {
-  setCategory: ({ commit }, current) => commit('SET_CATEGORY', current),
   closeModal: ({ commit }) => commit('CLOSE_MODAL'),
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
@@ -74,7 +69,6 @@ const actions = {
 }
 
 const getters = {
-  getCategory: state => state.category,
   getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal},
   getIsLogInModal: state => state.isLogInModal,
   getIsConfirmModal: state => state.isConfirmModal,
