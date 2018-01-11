@@ -15,12 +15,15 @@ django.setup()
 from stockApp.models import Stock
 
 data = csv.reader(open('symkey.csv'), delimiter=",")
+Stock.objects.all().delete()
 
 for row in data:
 	if row[0] != 'Name':
 		stock = Stock()
 		stock.name = row[0]
 		stock.fullname = row[1]
+		stock.industry = row[2]
+		stock.sector = row[3]
 		stock.save()
 		print(row)
 	
