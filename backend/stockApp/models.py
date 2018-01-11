@@ -6,6 +6,8 @@ from django.db import models
 class Stock(models.Model):
     name = models.CharField(max_length = 20)
     fullname = models.CharField(max_length = 1000)
+    industry = models.CharField(max_length = 10, blank=True, null = True)
+    sector = models.CharField(max_length = 10, blank=True, null = True)
    
     def __unicode__(self):
       
