@@ -1,8 +1,9 @@
 <template>
   <div id="index-menu">
-    <a class="main-menu" @click="setCategory(mainMenuTitle)">{{mainMenuTitle}}</a>
-    <a class="sub-menu" v-for="subMenuTitle in subMenuTitles"
-       @click="setCategory(subMenuTitle)">{{subMenuTitle}}</a>
+    <a class="main-menu" @click="onClickIndustry">{{industry}}</a>
+    <a class="sub-menu" v-for="(sector, index) in sectors"
+        v-bind:key="sector"
+        @click="onClickSector(index)">{{sector}}</a>
   </div>
 </template>
 
@@ -11,17 +12,20 @@
 
   export default {
     props: {
-      mainMenuTitle: {
+      industry: {
         type: String
       },
-      subMenuTitles: {
+      sectors: {
         type: Array
       }
     },
     methods: {
-      ...mapActions([
-        'setCategory'
-      ])
+      onClickIndustry() {
+        this.$emit("industryClick", this.industry)
+      },
+      onClickSector(index) {
+        this.$emit("sectorClick", this.sectors[index])
+      }
     }
   }
 </script>

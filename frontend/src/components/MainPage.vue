@@ -1,17 +1,19 @@
 <template>
-  <div id="main-page" class="row">
+  <div id="main-page" class="row" v-show="getStock !== null">
     <div class="col-sm-2">
       <index>
-        <div v-for="menuItem in menuItems" v-bind:key="menuItem.mainMenuTitle">
+        <div v-for="menuItem in menuItems" v-bind:key="menuItem.industry">
           <indexMenu
-            :mainMenuTitle="menuItem.mainMenuTitle"
-            :subMenuTitles="menuItem.subMenuTitles">
+            :industry="menuItem.industry"
+            :sectors="menuItem.sectors"
+            @industryClick="industryClick"
+            @sectorClick="sectorClick">
           </indexMenu>
         </div>
       </index>
     </div>
     <div class="col-sm-10">
-      <stock v-for="stock in getStock"
+      <stock v-for="stock in filteredStock"
              :key="stock.shortName"
              :stock="stock"></stock>
     </div>
@@ -29,38 +31,40 @@
       return {
         menuItems: [
           {
-            mainMenuTitle: "ARGO",
-            subMenuTitles: ["ARGI", "FOOD"]
+            industry: "AGRO",
+            sectors: ["AGRI", "FOOD"]
           },
           {
-            mainMenuTitle: "CONSUMP",
-            subMenuTitles: ["FASHION", "HOME", "PERSON"]
+            industry: "CONSUMP",
+            sectors: ["FASHION", "HOME", "PERSON"]
           },
           {
-            mainMenuTitle: "FINCIAL",
-            subMenuTitles: ["BANK", "FIN", "INSUR"]
+            industry: "FINCIAL",
+            sectors: ["BANK", "FIN", "INSUR"]
           },
           {
-            mainMenuTitle: "INDUS",
-            subMenuTitles: ["AUTO", "IMM", "PAPER", "PETRO", "PKG", "STEEL"]
+            industry: "INDUS",
+            sectors: ["AUTO", "IMM", "PAPER", "PETRO", "PKG", "STEEL"]
           },
           {
-            mainMenuTitle: "PROPCON",
-            subMenuTitles: ["CONMAT", "PROP", "PF&REIT", "CONS"]
+            industry: "PROPCON",
+            sectors: ["CONMAT", "PROP", "PF&REITs", "CONS"]
           },
           {
-            mainMenuTitle: "RESOURC",
-            subMenuTitles: ["ENERG", "MINE"]
+            industry: "RESOURC",
+            sectors: ["ENERG", "MINE"]
           },
           {
-            mainMenuTitle: "SERVICE",
-            subMenuTitles: ["COMM", "HELTH", "MEDIA", "PROF", "TOURISM", "TRANS"]
+            industry: "SERVICE",
+            sectors: ["COMM", "HELTH", "MEDIA", "PROF", "TOURISM", "TRANS"]
           },
           {
-            mainMenuTitle: "TECH",
-            subMenuTitles: ["ETRON", "ICT"]
+            industry: "TECH",
+            sectors: ["ETRON", "ICT"]
           }
-        ]
+        ],
+        sector: "AGRI",
+        industry: null
       }
     },
     components: {
@@ -71,7 +75,22 @@
     computed: {
       ...mapGetters([
         'getStock'
-      ])
+      ]),
+      filteredStock() {
+        if(this.getStock != null) {
+          return this.getStock.filter(stock => stock.sector === this.sector || stock.industry == this.industry)
+        }
+      }
+    },
+    methods: {
+      sectorClick(sector) {
+        this.sector = sector
+        this.industry = null
+      },
+      industryClick(industry) {
+        this.industry = industry
+        this.sector = null
+      }
     }
   }
 </script>
