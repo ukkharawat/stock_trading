@@ -73,7 +73,7 @@
         stockController.getStockList()
           .then(response => {
             let defaultStockList = response.stockList.map(stock => {
-              return stockDatasource.createDefaultStockList(stock.name, stock.fullname)
+              return stockDatasource.createDefaultStockList(stock)
             })
 
             this.setStock(defaultStockList)
