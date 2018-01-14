@@ -58,9 +58,11 @@
         userController.getUserDetail()
           .then(response => {
             this.setStep(response.stepCount)
-            let stock = stockDatasource.createChangedStockObject(response.portfolio[0])
+            let stocks = response.portfolio.map(stock => {
+              return stockDatasource.createChangedStockObject(stock)
+            })
 
-            this.updateStock(stock)
+            this.updateStock(stocks)
             this.setCash(response.cash)
           })
       },

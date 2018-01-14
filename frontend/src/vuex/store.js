@@ -37,11 +37,13 @@ const mutations = {
 
     state.stocks[stockIndex].price = stock.price
   },
-  UPDATE_STOCK(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.shortName)
+  UPDATE_STOCK(state, stocks) {
+    for( let stock in stocks) {
+      let stockIndex = findIndexOfStocks(stock.shortName)
 
-    state.stocks[stockIndex].amount = stock.amount
-    state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+      state.stocks[stockIndex].amount = stock.amount
+      state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+    }
   },
   SET_STOCK(state, stocks) {
     state.stocks = stocks
@@ -65,7 +67,7 @@ const actions = {
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
-  updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
+  updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
   setStep: ({ commit }, step) => commit('SET_STEP', step),
