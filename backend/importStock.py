@@ -15,7 +15,7 @@ django.setup()
 from stockApp.models import Stock
 
 data = csv.reader(open('symkey.csv'), delimiter=",")
-Stock.objects.all().delete()
+insertList = []
 
 for row in data:
 	if row[0] != 'Name':
@@ -24,8 +24,9 @@ for row in data:
 		stock.fullname = row[1]
 		stock.industry = row[2]
 		stock.sector = row[3]
-		stock.save()
-		print(row)
+		insertList.append(stock)
+
+Stock.objects.bulk_create(insertList)
 	
 
 # for row in data:
