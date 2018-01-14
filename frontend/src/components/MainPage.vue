@@ -24,7 +24,7 @@
   import index from '@/components/Index'
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     data() {
@@ -72,6 +72,9 @@
       stock,
       indexMenu
     },
+    created() {
+      this.setCurrentCategory("AGRI")
+    },
     computed: {
       ...mapGetters([
         'getStock'
@@ -83,6 +86,9 @@
       }
     },
     methods: {
+      ...mapActions([
+        'setCurrentCategory'
+      ]),
       sectorClick(sector) {
         this.sector = sector
         this.industry = null
