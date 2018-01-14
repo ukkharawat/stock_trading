@@ -1,11 +1,11 @@
 <template>
   <div id="stock" v-show="isDisplay">
-      <stockHeader :corpShortName="stock.shortName"
+      <stockHeader :corpSymbol="stock.symbol"
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
-          <amChart :stockName="stock.shortName"
+          <amChart :stockName="stock.symbol"
                   @displayChange="displayHandle"
                   @dataChange="dataChange">
           </amChart>
@@ -74,7 +74,7 @@
         'updatePrice'
       ]),
       onClick(event) {
-        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
+        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
 
         if(event === "buy" && this.amount) {
           if(this.amount * this.currentPrice < this.getCash) {
@@ -96,7 +96,7 @@
         this.currentPrice = (Number(event["Close"]) + Number(event["Open"]))/2
         
         let stock = {
-          'shortName': this.stock.shortName,
+          'symbol': this.stock.symbol,
           'price': this.currentPrice
         }
         

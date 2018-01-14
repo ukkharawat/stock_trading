@@ -4,7 +4,7 @@
       <div class="col-sm-3"></div>
       <div class="col-sm-6 remove-padding">
         <h2 class="cautions">
-          Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.shortName}} ?
+          Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
         </h2>
 
         <div class="row">
@@ -73,7 +73,7 @@
         stockController.buyStock(tradingObject)
           .then(response => {
             let updateData = {
-              'shortName': response.symbol,
+              'symbol': response.symbol,
               'amount': response.volume,
               'averageBuyPrice': response.averagePrice
             }
@@ -88,7 +88,7 @@
         stockController.sellStock(tradingObject)
           .then(response => {
             let updateData = {
-              'shortName': response.symbol,
+              'symbol': response.symbol,
               'amount': response.volume,
               'averageBuyPrice': response.averagePrice
             }
@@ -103,7 +103,7 @@
       },
       createTradingObject(tradingAction) {
         return {
-          'symbol': tradingAction.shortName,
+          'symbol': tradingAction.symbol,
           'volume': tradingAction.amount,
           'averagePrice': tradingAction.price
         }

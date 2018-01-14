@@ -14,7 +14,7 @@
     </div>
     <div class="col-sm-10">
       <stock v-for="stock in filteredStock"
-             :key="stock.shortName"
+             :key="stock.symbol"
              :stock="stock"></stock>
     </div>
   </div>

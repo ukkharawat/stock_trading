@@ -1,9 +1,9 @@
 export default class StockDatasource {
 
-  static createStockObject(action, name, fullname, amount, price) {
+  static createStockObject(action, symbol, fullname, amount, price) {
     return {
       "action": action,
-      "shortName": name,
+      "symbol": symbol,
       "fullName": fullname,
       "amount": Number(amount),
       "price": Number(price)
@@ -12,7 +12,7 @@ export default class StockDatasource {
 
   static createChangedStockObject(stock) {
     return {
-      "shortName": stock.symbol,
+      "symbol": stock.symbol,
       "amount": stock.volume,
       "averageBuyPrice": stock.averageBuyPrice
     }
@@ -20,7 +20,7 @@ export default class StockDatasource {
 
   static createDefaultStockList(stock) {
     return {
-      "shortName": stock.name,
+      "symbol": stock.name,
       "fullName": stock.fullname,
       "industry": stock.industry,
       "sector": stock.sector,

@@ -6,9 +6,9 @@ import ApiURL from '../utilities/ApiURL.utility';
 
 export default class StockController {
 
-  static getStockValue(shortname, start, end) {
+  static getStockValue(symbol, start, end) {
     let params = {
-      'symbol': shortname,
+      'symbol': symbol,
       'start': start,
       'end': end
     }

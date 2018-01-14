@@ -3,9 +3,9 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-function findIndexOfStocks(stockName) {
+function findIndexOfStocks(symbol) {
   return state.stocks.findIndex(stock => {
-    return stock.shortName === stockName
+    return stock.symbol === symbol
   })
 }
 
@@ -33,13 +33,13 @@ const mutations = {
     state.nextActionInfo = nextActionInfo
   },
   UPDATE_PRICE(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.shortName)
+    let stockIndex = findIndexOfStocks(stock.symbol)
 
     state.stocks[stockIndex].price = stock.price
   },
   UPDATE_STOCK(state, stocks) {
     for( let stock in stocks) {
-      let stockIndex = findIndexOfStocks(stock.shortName)
+      let stockIndex = findIndexOfStocks(stock.symbol)
 
       state.stocks[stockIndex].amount = stock.amount
       state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
