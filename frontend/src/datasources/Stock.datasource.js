@@ -10,11 +10,11 @@ export default class StockDatasource {
     }
   }
 
-  static createChangedStockObject(shortName, amount, averageBuyPrice) {
+  static createChangedStockObject(stock) {
     return {
-      "shortName": shortName,
-      "amount": amount,
-      "averageBuyPrice": averageBuyPrice
+      "shortName": stock.symbol,
+      "amount": stock.volume,
+      "averageBuyPrice": stock.averageBuyPrice
     }
   }
 

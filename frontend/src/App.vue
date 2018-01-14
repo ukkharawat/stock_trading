@@ -58,12 +58,7 @@
         userController.getUserDetail()
           .then(response => {
             this.setStep(response.stepCount)
-
-            let stock = stockDatasource.createChangedStockObject(
-              response.portfolio[0].symbol,
-              response.portfolio[0].volume,
-              response.portfolio[0].averagePrice
-            )
+            let stock = stockDatasource.createChangedStockObject(response.portfolio[0])
 
             this.updateStock(stock)
             this.setCash(response.cash)
