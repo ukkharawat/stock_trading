@@ -9,6 +9,7 @@
           <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
         </router-link>
         <a class="disable-hover" @click="openLogInModal" v-show="!isLoggedIn" >Log in</a>
+        <a class="disable-hover" @click="openRegisterModal" v-show="!isLoggedIn" >Register</a>
         <a class="disable-hover" @click="logout" v-show="isLoggedIn" >{{ getUsername }} (Log out)</a>
       </li>
     </ul>
@@ -35,24 +36,16 @@
       ...mapGetters([
         'getCash',
         'getUsername',
-        'isLoggedIn',
-        'getStock'
+        'isLoggedIn'
       ])
-    },
-    watch: {
-      getStock: {
-        handler(val) {
-          this.capital = this.getCash + this.getStock.map(stock => stock.amount * stock.price).reduce((sum, current) => sum + current)
-        },
-        deep: true
-      }
     },
     methods: {
       ...mapActions([
         'openLogInModal',
         'setUsername',
         'setCash',
-        'setStep'
+        'setStep',
+        'openRegisterModal'
       ]),
       logout() {
         userController.logout()

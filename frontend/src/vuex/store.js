@@ -12,6 +12,7 @@ function findIndexOfStocks(symbol) {
 const state = {
   isLogInModal: false,
   isConfirmModal: false,
+  isRegisterModal: false,
   nextActionInfo: null,
   stocks: null,
   step: 1,
@@ -24,6 +25,7 @@ const mutations = {
   CLOSE_MODAL(state) {
     state.isLogInModal = false
     state.isConfirmModal = false
+    state.isRegisterModal = false
   },
   OPEN_LOG_IN_MODAL(state) {
     state.isLogInModal = true
@@ -31,6 +33,9 @@ const mutations = {
   OPEN_CONFIRM_MODAL(state, nextActionInfo) {
     state.isConfirmModal = true
     state.nextActionInfo = nextActionInfo
+  },
+  OPEN_REGISTER_MODAL(state) {
+    state.isRegisterModal = true
   },
   UPDATE_PRICE(state, stock) {
     let stockIndex = findIndexOfStocks(stock.symbol)
@@ -65,6 +70,7 @@ const mutations = {
 const actions = {
   closeModal: ({ commit }) => commit('CLOSE_MODAL'),
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
+  openRegisterModal: ({ commit }) => commit('OPEN_REGISTER_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
   updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
@@ -76,8 +82,9 @@ const actions = {
 }
 
 const getters = {
-  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal},
+  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal || state.isRegisterModal },
   getIsLogInModal: state => state.isLogInModal,
+  getIsRegisterModal: state => state.isRegisterModal,
   getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
   getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
