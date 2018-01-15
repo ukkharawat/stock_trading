@@ -92,4 +92,11 @@
   .row {
     margin-right: 0 !important;
   }
+
+  .base-modal {
+    background-color: #fafafa;
+    width: 50%;
+    height: auto;
+    border-radius: 8px;
+  }
 </style>

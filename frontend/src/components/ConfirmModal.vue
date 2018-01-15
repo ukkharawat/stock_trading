@@ -1,5 +1,5 @@
 <template>
-  <div id="confirm-modal" @click.stop>
+  <div class="base-modal" @click.stop>
     <modalHeader :message="message"></modalHeader>
     <confirmModalContent :actionInfo="getNextActionInfo">
     </confirmModalContent>
@@ -28,12 +28,3 @@
     }
   }
 </script>
-
-<style>
-  #confirm-modal {
-    background-color: #fafafa;
-    width: 50%;
-    height: auto;
-    border-radius: 8px;
-  }
-</style>
