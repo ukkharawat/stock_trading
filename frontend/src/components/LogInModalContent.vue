@@ -25,6 +25,7 @@
   import actionButton from '@/components/ActionButton'
   import userController from '@/controllers/User.controller'
   import cacheController from '@/controllers/Cache.controller'
+  import stockDatasource from '@/datasources/Stock.datasource'
   import { mapActions } from 'vuex'
 
   export default {
@@ -66,14 +67,8 @@
       setVuex(data) {
         this.setUsername(data.username)
         this.setStep(data.stepCount)
-        
-        let stock = {
-          'symbol': response.portfolio[0].symbol,
-          'amount': response.portfolio[0].volume,
-          'averageBuyPrice': response.portfolio[0].averagePrice
-        }
-            
-        this.setCash(response.cash)
+        stockDatasource.createChangedStockObject(data.portfolio[0])
+        this.setCash(data.cash)
         this.updateStock(stock)
       },
       setLocalStorage(data) {
