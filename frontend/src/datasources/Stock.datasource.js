@@ -1,20 +1,32 @@
 export default class StockDatasource {
 
-  static createStockObject(action, name, fullname, amount, price) {
+  static createStockObject(action, symbol, fullname, amount, price) {
     return {
       "action": action,
-      "shortName": name,
+      "symbol": symbol,
       "fullName": fullname,
       "amount": Number(amount),
       "price": Number(price)
     }
   }
 
-  static createChangedStockObject(shortName, amount, averageBuyPrice) {
+  static createChangedStockObject(stock) {
     return {
-      "shortName": shortName,
-      "amount": amount,
-      "averageBuyPrice": averageBuyPrice
+      "symbol": stock.symbol,
+      "amount": stock.volume,
+      "averageBuyPrice": stock.averageBuyPrice
+    }
+  }
+
+  static createDefaultStockList(stock) {
+    return {
+      "symbol": stock.name,
+      "fullName": stock.fullname,
+      "industry": stock.industry,
+      "sector": stock.sector,
+      "amount": 0,
+      "price": 0,
+      "averageBuyPrice": 0
     }
   }
 }

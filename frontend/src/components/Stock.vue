@@ -1,19 +1,20 @@
 <template>
-  <div id="stock">
-      <stockHeader :corpShortName="stock.shortName"
+  <div id="stock" v-show="isDisplay">
+      <stockHeader :corpSymbol="stock.symbol"
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
       <div class="row">
         <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
-          <amChart :stockName="stock.shortName"
-                   @dataChange="dataChange">
+          <amChart :stockName="stock.symbol"
+                  @displayChange="displayHandle"
+                  @dataChange="dataChange">
           </amChart>
         </div>
         <div class="col-sm-2 vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
-                     @handleValueChange="amountChange">
+                    @handleValueChange="amountChange">
           </textInput>
           <actionButton :message="'buy'" 
                         @onClick="onClick"
@@ -47,7 +48,8 @@
     data() {
       return {
         amount: null,
-        currentPrice: null
+        currentPrice: null,
+        isDisplay: true
       }
     },
     components: {
@@ -72,7 +74,7 @@
         'updatePrice'
       ]),
       onClick(event) {
-        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.shortName, this.stock.fullName, this.amount, this.currentPrice)
+        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
 
         if(event === "buy" && this.amount) {
           if(this.amount * this.currentPrice < this.getCash) {
@@ -94,11 +96,14 @@
         this.currentPrice = (Number(event["Close"]) + Number(event["Open"]))/2
         
         let stock = {
-          'shortName': this.stock.shortName,
+          'symbol': this.stock.symbol,
           'price': this.currentPrice
         }
         
         this.updatePrice(stock)
+      },
+      displayHandle(event) {
+        this.isDisplay = false
       },
       formatAverageBuyPrice(price) {
         if(!price)

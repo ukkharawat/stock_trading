@@ -1,3 +1,4 @@
 *.pyc
 migrations/
+stockData/
 db.sqlite3

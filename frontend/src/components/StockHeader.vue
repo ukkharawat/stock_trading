@@ -1,6 +1,6 @@
 <template>
   <div id="stock-header">
-    <h2 class="shortname">{{corpShortName}}</h2>
+    <h2 class="symbol">{{corpSymbol}}</h2>
     <h3 class="fullname">{{corpFullThaiName}}</h3>
   </div>
 </template>
@@ -9,7 +9,7 @@
 
   export default {
     props: {
-      corpShortName: {
+      corpSymbol: {
         type: String
       },
       corpFullThaiName: {
@@ -26,7 +26,7 @@
     text-align: left;
   }
 
-  .shortname {
+  .symbol {
     font-size: 24px;
     display: inline;
     margin-right: 4px;

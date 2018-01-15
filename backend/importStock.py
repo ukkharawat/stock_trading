@@ -15,14 +15,18 @@ django.setup()
 from stockApp.models import Stock
 
 data = csv.reader(open('symkey.csv'), delimiter=",")
+insertList = []
 
 for row in data:
 	if row[0] != 'Name':
 		stock = Stock()
 		stock.name = row[0]
 		stock.fullname = row[1]
-		stock.save()
-		print(row)
+		stock.industry = row[2]
+		stock.sector = row[3]
+		insertList.append(stock)
+
+Stock.objects.bulk_create(insertList)
 	
 
 # for row in data:

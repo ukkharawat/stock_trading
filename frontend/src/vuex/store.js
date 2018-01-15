@@ -3,33 +3,24 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-function findIndexOfStocks(stockName) {
+function findIndexOfStocks(symbol) {
   return state.stocks.findIndex(stock => {
-    return stock.shortName === stockName
+    return stock.symbol === symbol
   })
 }
 
 const state = {
-  category: "",
   isLogInModal: false,
   isConfirmModal: false,
   nextActionInfo: null,
-  stocks: [ {
-    "shortName": "PTT",
-    "fullName": "PTT Public company limited",
-    "amount": 0,
-    "price": 0,
-    "averageBuyPrice": 0
-  } ],
+  stocks: null,
   step: 1,
   cash: null,
-  username: null
+  username: null,
+  category: null
 }
 
 const mutations = {
-  SET_CATEGORY(state, current) {
-    state.category = current
-  },
   CLOSE_MODAL(state) {
     state.isLogInModal = false
     state.isConfirmModal = false
@@ -42,15 +33,20 @@ const mutations = {
     state.nextActionInfo = nextActionInfo
   },
   UPDATE_PRICE(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.shortName)
+    let stockIndex = findIndexOfStocks(stock.symbol)
 
     state.stocks[stockIndex].price = stock.price
   },
-  UPDATE_STOCK(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.shortName)
+  UPDATE_STOCK(state, stocks) {
+    for( let stock in stocks) {
+      let stockIndex = findIndexOfStocks(stock.symbol)
 
-    state.stocks[stockIndex].amount = stock.amount
-    state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+      state.stocks[stockIndex].amount = stock.amount
+      state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+    }
+  },
+  SET_STOCK(state, stocks) {
+    state.stocks = stocks
   },
   SET_USERNAME(state, username) {
     state.username = username
@@ -60,23 +56,26 @@ const mutations = {
   },
   SET_CASH(state, cash) {
     state.cash = cash
+  },
+  SET_CURRENT_CATEGORY(state, category) {
+    state.category = category
   }
 }
 
 const actions = {
-  setCategory: ({ commit }, current) => commit('SET_CATEGORY', current),
   closeModal: ({ commit }) => commit('CLOSE_MODAL'),
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
-  updateStock: ({ commit }, stock) => commit('UPDATE_STOCK', stock),
+  updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
+  setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
   setStep: ({ commit }, step) => commit('SET_STEP', step),
   setCash: ({ commit }, cash) => commit('SET_CASH', cash),
+  setCurrentCategory: ({ commit }, category) => commit('SET_CURRENT_CATEGORY', category)
 }
 
 const getters = {
-  getCategory: state => state.category,
   getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal},
   getIsLogInModal: state => state.isLogInModal,
   getIsConfirmModal: state => state.isConfirmModal,
@@ -86,6 +85,7 @@ const getters = {
   getUsername: state => state.username,
   getCash: state => state.cash,
   getStep: state => state.step,
+  getCurrentCategory: state => state.category,
   isLoggedIn: state => state.username !== null
 }
 

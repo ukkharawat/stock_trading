@@ -9,7 +9,7 @@
       </index>
     </div>
     <div class="col-sm-10">
-      <stock v-for="stock in getHoldingStock" :key="stock.shortName" :stock="stock"></stock>
+      <stock v-for="stock in getHoldingStock" :key="stock.symbol" :stock="stock"></stock>
     </div>
   </div>
 </template>
@@ -37,7 +37,7 @@
       ]),
       getStocksName() {
         return this.getHoldingStock.map(holdingStock => {
-          return holdingStock.shortName
+          return holdingStock.symbol
         })
       }
     }
