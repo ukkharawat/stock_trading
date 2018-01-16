@@ -128,8 +128,8 @@
     height: auto;
     margin-top: 24px;
     border-radius: 8px;
-    border: #ffc900 solid 1px;
-    box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
   }
 
   .vertical-center {
