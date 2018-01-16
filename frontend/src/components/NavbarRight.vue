@@ -1,18 +1,18 @@
 <template>
   <div id="navbar-right">
-    <ul class="nav navbar-nav navbar-right">
-      <li class="list-menu">
-        <a class="disable-hover menu-padding" v-show="isLoggedIn">
+    <b-nav>
+        <b-nav-item v-show="isLoggedIn">
           Capital: {{capital | currency}} ({{getCash | currency}})
-          </a>
-        <router-link to="/portfolio" v-show="isLoggedIn">
-          <a class="disable-hover portfolio-link menu-padding">Portfolio</a>
-        </router-link>
-        <a class="disable-hover" @click="openLogInModal" v-show="!isLoggedIn" >Log in</a>
-        <a class="disable-hover" @click="openRegisterModal" v-show="!isLoggedIn" >Register</a>
-        <a class="disable-hover" @click="logout" v-show="isLoggedIn" >{{ getUsername }} (Log out)</a>
-      </li>
-    </ul>
+        </b-nav-item>
+
+        <b-nav-item @click="openLogInModal" v-show="!isLoggedIn" >Log in</b-nav-item>
+        <b-nav-item @click="openRegisterModal" v-show="!isLoggedIn" >Register</b-nav-item>
+
+        <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
+          <router-link to="/portfolio" class="dropdown-item"> Portfolio </router-link>
+            <b-dropdown-item @click="logout">Log out</b-dropdown-item>
+          </b-nav-item-dropdown>
+    </b-nav>
   </div>
 </template>
 
@@ -36,8 +36,17 @@
       ...mapGetters([
         'getCash',
         'getUsername',
-        'isLoggedIn'
+        'isLoggedIn',
+        'getStock'
       ])
+    },
+    watch: {
+      getStock: {
+        handler(val) {
+          this.capital = this.getCash + this.getStock.map(stock => stock.amount * stock.price).reduce((sum, current) => sum + current)
+        },
+        deep: true
+      }
     },
     methods: {
       ...mapActions([
@@ -73,24 +82,8 @@
 </script>
 
 <style>
-  .disable-hover {
-    cursor: pointer;
-  }
-
-  .list-menu a {
-    text-decoration: none;
-  }
-
-  .menu-padding {
-    padding-right: 16px;
-  }
-
-  .portfolio-link, .portfolio-link:hover {
+  a.nav-link {
     color: #424242 !important;
     text-decoration: none;
-  }
-
-  a.disable-hover:hover {
-    background-color: transparent !important;
   }
 </style>
