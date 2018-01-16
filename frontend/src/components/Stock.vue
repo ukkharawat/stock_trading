@@ -3,14 +3,14 @@
       <stockHeader :corpSymbol="stock.symbol"
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
-      <div class="row">
+      <b-row>
         <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
           <amChart :stockName="stock.symbol"
                   @displayChange="displayHandle"
                   @dataChange="dataChange">
           </amChart>
         </div>
-        <div class="col-sm-2 vertical-center" v-show="isLoggedIn">
+        <b-col cols="2" class="vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <textInput :placeholder="'Amount'"
@@ -24,8 +24,8 @@
                         @onClick="onClick"
                         :buttonClass="'sell-button'">
           </actionButton>
-        </div>
-      </div>
+        </b-col>
+      </b-row>
   </div>
 </template>
 

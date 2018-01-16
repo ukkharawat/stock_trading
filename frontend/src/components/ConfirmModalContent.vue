@@ -1,29 +1,27 @@
 <template>
   <div id="confirm-modal-content" v-if="actionInfo != null">
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6 remove-padding">
+    <b-row class="justify-content-sm-center">
+      <b-col cols="6" class="remove-padding">
         <h2 class="cautions">
           Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
         </h2>
 
-        <div class="row">
-          <div class="col-sm-6">
+        <b-row>
+          <b-col cols="6">
             <confirmModalButton :buttonClass="'yes-button'"
                                 @onClickEvent="handleClickYes"
                                 :message="'YES'">
             </confirmModalButton>
-          </div>
-          <div class="col-sm-6">
+          </b-col>
+          <b-col cols="6">
             <confirmModalButton :buttonClass="'no-button'"
                                 @onClickEvent="handleClickNo"
                                 :message="'NO'">
             </confirmModalButton>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-3"></div>
-    </div>
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
   </div>
 </template>
 

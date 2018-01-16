@@ -1,8 +1,7 @@
 <template>
   <div id="log-in-modal-content">
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6">
+    <b-row class="justify-content-sm-center">
+      <b-col cols="6">
         <textInput :placeholder="'Username'"
                    @handleValueChange="handleUsernameChange">
         </textInput>
@@ -13,9 +12,8 @@
                       @onClick="login"
                       :message="'Log in'">
         </actionButton>
-      </div>
-      <div class="col-sm-3"></div>
-    </div>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
