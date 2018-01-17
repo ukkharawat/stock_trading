@@ -80,10 +80,3 @@
     }
   }
 </script>
-
-<style>
-  a.nav-link {
-    color: #424242 !important;
-    text-decoration: none;
-  }
-</style>

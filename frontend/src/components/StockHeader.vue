@@ -18,22 +18,3 @@
     }
   }
 </script>
-
-<style>
-  #stock-header {
-    margin-left: 16px;
-    padding-top: 16px;
-    text-align: left;
-  }
-
-  .symbol {
-    font-size: 24px;
-    display: inline;
-    margin-right: 4px;
-  }
-
-  .fullname {
-    font-size: 16px;
-    display: inline;
-  }
-</style>

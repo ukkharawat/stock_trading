@@ -41,30 +41,3 @@
     }
   }
 </script>
-
-<style>
-  #index-menu {
-    padding-top: 8px;
-    margin-left: 16px;
-    text-align: left;
-  }
-
-  a.main-menu {
-    color: #373737;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-  }
-
-  a.sub-menu {
-    margin-left: 16px;
-    color: #636363;
-    font-size: 14px;
-    cursor: pointer;
-    display: block;
-  }
-
-  .bold-text {
-    font-weight: bold;
-  }
-</style>

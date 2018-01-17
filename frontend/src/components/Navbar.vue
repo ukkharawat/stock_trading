@@ -23,11 +23,3 @@
     }
   }
 </script>
-
-<style>
-	.stock-navbar {
-		background-color : #ffc400;
-		box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 0 !important;
-	}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="log-in-modal-content">
+  <div class="modal-content">
     <b-row class="justify-content-sm-center">
       <b-col cols="8">
         <b-form @submit="login">
@@ -75,26 +75,3 @@
     }
   }
 </script>
-
-<style>
-
-  #log-in-modal-content {
-    width: 100%;
-    margin-top: 8px;
-    padding-bottom: 16px;
-  }
-
-  .form-group {
-    padding-top: 8px;
-    text-align: left;
-  }
-
-  .margin-top {
-    margin-top: 16px;
-  }
-
-  .btn {
-    width: 100%;
-    color: #424242;
-  }
-</style>

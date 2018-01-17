@@ -108,20 +108,3 @@
     }
   }
 </script>
-
-<style>
-  #stock {
-    width: 100%;
-    height: auto;
-    margin-top: 24px;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
-  }
-
-  .vertical-center {
-    display : flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-</style>

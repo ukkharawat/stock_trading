@@ -21,13 +21,3 @@
     }
   }
 </script>
-
-<style>
-  .modal-header {
-    background-color : #ffc400;
-  }
-
-  .close {
-    cursor: pointer;
-  }
-</style>

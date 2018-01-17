@@ -1,5 +1,5 @@
 <template>
-  <div id="confirm-modal-content" v-if="actionInfo != null">
+  <div class="modal-content" v-if="actionInfo != null">
     <b-row class="justify-content-sm-center">
       <b-col cols="6" class="remove-padding">
         <h2 class="cautions">
@@ -98,12 +98,6 @@
 </script>
 
 <style>
-  #confirm-modal-content {
-    width: 100%;
-    margin-top: 24px;
-    padding-bottom: 24px;
-  }
-
   .cautions {
     text-align: left;
     font-size: 24px;
