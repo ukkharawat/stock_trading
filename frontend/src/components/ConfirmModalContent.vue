@@ -8,16 +8,10 @@
 
         <b-row>
           <b-col cols="6">
-            <confirmModalButton :buttonClass="'yes-button'"
-                                @onClickEvent="handleClickYes"
-                                :message="'YES'">
-            </confirmModalButton>
+            <b-button variant="primary" @onClick="handleClickYes">YES</b-button>
           </b-col>
           <b-col cols="6">
-            <confirmModalButton :buttonClass="'no-button'"
-                                @onClickEvent="handleClickNo"
-                                :message="'NO'">
-            </confirmModalButton>
+            <b-button variant="danger" @onClick="handleClickNo">No</b-button>
           </b-col>
         </b-row>
       </b-col>
@@ -26,8 +20,8 @@
 </template>
 
 <script>
-  import confirmModalButton from '@/components/ConfirmModalButton'
   import stockController from '@/controllers/Stock.controller'
+  import stockDatasource from '@/datasources/Stock.datasource'
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
@@ -35,9 +29,6 @@
       actionInfo: {
         type: Object
       }
-    },
-    components: {
-      confirmModalButton
     },
     computed: {
       ...mapGetters([
@@ -70,11 +61,7 @@
 
         stockController.buyStock(tradingObject)
           .then(response => {
-            let updateData = {
-              'symbol': response.symbol,
-              'amount': response.volume,
-              'averageBuyPrice': response.averagePrice
-            }
+            let updateData = stockDatasource.createChangedStockObject(response)
 
             this.setCash(response.cash)
             this.updateVuex(updateData)
