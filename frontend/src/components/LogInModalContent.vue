@@ -1,26 +1,36 @@
 <template>
   <div id="log-in-modal-content">
     <b-row class="justify-content-sm-center">
-      <b-col cols="6">
-        <textInput :placeholder="'Username'"
-                   @handleValueChange="handleUsernameChange">
-        </textInput>
-        <passwordInput :placeholder="'Password'"
-                       @handleValueChange="handlePasswordChange">
-        </passwordInput>
-        <actionButton :buttonClass="'log-in-button'"
-                      @onClick="login"
-                      :message="'Log in'">
-        </actionButton>
+      <b-col cols="8">
+        <b-form @submit="login">
+          <b-form-group id="usernameInputGroup"
+                        label="Your Username:"
+                        label-for="usernameInput">
+            <b-form-input id="usernameInput"
+                          type="text"
+                          v-model="username"
+                          required
+                          placeholder="Username">
+            </b-form-input>
+          </b-form-group>
+          <b-form-group id="passwordInputGroup"
+                        label="Your Password:"
+                        label-for="exampleInput2">
+            <b-form-input id="passwordInput"
+                          type="password"
+                          v-model="password"
+                          required
+                          placeholder="Password">
+            </b-form-input>
+          </b-form-group>
+          <b-button type="submit" class="margin-top" variant="warning">Log In</b-button>
+        </b-form>
       </b-col>
     </b-row>
   </div>
 </template>
 
 <script>
-  import textInput from '@/components/TextInput'
-  import passwordInput from '@/components/PasswordInput'
-  import actionButton from '@/components/ActionButton'
   import userController from '@/controllers/User.controller'
   import cacheController from '@/controllers/Cache.controller'
   import stockDatasource from '@/datasources/Stock.datasource'
@@ -33,11 +43,6 @@
         password: null
       }
     },
-    components: {
-      textInput,
-      actionButton,
-      passwordInput
-    },
     methods: {
       ...mapActions([
         'closeModal',
@@ -45,13 +50,8 @@
         'setCash',
         'setStep'
       ]),
-      handleUsernameChange(event) {
-        this.username = event
-      },
-      handlePasswordChange(event) {
-        this.password = event
-      },
-      login() {
+      login(event) {
+        event.preventDefault()
         userController.login(this.username, this.password)
           .then(response => {
             this.setUserCache(response)
@@ -80,7 +80,21 @@
 
   #log-in-modal-content {
     width: 100%;
-    margin-top: 24px;
-    padding-bottom: 24px;
+    margin-top: 8px;
+    padding-bottom: 16px;
+  }
+
+  .form-group {
+    padding-top: 8px;
+    text-align: left;
+  }
+
+  .margin-top {
+    margin-top: 16px;
+  }
+
+  .btn {
+    width: 100%;
+    color: #424242;
   }
 </style>
