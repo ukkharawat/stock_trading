@@ -43,7 +43,9 @@
     watch: {
       getStock: {
         handler(val) {
-          this.capital = this.getCash + this.getStock.map(stock => stock.amount * stock.price).reduce((sum, current) => sum + current)
+          this.capital = this.getCash 
+          this.capital += this.getStock.map(stock => stock.amount * stock.price)
+                              .reduce((sum, current) => sum + current)
         },
         deep: true
       }

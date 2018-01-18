@@ -22,7 +22,7 @@ export default class StockController {
 
   static buyStock(tradingAction) {
     let token = cacheController.getToken()
-    
+
     return stockService.buyStock(ApiURL.buyStockURL, tradingAction, token)
   }
 

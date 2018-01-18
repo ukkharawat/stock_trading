@@ -6,7 +6,6 @@
 </template>
 
 <script>
-
   import baseInfo from '@/components/BaseInfo'
 
   export default {

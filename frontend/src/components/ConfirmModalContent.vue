@@ -96,15 +96,3 @@
     }
   }
 </script>
-
-<style>
-  .cautions {
-    text-align: left;
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
-
-  .remove-padding {
-    padding: 0 8px;
-  }
-</style>

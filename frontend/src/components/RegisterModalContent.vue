@@ -41,31 +41,32 @@
 </template>
 
 <script>
-import userController from "@/controllers/User.controller";
-import { mapActions } from "vuex";
+  import userController from "@/controllers/User.controller"
+  import { mapActions } from "vuex"
 
-export default {
-  data() {
-    return {
-      username: null,
-      password: null,
-      repassword: null
-    };
-  },
-  methods: {
-    ...mapActions(["closeModal"]),
-    isPasswordMatch() {
-      return this.password === this.repassword;
+  export default {
+    data() {
+      return {
+        username: null,
+        password: null,
+        repassword: null
+      };
     },
-    register(event) {
-      event.preventDefault();
+    methods: {
+      ...mapActions(["closeModal"]),
+      isPasswordMatch() {
+        return this.password === this.repassword
+      },
+      register(event) {
+        event.preventDefault()
 
-      if (this.isPasswordMatch()) {
-        userController.register(this.username, this.password).then(response => {
-          this.closeModal();
-        });
+        if (this.isPasswordMatch()) {
+          userController.register(this.username, this.password)
+            .then(response => {
+              this.closeModal()
+            })
+        }
       }
     }
-  }
-};
+  };
 </script>
