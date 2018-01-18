@@ -51,7 +51,11 @@ class Response(object):
 
     @staticmethod
     def createStockList(data):
-        return JsonResponse(data, status = status.HTTP_200_OK)
+        response = {
+            'stockList': data
+        }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
     def createStockValueList(stockValue):
@@ -61,3 +65,11 @@ class Response(object):
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
+
+    @staticmethod
+    def createNotFoundStock():
+        response = {
+            'status': False
+        }
+
+        return JsonResponse(response, status = status.HTTP_404_NOT_FOUND)

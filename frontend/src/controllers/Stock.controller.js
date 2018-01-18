@@ -6,9 +6,9 @@ import ApiURL from '../utilities/ApiURL.utility';
 
 export default class StockController {
 
-  static getStockValue(shortname, start, end) {
+  static getStockValue(symbol, start, end) {
     let params = {
-      'symbol': shortname,
+      'symbol': symbol,
       'start': start,
       'end': end
     }
@@ -22,7 +22,7 @@ export default class StockController {
 
   static buyStock(tradingAction) {
     let token = cacheController.getToken()
-    
+
     return stockService.buyStock(ApiURL.buyStockURL, tradingAction, token)
   }
 
@@ -30,5 +30,9 @@ export default class StockController {
     let token = cacheController.getToken()
 
     return stockService.sellStock(ApiURL.sellStockURL, tradingAction, token)
+  }
+
+  static getStockList() {
+    return stockService.getStockList(ApiURL.getStockListURL)
   }
 }

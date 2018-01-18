@@ -1,17 +1,17 @@
 <template>
-  <div id="portfolio-page" class="row">
-    <div class="col-sm-2" v-show="getHoldingStock != 0">
+  <b-row id="portfolio-page">
+    <b-col cols="2" v-show="getHoldingStock != 0">
       <index>
           <indexMenu
             :mainMenuTitle="title"
             :subMenuTitles="getStocksName">
           </indexMenu>
       </index>
-    </div>
-    <div class="col-sm-10">
-      <stock v-for="stock in getHoldingStock" :key="stock.shortName" :stock="stock"></stock>
-    </div>
-  </div>
+    </b-col>
+    <b-col cols="10">
+      <stock v-for="stock in getHoldingStock" :key="stock.symbol" :stock="stock"></stock>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
@@ -37,7 +37,7 @@
       ]),
       getStocksName() {
         return this.getHoldingStock.map(holdingStock => {
-          return holdingStock.shortName
+          return holdingStock.symbol
         })
       }
     }

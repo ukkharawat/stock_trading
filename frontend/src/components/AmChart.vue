@@ -1,15 +1,11 @@
 <template>
-  <div id="chartdiv">
+  <div :id="stockName" class="chartdiv">
   </div>
 </template>
 
 <script>
   import stockController from '@/controllers/Stock.controller'
   import { mapActions, mapGetters } from 'vuex'
-
-  function sleep() {
-    return new Promise(resolve => setTimeout(resolve , 3000))
-  }
 
   export default {
     name: 'app',
@@ -36,6 +32,12 @@
           stockController.getStockValue(this.stockName, oldVal, val)
             .then(response => response.stockValue)
             .then(stockValue => {
+              for(let i = 0; i < stockValue.length; i++) {
+                stockValue[i]['BuyPrice'] = (stockValue[i]['Open'] + stockValue[i]['Close'])/2
+              }
+              return stockValue
+            })
+            .then(stockValue => {
               this.displayData = this.displayData.concat(stockValue)
               this.chart.dataSets[0].dataProvider = this.displayData
               this.chart.validateData()
@@ -52,10 +54,19 @@
       await stockController.getStockValue(this.stockName, 0, end)
         .then(response => response.stockValue)
         .then(stockValue => {
+          for(let i = 0; i < stockValue.length; i++) {
+            stockValue[i]['BuyPrice'] = (stockValue[i]['Open'] + stockValue[i]['Close'])/2
+          }
+          return stockValue
+        })
+        .then(stockValue => {
           this.displayData = stockValue
           this.createChart()
 
           this.$emit("dataChange", this.displayData[this.displayData.length - 1])
+        })
+        .catch(error => {
+          this.$emit("displayChange", false)
         })
     },
     methods: {
@@ -64,7 +75,7 @@
         'updatePrice'
       ]),
       createChart() {
-        this.chart = AmCharts.makeChart("chartdiv", {
+        this.chart = AmCharts.makeChart(this.stockName, {
           "type": "stock",
           "theme": "light",
           "glueToTheEnd": true,
@@ -86,6 +97,9 @@
             }, {
               "fromField": "Volume",
               "toField": "volume"
+            }, {
+              "fromField": "BuyPrice",
+              "toField": "buyPrice"
             }],
             "compared": false,
             "categoryField": "Date",
@@ -104,7 +118,7 @@
               "closeField": "close",
               "highField": "high",
               "lowField": "low",
-              "valueField": "close",
+              "valueField": "buyPrice",
               "lineColor": "#0f0",
               "fillColors": "#0f0",
               "negativeLineColor": "#db4c3c",
@@ -216,11 +230,3 @@
     }
   }
 </script>
-
-<style>
-  #chartdiv {
-    width: calc(100% - 16px);
-    height:calc(50vw * 0.5125);
-    margin: 16px 16px 16px 0;
-  }
-</style>
