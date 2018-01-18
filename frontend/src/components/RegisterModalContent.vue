@@ -3,31 +3,31 @@
       <b-row class="justify-content-sm-center">
         <b-col cols="8">
           <b-form @submit="register">
-            <b-form-group id="usernameInputGroup"
+            <b-form-group id="registerUsernameInputGroup"
                           label="Your Username:"
-                          label-for="usernameInput">
-              <b-form-input id="usernameInput"
+                          label-for="registerUsernameInput">
+              <b-form-input id="registerUsernameInput"
                             type="text"
                             v-model="username"
                             required
                             placeholder="Username">
               </b-form-input>
             </b-form-group>
-            <b-form-group id="passwordInputGroup"
+            <b-form-group id="registerPasswordInputGroup"
                           label="Your Password:"
-                          label-for="passwordInput">
-              <b-form-input id="passwordInput"
-                            type="text"
+                          label-for="registerPasswordInput">
+              <b-form-input id="registerPasswordInput"
+                            type="password"
                             v-model="password"
                             required
                             placeholder="Password">
               </b-form-input>
             </b-form-group>
-            <b-form-group id="rePasswordInputGroup"
+            <b-form-group id="registerRepasswordInputGroup"
                           label="Type Your Password Again:"
-                          label-for="rePasswordInput">
-              <b-form-input id="rePasswordInput"
-                            type="text"
+                          label-for="registerRepasswordInput">
+              <b-form-input id="registerRepasswordInput"
+                            type="password"
                             v-model="repassword"
                             required
                             placeholder="Re-password">
