@@ -1,16 +1,13 @@
 <template>
-  <div id="navbar-header" class="navbar-header">
-    <navbarBrand :brandTitle="brandTitle"></navbarBrand>
+  <div id="navbar-header">
+    <router-link to="/">
+      <b-navbar-brand>{{ brandTitle }}</b-navbar-brand>
+    </router-link>
   </div>
 </template>
 
 <script>
-  import navbarBrand from '@/components/NavbarBrand'
-
   export default {
-    components: {
-      navbarBrand
-    },
     props: {
       brandTitle: {
         type: String

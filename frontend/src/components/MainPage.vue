@@ -1,6 +1,6 @@
 <template>
-  <div id="main-page" class="row" v-show="getStock !== null">
-    <div class="col-sm-2">
+  <b-row id="main-page" v-show="getStock !== null">
+    <b-col cols="2">
       <index>
         <div v-for="menuItem in menuItems" v-bind:key="menuItem.industry">
           <indexMenu
@@ -11,13 +11,13 @@
           </indexMenu>
         </div>
       </index>
-    </div>
-    <div class="col-sm-10">
+    </b-col>
+    <b-col cols="10">
       <stock v-for="stock in filteredStock"
              :key="stock.symbol"
              :stock="stock"></stock>
-    </div>
-  </div>
+    </b-col>
+  </b-row>
 </template>
 
 <script>

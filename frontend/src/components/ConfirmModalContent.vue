@@ -1,35 +1,27 @@
 <template>
-  <div id="confirm-modal-content" v-if="actionInfo != null">
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6 remove-padding">
+  <div class="modal-content" v-if="actionInfo != null">
+    <b-row class="justify-content-sm-center">
+      <b-col cols="6" class="remove-padding">
         <h2 class="cautions">
           Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
         </h2>
 
-        <div class="row">
-          <div class="col-sm-6">
-            <confirmModalButton :buttonClass="'yes-button'"
-                                @onClickEvent="handleClickYes"
-                                :message="'YES'">
-            </confirmModalButton>
-          </div>
-          <div class="col-sm-6">
-            <confirmModalButton :buttonClass="'no-button'"
-                                @onClickEvent="handleClickNo"
-                                :message="'NO'">
-            </confirmModalButton>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-3"></div>
-    </div>
+        <b-row>
+          <b-col cols="6">
+            <b-button variant="primary" @onClick="handleClickYes">YES</b-button>
+          </b-col>
+          <b-col cols="6">
+            <b-button variant="danger" @onClick="handleClickNo">No</b-button>
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
-  import confirmModalButton from '@/components/ConfirmModalButton'
   import stockController from '@/controllers/Stock.controller'
+  import stockDatasource from '@/datasources/Stock.datasource'
   import { mapActions, mapGetters } from 'vuex'
 
   export default {
@@ -37,9 +29,6 @@
       actionInfo: {
         type: Object
       }
-    },
-    components: {
-      confirmModalButton
     },
     computed: {
       ...mapGetters([
@@ -72,11 +61,7 @@
 
         stockController.buyStock(tradingObject)
           .then(response => {
-            let updateData = {
-              'symbol': response.symbol,
-              'amount': response.volume,
-              'averageBuyPrice': response.averagePrice
-            }
+            let updateData = stockDatasource.createChangedStockObject(response)
 
             this.setCash(response.cash)
             this.updateVuex(updateData)
@@ -111,21 +96,3 @@
     }
   }
 </script>
-
-<style>
-  #confirm-modal-content {
-    width: 100%;
-    margin-top: 24px;
-    padding-bottom: 24px;
-  }
-
-  .cautions {
-    text-align: left;
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
-
-  .remove-padding {
-    padding: 0 8px;
-  }
-</style>

@@ -1,10 +1,10 @@
 <template>
-	<div class="navbar" id="navbar">
+	<b-navbar class="stock-navbar">
 		<div class="container-fluid">
 			<navbarHeader :brandTitle="brandTitle"></navbarHeader>
 			<navbarRight></navbarRight>
 		</div>
-	</div>
+	</b-navbar>
 </template>
 
 <script>
@@ -23,11 +23,3 @@
     }
   }
 </script>
-
-<style>
-	#navbar {
-		background-color : #ffc400;
-		box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 0 !important;
-	}
-</style>

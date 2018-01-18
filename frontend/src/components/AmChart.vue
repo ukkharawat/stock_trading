@@ -230,11 +230,3 @@
     }
   }
 </script>
-
-<style>
-  .chartdiv {
-    width: calc(100% - 16px);
-    height:calc(50vw * 0.5125);
-    margin: 16px 16px 16px 0;
-  }
-</style>

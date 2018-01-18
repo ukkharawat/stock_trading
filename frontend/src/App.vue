@@ -4,6 +4,7 @@
     <router-view/>
     <modal>
       <logInModal v-show="getIsLogInModal"></logInModal>
+      <registerModal v-show="getIsRegisterModal"></registerModal>
       <confirmModal v-show="getIsConfirmModal"></confirmModal>
     </modal>
     <nextDayButton></nextDayButton>
@@ -15,6 +16,7 @@
   import navbar from '@/components/Navbar'
   import logInModal from '@/components/LogInModal'
   import confirmModal from '@/components/ConfirmModal'
+  import registerModal from '@/components/RegisterModal'
   import { mapGetters, mapActions } from 'vuex'
   import nextDayButton from '@/components/NextDayButton'
   import cacheController from '@/controllers/Cache.controller'
@@ -29,6 +31,7 @@
       navbar,
       logInModal,
       confirmModal,
+      registerModal,
       nextDayButton
     },
     created() {
@@ -43,6 +46,7 @@
       ...mapGetters([
         'getIsLogInModal',
         'getIsConfirmModal',
+        'getIsRegisterModal',
         'isLoggedIn'
       ])
     },
@@ -87,9 +91,17 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    background-color: rgba(0, 0, 0, 0.08);
   }
 
   .row {
     margin-right: 0 !important;
+  }
+
+  .base-modal {
+    background-color: #fafafa;
+    width: 50%;
+    height: auto;
+    border-radius: 8px;
   }
 </style>

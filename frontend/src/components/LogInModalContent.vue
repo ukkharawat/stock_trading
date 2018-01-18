@@ -1,30 +1,39 @@
 <template>
-  <div id="log-in-modal-content">
-    <div class="row">
-      <div class="col-sm-3"></div>
-      <div class="col-sm-6">
-        <textInput :placeholder="'Username'"
-                   @handleValueChange="handleUsernameChange">
-        </textInput>
-        <passwordInput :placeholder="'Password'"
-                       @handleValueChange="handlePasswordChange">
-        </passwordInput>
-        <actionButton :buttonClass="'log-in-button'"
-                      @onClick="login"
-                      :message="'Log in'">
-        </actionButton>
-      </div>
-      <div class="col-sm-3"></div>
-    </div>
+  <div class="modal-content">
+    <b-row class="justify-content-sm-center">
+      <b-col cols="8">
+        <b-form @submit="login">
+          <b-form-group id="usernameInputGroup"
+                        label="Your Username:"
+                        label-for="usernameInput">
+            <b-form-input id="usernameInput"
+                          type="text"
+                          v-model="username"
+                          required
+                          placeholder="Username">
+            </b-form-input>
+          </b-form-group>
+          <b-form-group id="passwordInputGroup"
+                        label="Your Password:"
+                        label-for="exampleInput2">
+            <b-form-input id="passwordInput"
+                          type="password"
+                          v-model="password"
+                          required
+                          placeholder="Password">
+            </b-form-input>
+          </b-form-group>
+          <b-button type="submit" class="margin-top" variant="warning">Log In</b-button>
+        </b-form>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
-  import textInput from '@/components/TextInput'
-  import passwordInput from '@/components/PasswordInput'
-  import actionButton from '@/components/ActionButton'
   import userController from '@/controllers/User.controller'
   import cacheController from '@/controllers/Cache.controller'
+  import stockDatasource from '@/datasources/Stock.datasource'
   import { mapActions } from 'vuex'
 
   export default {
@@ -34,11 +43,6 @@
         password: null
       }
     },
-    components: {
-      textInput,
-      actionButton,
-      passwordInput
-    },
     methods: {
       ...mapActions([
         'closeModal',
@@ -46,18 +50,14 @@
         'setCash',
         'setStep'
       ]),
-      handleUsernameChange(event) {
-        this.username = event
-      },
-      handlePasswordChange(event) {
-        this.password = event
-      },
-      login() {
+      login(event) {
+        event.preventDefault()
         userController.login(this.username, this.password)
           .then(response => {
             this.setUserCache(response)
             this.closeModal()
           })
+          .catch(error => console.log(error))
       },
       setUserCache(response) {
         this.setLocalStorage(response)
@@ -66,28 +66,18 @@
       setVuex(data) {
         this.setUsername(data.username)
         this.setStep(data.stepCount)
+        this.setCash(data.cash)
         
-        let stock = {
-          'symbol': response.portfolio[0].symbol,
-          'amount': response.portfolio[0].volume,
-          'averageBuyPrice': response.portfolio[0].averagePrice
+        if(this.isPortfolioExist(data)) {
+          stockDatasource.createChangedStockObject(data.portfolio[0])
         }
-            
-        this.setCash(response.cash)
-        this.updateStock(stock)
       },
       setLocalStorage(data) {
         cacheController.setUserCache(data.username, data.Token)
+      },
+      isPortfolioExist(data) {
+        return data.portfolio != null && data.portfolio != undefined && data.portfolio.length > 0
       }
     }
   }
 </script>
-
-<style>
-
-  #log-in-modal-content {
-    width: 100%;
-    margin-top: 24px;
-    padding-bottom: 24px;
-  }
-</style>

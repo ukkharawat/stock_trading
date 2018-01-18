@@ -1,4 +1,5 @@
 import axios from 'axios'
+import headerUtility from '@/utilities/Header.utility'
 
 export default class StockService {
 
@@ -10,23 +11,17 @@ export default class StockService {
   }
 
   static async buyStock(URL, tradingDetail, token) {
-    let header = {
-      'Authorization': 'Token ' + token
-    }
 
     return axios.post(URL, tradingDetail, {
-        headers: header
+        headers: headerUtility.createAuthorzation(token)
       })
       .then(response => response.data)
   }
 
   static async sellStock(URL, tradingDetail, token) {
-    let header = {
-      'Authorization': 'Token ' + token
-    }
 
     return axios.post(URL, tradingDetail, {
-        headers: header
+        headers: headerUtility.createAuthorzation(token)
       })
       .then(response => response.data)
   }

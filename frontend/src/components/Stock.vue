@@ -3,29 +3,25 @@
       <stockHeader :corpSymbol="stock.symbol"
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
-      <div class="row">
+      <b-row>
         <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
           <amChart :stockName="stock.symbol"
                   @displayChange="displayHandle"
                   @dataChange="dataChange">
           </amChart>
         </div>
-        <div class="col-sm-2 vertical-center" v-show="isLoggedIn">
+        <b-col cols="2" class="vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
           <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
-          <textInput :placeholder="'Amount'"
-                    @handleValueChange="amountChange">
-          </textInput>
-          <actionButton :message="'buy'" 
-                        @onClick="onClick"
-                        :buttonClass="'buy-button'">
-          </actionButton>
-          <actionButton :message="'sell'"
-                        @onClick="onClick"
-                        :buttonClass="'sell-button'">
-          </actionButton>
-        </div>
-      </div>
+          <b-form-input type="text"
+                        v-model="amount"
+                        required
+                        placeholder="Amount">
+          </b-form-input>
+          <b-button variant="primary" class="margin-top" @onClick="buy">BUY</b-button>
+          <b-button variant="danger" @onClick="sell">SELL</b-button>
+        </b-col>
+      </b-row>
   </div>
 </template>
 
@@ -36,8 +32,6 @@
   import amChart from '@/components/AmChart'
   import holdingInfo from '@/components/HoldingInfo'
   import averagePriceInfo from '@/components/AveragePriceInfo'
-  import textInput from '@/components/TextInput'
-  import actionButton from '@/components/ActionButton'
 
   export default {
     props: {
@@ -55,8 +49,6 @@
     components: {
       stockHeader,
       amChart,
-      textInput,
-      actionButton,
       holdingInfo,
       averagePriceInfo
     },
@@ -73,31 +65,26 @@
         'openConfirmModal',
         'updatePrice'
       ]),
-      onClick(event) {
-        let nextActionInfo = stockDatasource.createStockObject(event, this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
+      buy() {
+        let nextActionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
 
-        if(event === "buy" && this.amount) {
-          if(this.amount * this.currentPrice < this.getCash) {
+        if(this.amount * this.currentPrice < this.getCash) {
 
-            this.openConfirmModal(nextActionInfo)
-          }
-        } else if((event === "sell" && this.amount)) {
-          let currentAmount = this.stock.amount
-
-          if(this.amount <= currentAmount) {
-            this.openConfirmModal(nextActionInfo)
-          }
+          this.openConfirmModal(nextActionInfo)
         }
       },
-      amountChange(event) {
-        this.amount = event
+      sell() {
+        let nextActionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
+        let currentAmount = this.stock.amount
+
+        if(this.amount <= currentAmount) {
+          this.openConfirmModal(nextActionInfo)
+        }
       },
       dataChange(event) {
-        this.currentPrice = (Number(event["Close"]) + Number(event["Open"]))/2
-        
         let stock = {
           'symbol': this.stock.symbol,
-          'price': this.currentPrice
+          'price': event['BuyPrice']
         }
         
         this.updatePrice(stock)
@@ -121,20 +108,3 @@
     }
   }
 </script>
-
-<style>
-  #stock {
-    width: 100%;
-    height: auto;
-    margin-top: 24px;
-    border-radius: 8px;
-    border: #ffc900 solid 1px;
-    box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  .vertical-center {
-    display : flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-</style>

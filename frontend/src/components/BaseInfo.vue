@@ -6,7 +6,6 @@
 </template>
 
 <script>
-
   export default {
     props: {
       amount: {
@@ -18,19 +17,3 @@
     }
   }
 </script>
-
-<style>
-
-  #info-base {
-    margin-bottom: 16px;
-  }
-
-  .info {
-    text-align: left;
-    font-size: 18px;
-  }
-
-  .info-amount {
-    font-size: 14px;
-  }
-</style>
