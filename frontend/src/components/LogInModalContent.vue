@@ -57,6 +57,7 @@
             this.setUserCache(response)
             this.closeModal()
           })
+          .catch(error => console.log(error))
       },
       setUserCache(response) {
         this.setLocalStorage(response)
@@ -65,12 +66,17 @@
       setVuex(data) {
         this.setUsername(data.username)
         this.setStep(data.stepCount)
-        stockDatasource.createChangedStockObject(data.portfolio[0])
         this.setCash(data.cash)
-        this.updateStock(stock)
+        
+        if(this.isPortfolioExist(data)) {
+          stockDatasource.createChangedStockObject(data.portfolio[0])
+        }
       },
       setLocalStorage(data) {
         cacheController.setUserCache(data.username, data.Token)
+      },
+      isPortfolioExist(data) {
+        return data.portfolio != null && data.portfolio != undefined && data.portfolio.length > 0
       }
     }
   }
