@@ -4,8 +4,9 @@
   margin: 16px 16px 16px 0;
 }
 
-#info-base {
-  margin-bottom: 16px;
+.dropdown-menu  {
+  min-width: 0 !important;
+  top: 80% !important;
 }
 
 .info {
@@ -181,4 +182,8 @@ a.nav-link {
   padding-top: 8px;
   margin-left: 16px;
   text-align: left;
+}
+
+#info-base {
+  margin-bottom: 16px;
 }
