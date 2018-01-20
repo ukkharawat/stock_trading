@@ -23,7 +23,8 @@
                           placeholder="Password">
             </b-form-input>
           </b-form-group>
-          <b-button type="submit" class="margin-top" variant="warning">Log In</b-button>
+          <b-button type="submit" class="margin-top" variant="warning"
+                :disabled="username == null || password == null">Log In</b-button>
         </b-form>
       </b-col>
     </b-row>
