@@ -209,3 +209,11 @@ a.nav-link {
   font-size: 16px;
   display: inline;
 }
+
+.help {
+  font-size: 12px;
+}
+
+.col-form-label {
+  padding: 0 !important;
+}
