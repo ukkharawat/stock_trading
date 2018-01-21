@@ -10,8 +10,7 @@ class Stock(models.Model):
     sector = models.CharField(max_length = 10, blank=True, null = True)
    
     def __unicode__(self):
-      
-		  return "%s"%(self.name)
+        return "%s"%(self.name)
 
 class StockValue(models.Model):
     name = models.ForeignKey(Stock , on_delete = models.CASCADE)
@@ -28,5 +27,4 @@ class StockValue(models.Model):
         default_related_name = 'stockValue'
    
     def __unicode__(self):
-
-		  return "%s"%(self.name)
+        return "%s"%(self.name)
