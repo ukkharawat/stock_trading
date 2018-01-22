@@ -14,8 +14,8 @@
 
 ``` bash
   # Recommend
-  python: 3.6.*  
-  django: 2.0.*
+  python: 2.7.*  
+  django: 1.11.*
   djangorestframework 3.7.*  
   django-cors-headers 2.1.*  
   markdown 2.6.*  
