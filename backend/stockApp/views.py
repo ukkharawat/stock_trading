@@ -27,7 +27,7 @@ def list(request):
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
 def getStockValue(request):
-    if request.method == 'GET':
+	if request.method == 'GET':
 		symbol = request.GET['symbol']
 		start = request.GET['start']
 		end = request.GET['end']
@@ -41,7 +41,7 @@ def getStockValue(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def buyStock(request):
-    if request.method == 'POST':
+	if request.method == 'POST':
 		data = JSONParser().parse(request)
 		username = str(request.user)
 		user = UserDetail.objects.get(pk = username)
