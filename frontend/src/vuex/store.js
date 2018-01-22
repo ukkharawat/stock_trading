@@ -37,11 +37,6 @@ const mutations = {
   OPEN_REGISTER_MODAL(state) {
     state.isRegisterModal = true
   },
-  UPDATE_PRICE(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.symbol)
-
-    state.stocks[stockIndex].price = stock.price
-  },
   UPDATE_STOCK(state, stocks) {
     for( let stock in stocks) {
       let stockIndex = findIndexOfStocks(stock.symbol)
@@ -72,7 +67,6 @@ const actions = {
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
   openRegisterModal: ({ commit }) => commit('OPEN_REGISTER_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
-  updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
   updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),

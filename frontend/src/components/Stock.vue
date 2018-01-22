@@ -12,14 +12,14 @@
         </div>
         <b-col cols="2" class="vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
-          <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
+        <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
           <b-form-input type="text"
                         v-model="amount"
                         required
                         placeholder="Amount">
           </b-form-input>
-          <b-button variant="primary" class="margin-top" @onClick="buy">BUY</b-button>
-          <b-button variant="danger" @onClick="sell">SELL</b-button>
+          <b-button variant="primary" class="margin-top" @click="buy">BUY</b-button>
+          <b-button variant="danger" @click="sell">SELL</b-button>
         </b-col>
       </b-row>
   </div>
@@ -43,7 +43,8 @@
       return {
         amount: null,
         currentPrice: null,
-        isDisplay: true
+        isDisplay: true,
+        buyPrice: null
       }
     },
     components: {
@@ -62,19 +63,17 @@
     },
     methods: {
       ...mapActions([
-        'openConfirmModal',
-        'updatePrice'
+        'openConfirmModal'
       ]),
       buy() {
-        let nextActionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
-
-        if(this.amount * this.currentPrice < this.getCash) {
-
+        let nextActionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.stock.fullName, this.amount, this.buyPrice)
+        
+        if(this.amount * this.buyPrice < this.getCash) {
           this.openConfirmModal(nextActionInfo)
         }
       },
       sell() {
-        let nextActionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.stock.fullName, this.amount, this.currentPrice)
+        let nextActionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.stock.fullName, this.amount, this.buyPrice)
         let currentAmount = this.stock.amount
 
         if(this.amount <= currentAmount) {
@@ -82,12 +81,7 @@
         }
       },
       dataChange(event) {
-        let stock = {
-          'symbol': this.stock.symbol,
-          'price': event['BuyPrice']
-        }
-        
-        this.updatePrice(stock)
+        this.buyPrice = event['BuyPrice']
       },
       displayHandle(event) {
         this.isDisplay = false
