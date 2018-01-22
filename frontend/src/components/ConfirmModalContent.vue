@@ -53,7 +53,7 @@
           this.sellStock(this.getNextActionInfo)
         }
       },
-      cancle() {
+      cancel() {
         this.closeModal()
       },
       buyStock(tradingAction) {
