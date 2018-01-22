@@ -69,7 +69,7 @@
         return  this.username != null && 
                 this.password != null && 
                 this.repassword != null && 
-                this.repassword != this.password
+                this.repassword == this.password
       }
     },
     methods: {
