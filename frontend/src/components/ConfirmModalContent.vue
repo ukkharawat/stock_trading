@@ -8,10 +8,10 @@
 
         <b-row>
           <b-col cols="6">
-            <b-button variant="primary" @onClick="handleClickYes">YES</b-button>
+            <b-button variant="primary" @click="submit">YES</b-button>
           </b-col>
           <b-col cols="6">
-            <b-button variant="danger" @onClick="handleClickNo">No</b-button>
+            <b-button variant="danger" @click="cancel">No</b-button>
           </b-col>
         </b-row>
       </b-col>
@@ -44,7 +44,7 @@
         'updateStock',
         'updateCapital'
       ]),
-      handleClickYes() {
+      submit() {
         let action = this.getNextActionInfo.action
 
         if(action === "buy") {
@@ -53,7 +53,7 @@
           this.sellStock(this.getNextActionInfo)
         }
       },
-      handleClickNo() {
+      cancle() {
         this.closeModal()
       },
       buyStock(tradingAction) {
