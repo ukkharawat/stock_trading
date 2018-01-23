@@ -2,9 +2,12 @@
   <div id="navbar-right">
     <b-nav>
         <b-nav-item v-show="isLoggedIn">
-          Capital: {{capital | currency}} ({{getCash | currency}})
+          Capital: {{capital | currency}} 
         </b-nav-item>
-
+        <b-nav-item v-show="isLoggedIn">
+          Cash: {{getCash | currency}}
+        </b-nav-item>
+        
         <b-nav-item @click="openLogInModal" v-show="!isLoggedIn" >Log in</b-nav-item>
         <b-nav-item @click="openRegisterModal" v-show="!isLoggedIn" >Register</b-nav-item>
 
@@ -44,9 +47,10 @@
       getStock: {
         handler(val) {
           this.capital = this.getCash
-          let holdingStock = this.getStock.filter(stock => stock.amount !== 0)
+          let holdingStock = this.getStock.filter(stock => stock.amount > 0)
+          
           if(holdingStock.length > 0) {
-            this.capital += holdingStock.map(stock => stock.amount * stock.price)
+            this.capital += holdingStock.map(stock => stock.amount * stock.averagePrice)
                               .reduce((sum, current) => sum + current)
           }
           
