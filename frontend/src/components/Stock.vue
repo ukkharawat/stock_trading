@@ -56,7 +56,6 @@
     computed: {
       ...mapGetters([
         'getCategory',
-        'getHoldingStock',
         'getCash',
         'isLoggedIn'
       ])

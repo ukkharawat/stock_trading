@@ -81,7 +81,6 @@ const getters = {
   getIsRegisterModal: state => state.isRegisterModal,
   getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
-  getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getNextActionInfo: state => state.nextActionInfo,
   getUsername: state => state.username,
   getCash: state => state.cash,

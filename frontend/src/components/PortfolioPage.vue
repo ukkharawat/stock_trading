@@ -33,8 +33,11 @@
     },
     computed: {
       ...mapGetters([
-        "getHoldingStock"
+        "getStock"
       ]),
+      getHoldingStock() {
+        return this.getStock.filter(stock => stock.amount != 0)
+      },
       getStocksName() {
         return this.getHoldingStock.map(holdingStock => {
           return holdingStock.symbol
