@@ -55,9 +55,9 @@
         let action = this.actionInfo.action
 
         if(action === "buy") {
-          this.buyStock(this.getNextActionInfo)
+          this.buyStock(this.actionInfo)
         } else {
-          this.sellStock(this.getNextActionInfo)
+          this.sellStock(this.actionInfo)
         }
       },
       cancel() {
@@ -65,7 +65,7 @@
       },
       buyStock(tradingAction) {
         let tradingObject = stockDatasource.createTradingStock(tradingAction)
-
+        
         stockController.buyStock(tradingObject)
           .then(response => {
             let updateData = stockDatasource.createChangedStockObject(response)
