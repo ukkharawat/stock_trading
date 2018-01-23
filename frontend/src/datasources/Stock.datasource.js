@@ -12,7 +12,7 @@ export default class StockDatasource {
   static createTradingStock(stock) {
     return {
       "symbol": stock.symbol,
-      "volume": stock.volume,
+      "volume": stock.amount,
       "averagePrice": stock.averagePrice
     }
   }
