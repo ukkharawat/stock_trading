@@ -3,12 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-function findIndexOfStocks(symbol) {
-  return state.stocks.findIndex(stock => {
-    return stock.symbol === symbol
-  })
-}
-
 const state = {
   isLogInModal: false,
   isConfirmModal: false,
@@ -38,12 +32,12 @@ const mutations = {
     state.isRegisterModal = true
   },
   UPDATE_STOCK(state, stocks) {
-    for( let stock in stocks) {
-      let stockIndex = findIndexOfStocks(stock.symbol)
+    stocks.forEach((stock) => {
+      let stockIndex = state.stocks.findIndex(stateStock => stateStock.symbol === stock.symbol)
 
       state.stocks[stockIndex].amount = stock.amount
       state.stocks[stockIndex].averagePrice = stock.averagePrice
-    }
+    })
   },
   SET_STOCK(state, stocks) {
     state.stocks = stocks
