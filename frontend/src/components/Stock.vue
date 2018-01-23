@@ -12,14 +12,19 @@
         </div>
         <b-col cols="2" class="vertical-center" v-show="isLoggedIn">
           <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
-        <averagePriceInfo :price="formatAverageBuyPrice(stock.averageBuyPrice)"></averagePriceInfo>
-          <b-form-input type="text"
+        <averagePriceInfo :price="formatAveragePrice(stock.averagePrice)"></averagePriceInfo>
+          <b-form-input type="number"
+                        name="amount"
                         v-model="amount"
-                        required
+                        v-validate="'required|min_value:100'"
                         placeholder="Amount">
           </b-form-input>
-          <b-button variant="primary" class="margin-top" @click="buy">BUY</b-button>
-          <b-button variant="danger" @click="sell">SELL</b-button>
+          <span v-show="errors.has('amount')" 
+                    class="help text-danger">{{ errors.first('amount') }}</span>
+          <b-button variant="primary" class="margin-top" 
+                    @click="buy" :disabled="amount === null || errors.any()">BUY</b-button>
+          <b-button variant="danger" @click="sell"
+                    :disabled="amount === null || errors.any() || isSellButtonDisable">SELL</b-button>
         </b-col>
       </b-row>
   </div>
@@ -44,7 +49,7 @@
         amount: null,
         currentPrice: null,
         isDisplay: true,
-        buyPrice: null
+        averagePrice: null
       }
     },
     components: {
@@ -58,21 +63,24 @@
         'getCategory',
         'getCash',
         'isLoggedIn'
-      ])
+      ]),
+      isSellButtonDisable() {
+        return this.amount > this.stock.amount
+      }
     },
     methods: {
       ...mapActions([
         'openConfirmModal'
       ]),
       buy() {
-        let nextActionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.stock.fullName, this.amount, this.buyPrice)
+        let nextActionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.amount, this.averagePrice)
         
-        if(this.amount * this.buyPrice < this.getCash) {
+        if(this.amount * this.averagePrice < this.getCash) {
           this.openConfirmModal(nextActionInfo)
         }
       },
       sell() {
-        let nextActionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.stock.fullName, this.amount, this.buyPrice)
+        let nextActionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.amount, this.averagePrice)
         let currentAmount = this.stock.amount
 
         if(this.amount <= currentAmount) {
@@ -80,12 +88,12 @@
         }
       },
       dataChange(event) {
-        this.buyPrice = event['BuyPrice']
+        this.averagePrice = event['BuyPrice']
       },
       displayHandle(event) {
         this.isDisplay = false
       },
-      formatAverageBuyPrice(price) {
+      formatAveragePrice(price) {
         if(!price)
           return '0'
         price = price.toFixed(2).toString()
