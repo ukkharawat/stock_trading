@@ -1,12 +1,19 @@
 export default class StockDatasource {
 
-  static createStockObject(action, symbol, fullname, amount, price) {
+  static createStockObject(action, symbol, amount, averagePrice) {
     return {
       "action": action,
       "symbol": symbol,
-      "fullName": fullname,
       "amount": Number(amount),
-      "price": Number(price)
+      "averagePrice": Number(averagePrice)
+    }
+  }
+
+  static createTradingStock(stock) {
+    return {
+      "symbol": stock.symbol,
+      "volume": stock.volume,
+      "averagePrice": stock.averagePrice
     }
   }
 
@@ -14,7 +21,7 @@ export default class StockDatasource {
     return {
       "symbol": stock.symbol,
       "amount": stock.volume,
-      "averageBuyPrice": stock.averageBuyPrice
+      "averagePrice": stock.averagePrice
     }
   }
 
@@ -26,7 +33,7 @@ export default class StockDatasource {
       "sector": stock.sector,
       "amount": 0,
       "price": 0,
-      "averageBuyPrice": 0
+      "averagePrice": 0
     }
   }
 }

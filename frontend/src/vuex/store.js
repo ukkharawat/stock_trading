@@ -42,7 +42,7 @@ const mutations = {
       let stockIndex = findIndexOfStocks(stock.symbol)
 
       state.stocks[stockIndex].amount = stock.amount
-      state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
+      state.stocks[stockIndex].averagePrice = stock.averagePrice
     }
   },
   SET_STOCK(state, stocks) {
