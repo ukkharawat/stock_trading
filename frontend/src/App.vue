@@ -34,8 +34,8 @@
       registerModal,
       nextDayButton
     },
-    created() {
-      this.setStockList()
+    async created() {
+      await this.setStockList()
 
       if(cacheController.isLoggedIn()) {
         this.setUsername(cacheController.getUsername())
@@ -72,13 +72,13 @@
       },
       setStockList() {
         stockController.getStockList()
-          .then(response => {
-            let defaultStockList = response.stockList.map(stock => {
-              return stockDatasource.createDefaultStockList(stock)
-            })
+                .then(response => {
+                  let defaultStockList = response.stockList.map(stock => {
+                    return stockDatasource.createDefaultStockList(stock)
+                  })
 
-            this.setStock(defaultStockList)
-          })
+                  this.setStock(defaultStockList)
+                })
       }
     }
   }
