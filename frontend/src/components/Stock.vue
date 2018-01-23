@@ -22,7 +22,7 @@
           <span v-show="errors.has('amount')" 
                     class="help text-danger">{{ errors.first('amount') }}</span>
           <b-button variant="primary" class="margin-top" 
-                    @click="buy" :disabled="amount === null || errors.any()">BUY</b-button>
+                    @click="buy" :disabled="amount === null || errors.any() || isBuyButtonDisable">BUY</b-button>
           <b-button variant="danger" @click="sell"
                     :disabled="amount === null || errors.any() || isSellButtonDisable">SELL</b-button>
         </b-col>
@@ -47,9 +47,10 @@
     data() {
       return {
         amount: null,
-        currentPrice: null,
         isDisplay: true,
-        averagePrice: null
+        averagePrice: null,
+        commissionRate: 0.001578,
+        vatRate: 1.07
       }
     },
     components: {
@@ -66,6 +67,9 @@
       ]),
       isSellButtonDisable() {
         return this.amount > this.stock.amount
+      },
+      isBuyButtonDisable() {
+        return this.amount * this.averagePrice * this.commissionRate * this.vatRate
       }
     },
     methods: {
