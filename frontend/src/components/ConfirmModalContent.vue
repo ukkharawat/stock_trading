@@ -31,17 +31,23 @@
         type: Object
       }
     },
+    data() {
+      return {
+        commissionRate: 0.001578,
+        vatRate: 1.07
+      }
+    },
     computed: {
       ...mapGetters([
         'getCash'
       ]),
       totalPrice() {
         if(this.actionInfo.action === "buy") {
-          return  (this.actionInfo.amount * this.actionInfo.averagePrice * 0.001578 * 1.07) +
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice * this.commissionRate * this.vatRate) +
                   (this.actionInfo.amount * this.actionInfo.averagePrice)
         } else {
           return  (this.actionInfo.amount * this.actionInfo.averagePrice) - 
-                  (this.actionInfo.amount * this.actionInfo.averagePrice * 0.001578 * 1.07)
+                  (this.actionInfo.amount * this.actionInfo.averagePrice * this.commissionRate * this.vatRate)
         }
       }
     },
