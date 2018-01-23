@@ -1,9 +1,10 @@
 <template>
   <div class="modal-content" v-if="actionInfo != null">
     <b-row class="justify-content-sm-center">
-      <b-col cols="6" class="remove-padding">
+      <b-col cols="8" class="remove-padding">
         <h2 class="cautions">
           Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
+          ({{formatAveragePrice(totalPrice)}})
         </h2>
 
         <b-row>
@@ -32,20 +33,26 @@
     },
     computed: {
       ...mapGetters([
-        'getNextActionInfo',
-        'getStock',
         'getCash'
-      ])
+      ]),
+      totalPrice() {
+        if(this.actionInfo.action === "buy") {
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice * 0.001578 * 1.07) +
+                  (this.actionInfo.amount * this.actionInfo.averagePrice)
+        } else {
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice) - 
+                  (this.actionInfo.amount * this.actionInfo.averagePrice * 0.001578 * 1.07)
+        }
+      }
     },
     methods: {
       ...mapActions([
         'closeModal',
         'setCash',
-        'updateStock',
-        'updateCapital'
+        'updateStock'
       ]),
       submit() {
-        let action = this.getNextActionInfo.action
+        let action = this.actionInfo.action
 
         if(action === "buy") {
           this.buyStock(this.getNextActionInfo)
@@ -57,7 +64,7 @@
         this.closeModal()
       },
       buyStock(tradingAction) {
-        let tradingObject = this.createTradingObject(tradingAction)
+        let tradingObject = stockDatasource.createTradingStock(tradingAction)
 
         stockController.buyStock(tradingObject)
           .then(response => {
@@ -68,15 +75,11 @@
           })
       },
       sellStock(tradingAction) {
-        let tradingObject = this.createTradingObject(tradingAction)
+        let tradingObject = stockDatasource.createTradingStock(tradingAction)
 
         stockController.sellStock(tradingObject)
           .then(response => {
-            let updateData = {
-              'symbol': response.symbol,
-              'amount': response.volume,
-              'averageBuyPrice': response.averagePrice
-            }
+            let updateData = stockDatasource.createChangedStockObject(response)
 
             this.setCash(response.cash)
             this.updateVuex(updateData)
@@ -86,12 +89,12 @@
         this.updateStock(updateData)
         this.closeModal()
       },
-      createTradingObject(tradingAction) {
-        return {
-          'symbol': tradingAction.symbol,
-          'volume': tradingAction.amount,
-          'averagePrice': tradingAction.price
-        }
+      formatAveragePrice(price) {
+        if(!price)
+          return '0'
+        price = price.toFixed(2).toString()
+
+        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
       }
     }
   }
