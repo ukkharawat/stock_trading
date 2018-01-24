@@ -11,10 +11,14 @@
                             name="username"
                             v-model="username"
                             v-validate="'required|min:8|alpha'"
+                            :class="{'is-invalid': errors.has('username') || isRegisterFailed }"
                             placeholder="Username">
               </b-form-input>
               <span v-show="errors.has('username')" 
                     class="help text-danger">{{ errors.first('username') }}</span>
+              <span v-show="isRegisterFailed" 
+                    class="help text-danger">This username has been taken</span>
+
             </b-form-group>
 
             <b-form-group id="registerPasswordInputGroup"
@@ -24,6 +28,7 @@
                             type="password"
                             name="password"
                             v-model="password"
+                            :class="{'is-invalid': errors.has('password')}"
                             v-validate="'required|min:8|verify_password'"
                             placeholder="Password">
               </b-form-input>
@@ -37,15 +42,16 @@
               <b-form-input id="registerRepasswordInput"
                             type="password"
                             v-model="repassword"
+                            :class="{'is-invalid': !isPasswordMatch}"
                             v-validate="'required|min:8|verify_password'"
                             placeholder="Re-password">
               </b-form-input>
-              <span v-show="(repassword != null && password != repassword)" 
+              <span v-show="(repassword != null && !isPasswordMatch)" 
                     class="help text-danger">Your password doesn't match</span>
             </b-form-group>
 
             <b-button type="submit" class="margin-top" variant="warning"
-                :disabled="!isFieldComplete || errors.any()">Register</b-button>
+                :disabled="!isFieldComplete || errors.any() || !isPasswordMatch">Register</b-button>
           </b-form>
         </b-col>
       </b-row>
@@ -61,31 +67,39 @@
       return {
         username: null,
         password: null,
-        repassword: null
+        repassword: null,
+        isRegisterFailed: false
       };
     },
     computed: {
       isFieldComplete() {
         return  this.username != null && 
                 this.password != null && 
-                this.repassword != null && 
-                this.repassword == this.password
+                this.repassword != null
+      },
+      isPasswordMatch() {
+        return this.repassword == this.password
       }
     },
     methods: {
-      ...mapActions(["closeModal"]),
-      isPasswordMatch() {
-        return this.password === this.repassword
-      },
+      ...mapActions([
+        "closeModal"
+      ]),
       register(event) {
         event.preventDefault()
 
-        if (this.isPasswordMatch()) {
-          userController.register(this.username, this.password)
-            .then(response => {
-              this.closeModal()
-            })
-        }
+        userController.register(this.username, this.password)
+          .then(response => {
+            this.closeModal()
+          })
+          .catch(error => {
+            this.isRegisterFailed = true
+          })
+      }
+    },
+    watch: {
+      username(val) {
+        this.isRegisterFailed = false
       }
     }
   };
