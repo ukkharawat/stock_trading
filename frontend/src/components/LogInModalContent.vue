@@ -3,6 +3,8 @@
     <b-row class="justify-content-sm-center">
       <b-col cols="8">
         <b-form @submit="login">
+          <h5 class="text-danger margin-top"
+              v-show="isLoginFailed">Your username or password is invalid.</h5>
           <b-form-group id="usernameInputGroup"
                         label="Your Username:"
                         label-for="usernameInput">
@@ -41,7 +43,8 @@
     data() {
       return {
         username: null,
-        password: null
+        password: null,
+        isLoginFailed: false
       }
     },
     methods: {
@@ -58,7 +61,9 @@
             this.setUserCache(response)
             this.closeModal()
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+            this.isLoginFailed = true
+          })
       },
       setUserCache(response) {
         this.setLocalStorage(response)
@@ -78,6 +83,14 @@
       },
       isPortfolioExist(data) {
         return data.portfolio != null && data.portfolio != undefined && data.portfolio.length > 0
+      }
+    },
+    watch: {
+      username(val) {
+        this.isLoginFailed = false
+      },
+      password(val) {
+        this.isLoginFailed = false
       }
     }
   }
