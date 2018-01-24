@@ -71,8 +71,7 @@
     },
     methods: {
       ...mapActions([
-        'updateCapital',
-        'updatePrice'
+        'updateCapital'
       ]),
       createChart() {
         this.chart = AmCharts.makeChart(this.stockName, {

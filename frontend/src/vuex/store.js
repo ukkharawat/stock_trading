@@ -3,12 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-function findIndexOfStocks(symbol) {
-  return state.stocks.findIndex(stock => {
-    return stock.symbol === symbol
-  })
-}
-
 const state = {
   isLogInModal: false,
   isConfirmModal: false,
@@ -37,18 +31,13 @@ const mutations = {
   OPEN_REGISTER_MODAL(state) {
     state.isRegisterModal = true
   },
-  UPDATE_PRICE(state, stock) {
-    let stockIndex = findIndexOfStocks(stock.symbol)
-
-    state.stocks[stockIndex].price = stock.price
-  },
   UPDATE_STOCK(state, stocks) {
-    for( let stock in stocks) {
-      let stockIndex = findIndexOfStocks(stock.symbol)
+    stocks.forEach((stock) => {
+      let stockIndex = state.stocks.findIndex(stateStock => stateStock.symbol === stock.symbol)
 
       state.stocks[stockIndex].amount = stock.amount
-      state.stocks[stockIndex].averageBuyPrice = stock.averageBuyPrice
-    }
+      state.stocks[stockIndex].averagePrice = stock.averagePrice
+    })
   },
   SET_STOCK(state, stocks) {
     state.stocks = stocks
@@ -72,7 +61,6 @@ const actions = {
   openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
   openRegisterModal: ({ commit }) => commit('OPEN_REGISTER_MODAL'),
   openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
-  updatePrice: ({ commit }, stock) => commit('UPDATE_PRICE', stock),
   updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
@@ -87,7 +75,6 @@ const getters = {
   getIsRegisterModal: state => state.isRegisterModal,
   getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
-  getHoldingStock: state => state.stocks.filter(stock => stock.amount !== 0),
   getNextActionInfo: state => state.nextActionInfo,
   getUsername: state => state.username,
   getCash: state => state.cash,

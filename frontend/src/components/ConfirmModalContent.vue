@@ -1,17 +1,18 @@
 <template>
   <div class="modal-content" v-if="actionInfo != null">
     <b-row class="justify-content-sm-center">
-      <b-col cols="6" class="remove-padding">
+      <b-col cols="8" class="remove-padding">
         <h2 class="cautions">
           Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
+          ({{formatAveragePrice(totalPrice)}})
         </h2>
 
         <b-row>
           <b-col cols="6">
-            <b-button variant="primary" @onClick="handleClickYes">YES</b-button>
+            <b-button variant="primary" @click="submit">YES</b-button>
           </b-col>
           <b-col cols="6">
-            <b-button variant="danger" @onClick="handleClickNo">No</b-button>
+            <b-button variant="danger" @click="cancel">No</b-button>
           </b-col>
         </b-row>
       </b-col>
@@ -30,35 +31,47 @@
         type: Object
       }
     },
+    data() {
+      return {
+        commissionRate: 0.001578,
+        vatRate: 1.07
+      }
+    },
     computed: {
       ...mapGetters([
-        'getNextActionInfo',
-        'getStock',
         'getCash'
-      ])
+      ]),
+      totalPrice() {
+        if(this.actionInfo.action === "buy") {
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice * this.commissionRate * this.vatRate) +
+                  (this.actionInfo.amount * this.actionInfo.averagePrice)
+        } else {
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice) - 
+                  (this.actionInfo.amount * this.actionInfo.averagePrice * this.commissionRate * this.vatRate)
+        }
+      }
     },
     methods: {
       ...mapActions([
         'closeModal',
         'setCash',
-        'updateStock',
-        'updateCapital'
+        'updateStock'
       ]),
-      handleClickYes() {
-        let action = this.getNextActionInfo.action
+      submit() {
+        let action = this.actionInfo.action
 
         if(action === "buy") {
-          this.buyStock(this.getNextActionInfo)
+          this.buyStock(this.actionInfo)
         } else {
-          this.sellStock(this.getNextActionInfo)
+          this.sellStock(this.actionInfo)
         }
       },
-      handleClickNo() {
+      cancel() {
         this.closeModal()
       },
       buyStock(tradingAction) {
-        let tradingObject = this.createTradingObject(tradingAction)
-
+        let tradingObject = stockDatasource.createTradingStock(tradingAction)
+        
         stockController.buyStock(tradingObject)
           .then(response => {
             let updateData = stockDatasource.createChangedStockObject(response)
@@ -68,15 +81,11 @@
           })
       },
       sellStock(tradingAction) {
-        let tradingObject = this.createTradingObject(tradingAction)
+        let tradingObject = stockDatasource.createTradingStock(tradingAction)
 
         stockController.sellStock(tradingObject)
           .then(response => {
-            let updateData = {
-              'symbol': response.symbol,
-              'amount': response.volume,
-              'averageBuyPrice': response.averagePrice
-            }
+            let updateData = stockDatasource.createChangedStockObject(response)
 
             this.setCash(response.cash)
             this.updateVuex(updateData)
@@ -86,12 +95,12 @@
         this.updateStock(updateData)
         this.closeModal()
       },
-      createTradingObject(tradingAction) {
-        return {
-          'symbol': tradingAction.symbol,
-          'volume': tradingAction.amount,
-          'averagePrice': tradingAction.price
-        }
+      formatAveragePrice(price) {
+        if(!price)
+          return '0'
+        price = price.toFixed(2).toString()
+
+        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
       }
     }
   }

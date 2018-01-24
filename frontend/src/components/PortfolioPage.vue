@@ -1,14 +1,14 @@
 <template>
-  <b-row id="portfolio-page">
-    <b-col cols="2" v-show="getHoldingStock != 0">
+  <b-row id="portfolio-page" v-if="getStock !== null">
+    <b-col cols="2" v-if="getHoldingStock !== null">
       <index>
-          <indexMenu
-            :mainMenuTitle="title"
-            :subMenuTitles="getStocksName">
-          </indexMenu>
+          <portfolioIndex
+            :title="title"
+            :stocksName="getStocksName">
+          </portfolioIndex>
       </index>
     </b-col>
-    <b-col cols="10">
+    <b-col cols="10" :class="{'extend-buttom': isExtendButtom}">
       <stock v-for="stock in getHoldingStock" :key="stock.symbol" :stock="stock"></stock>
     </b-col>
   </b-row>
@@ -17,7 +17,7 @@
 <script>
   import index from '@/components/Index'
   import stock from '@/components/Stock'
-  import indexMenu from '@/components/IndexMenu'
+  import portfolioIndex from '@/components/PortfolioIndex'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -29,16 +29,20 @@
     components: {
       index,
       stock,
-      indexMenu
+      portfolioIndex
     },
     computed: {
       ...mapGetters([
-        "getHoldingStock"
+        "getStock"
       ]),
+      getHoldingStock() {
+        return this.getStock.filter(stock => stock.amount != 0)
+      },
       getStocksName() {
-        return this.getHoldingStock.map(holdingStock => {
-          return holdingStock.symbol
-        })
+        return this.getHoldingStock.map(stock => stock.symbol)
+      },
+      isExtendButtom() {
+        return this.getHoldingStock.length == 1
       }
     }
   }
