@@ -34,8 +34,8 @@
       registerModal,
       nextDayButton
     },
-    created() {
-      this.setStockList()
+    async created() {
+      await this.setStockList()
 
       if(cacheController.isLoggedIn()) {
         this.setUsername(cacheController.getUsername())
@@ -72,36 +72,14 @@
       },
       setStockList() {
         stockController.getStockList()
-          .then(response => {
-            let defaultStockList = response.stockList.map(stock => {
-              return stockDatasource.createDefaultStockList(stock)
-            })
+                .then(response => {
+                  let defaultStockList = response.stockList.map(stock => {
+                    return stockDatasource.createDefaultStockList(stock)
+                  })
 
-            this.setStock(defaultStockList)
-          })
+                  this.setStock(defaultStockList)
+                })
       }
     }
   }
 </script>
-
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    background-color: rgba(0, 0, 0, 0.08);
-  }
-
-  .row {
-    margin-right: 0 !important;
-  }
-
-  .base-modal {
-    background-color: #fafafa;
-    width: 50%;
-    height: auto;
-    border-radius: 8px;
-  }
-</style>

@@ -8,32 +8,50 @@
                           label-for="registerUsernameInput">
               <b-form-input id="registerUsernameInput"
                             type="text"
+                            name="username"
                             v-model="username"
-                            required
+                            v-validate="'required|min:8|alpha'"
+                            :class="{'is-invalid': errors.has('username') || isRegisterFailed }"
                             placeholder="Username">
               </b-form-input>
+              <span v-show="errors.has('username')" 
+                    class="help text-danger">{{ errors.first('username') }}</span>
+              <span v-show="isRegisterFailed" 
+                    class="help text-danger">This username has been taken</span>
+
             </b-form-group>
+
             <b-form-group id="registerPasswordInputGroup"
                           label="Your Password:"
                           label-for="registerPasswordInput">
               <b-form-input id="registerPasswordInput"
                             type="password"
+                            name="password"
                             v-model="password"
-                            required
+                            :class="{'is-invalid': errors.has('password')}"
+                            v-validate="'required|min:8|verify_password'"
                             placeholder="Password">
               </b-form-input>
+              <span v-show="errors.has('password')" 
+                    class="help text-danger">{{ errors.first('password') }}</span>
             </b-form-group>
+
             <b-form-group id="registerRepasswordInputGroup"
                           label="Type Your Password Again:"
                           label-for="registerRepasswordInput">
               <b-form-input id="registerRepasswordInput"
                             type="password"
                             v-model="repassword"
-                            required
+                            :class="{'is-invalid': !isPasswordMatch}"
+                            v-validate="'required|min:8|verify_password'"
                             placeholder="Re-password">
               </b-form-input>
+              <span v-show="(repassword != null && !isPasswordMatch)" 
+                    class="help text-danger">Your password doesn't match</span>
             </b-form-group>
-            <b-button type="submit" class="margin-top" variant="warning">Register</b-button>
+
+            <b-button type="submit" class="margin-top" variant="warning"
+                :disabled="!isFieldComplete || errors.any() || !isPasswordMatch">Register</b-button>
           </b-form>
         </b-col>
       </b-row>
@@ -49,23 +67,39 @@
       return {
         username: null,
         password: null,
-        repassword: null
+        repassword: null,
+        isRegisterFailed: false
       };
     },
-    methods: {
-      ...mapActions(["closeModal"]),
-      isPasswordMatch() {
-        return this.password === this.repassword
+    computed: {
+      isFieldComplete() {
+        return  this.username != null && 
+                this.password != null && 
+                this.repassword != null
       },
+      isPasswordMatch() {
+        return this.repassword == this.password
+      }
+    },
+    methods: {
+      ...mapActions([
+        "closeModal"
+      ]),
       register(event) {
         event.preventDefault()
 
-        if (this.isPasswordMatch()) {
-          userController.register(this.username, this.password)
-            .then(response => {
-              this.closeModal()
-            })
-        }
+        userController.register(this.username, this.password)
+          .then(response => {
+            this.closeModal()
+          })
+          .catch(error => {
+            this.isRegisterFailed = true
+          })
+      }
+    },
+    watch: {
+      username(val) {
+        this.isRegisterFailed = false
       }
     }
   };

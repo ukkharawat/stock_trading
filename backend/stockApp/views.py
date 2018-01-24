@@ -29,8 +29,8 @@ def list(request):
 def getStockValue(request):
 	if request.method == 'GET':
 		symbol = request.GET['symbol']
-		start = request.GET['start']
-		end = request.GET['end']
+		start = int(request.GET['start'])
+		end = int(request.GET['end'])
 		stock = Stock.objects.get(name = symbol)
 		stockValue = StockValue.objects.filter(name = stock)[start:end]
 		if stockValue.exists():
