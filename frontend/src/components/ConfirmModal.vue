@@ -19,7 +19,7 @@
                 <b-button variant="primary" @click="submit">YES</b-button>
               </b-col>
               <b-col cols="6">
-                <b-button variant="danger" @click="cancel">No</b-button>
+                <b-button variant="danger" @click="closeModal">No</b-button>
               </b-col>
             </b-row>
           </b-col>
@@ -78,18 +78,13 @@
           this.sellStock(this.actionInfo)
         }
       },
-      cancel() {
-        this.closeModal()
-      },
       buyStock(tradingAction) {
         let tradingObject = stockDatasource.createTradingStock(tradingAction)
         
         stockController.buyStock(tradingObject)
           .then(response => {
-            let updateData = stockDatasource.createChangedStockObject(response)
-
-            this.setCash(response.cash)
-            this.updateVuex(updateData)
+            this.updateAfterTakeAction(response)
+            this.closeModal()
           })
       },
       sellStock(tradingAction) {
@@ -97,15 +92,15 @@
 
         stockController.sellStock(tradingObject)
           .then(response => {
-            let updateData = stockDatasource.createChangedStockObject(response)
-
-            this.setCash(response.cash)
-            this.updateVuex(updateData)
+            this.updateAfterTakeAction(response)
+            this.closeModal()
           })
       },
-      updateVuex(updateData) {
-        this.updateStock(updateData)
-        this.closeModal()
+      updateAfterTakeAction(response) {
+        this.setCash(response.cash)
+
+        let updateDetail = stockDatasource.createChangedStockObject(response)
+        this.updateStock(updateDetail)
       },
       formatAveragePrice(price) {
         if(!price)
