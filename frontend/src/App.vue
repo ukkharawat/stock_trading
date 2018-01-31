@@ -56,13 +56,13 @@
       },
       setStockList() {
         stockController.getStockList()
-                .then(response => {
-                  let defaultStockList = response.stockList.map(stock => {
-                    return stockDatasource.createDefaultStockList(stock)
-                  })
+          .then(response => {
+            let defaultStockList = response.stockList.map(stock => {
+              return stockDatasource.createDefaultStockList(stock)
+            })
 
-                  this.setStock(defaultStockList)
-                })
+            this.setStock(defaultStockList)
+          })
       }
     }
   }
