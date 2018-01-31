@@ -9,7 +9,7 @@
         </b-nav-item>
         
         <logInComponent></logInComponent>
-        <b-nav-item @click="openRegisterModal" v-show="!isLoggedIn" >Register</b-nav-item>
+        <registerComponent></registerComponent>
 
         <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
           <router-link to="/portfolio" class="dropdown-item"> Portfolio </router-link>
@@ -24,6 +24,7 @@
   import userController from '@/controllers/User.controller'
   import cacheController from '@/controllers/Cache.controller'
   import logInComponent from '@/components/LogInComponent'
+  import registerComponent from '@/components/RegisterComponent'
 
   export default {
     props: {
@@ -32,7 +33,8 @@
       }
     },
     components: {
-      logInComponent
+      logInComponent,
+      registerComponent
     },
     data() {
       return {
@@ -64,11 +66,9 @@
     },
     methods: {
       ...mapActions([
-        'openLogInModal',
         'setUsername',
         'setCash',
-        'setStep',
-        'openRegisterModal'
+        'setStep'
       ]),
       logout() {
         userController.logout()
