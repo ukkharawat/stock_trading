@@ -3,6 +3,7 @@
       <stockHeader :corpSymbol="stock.symbol"
                    :corpFullThaiName="stock.fullName">
       </stockHeader>
+
       <b-row>
         <div :class="{'col-sm-10': isLoggedIn, 'col-sm-12': !isLoggedIn}">
           <amChart :stockName="stock.symbol"
@@ -27,16 +28,18 @@
                     :disabled="amount === null || errors.any() || isSellButtonDisable">SELL</b-button>
         </b-col>
       </b-row>
+      <confirmModal ref="confirmModal"></confirmModal>
   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
   import stockDatasource from '@/datasources/Stock.datasource'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
   import holdingInfo from '@/components/HoldingInfo'
   import averagePriceInfo from '@/components/AveragePriceInfo'
+  import confirmModal from '@/components/ConfirmModal'
 
   export default {
     props: {
@@ -57,7 +60,8 @@
       stockHeader,
       amChart,
       holdingInfo,
-      averagePriceInfo
+      averagePriceInfo,
+      confirmModal
     },
     computed: {
       ...mapGetters([
@@ -69,26 +73,23 @@
         return this.amount > this.stock.amount
       },
       isBuyButtonDisable() {
-        return this.amount * this.averagePrice * this.commissionRate * this.vatRate
+        return (this.amount * this.averagePrice * this.commissionRate * this.vatRate) > this.getCash
       }
     },
     methods: {
-      ...mapActions([
-        'openConfirmModal'
-      ]),
       buy() {
-        let nextActionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.amount, this.averagePrice)
+        let actionInfo = stockDatasource.createStockObject('buy', this.stock.symbol, this.amount, this.averagePrice)
         
         if(this.amount * this.averagePrice < this.getCash) {
-          this.openConfirmModal(nextActionInfo)
+          this.$refs.confirmModal.openModal(actionInfo)
         }
       },
       sell() {
-        let nextActionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.amount, this.averagePrice)
+        let actionInfo = stockDatasource.createStockObject('sell', this.stock.symbol, this.amount, this.averagePrice)
         let currentAmount = this.stock.amount
 
         if(this.amount <= currentAmount) {
-          this.openConfirmModal(nextActionInfo)
+          this.$refs.confirmModal.openModal(actionInfo)
         }
       },
       dataChange(event) {
