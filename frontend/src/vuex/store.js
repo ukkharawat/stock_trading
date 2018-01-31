@@ -4,10 +4,6 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  isLogInModal: false,
-  isConfirmModal: false,
-  isRegisterModal: false,
-  nextActionInfo: null,
   stocks: null,
   step: 1,
   cash: null,
@@ -16,21 +12,6 @@ const state = {
 }
 
 const mutations = {
-  CLOSE_MODAL(state) {
-    state.isLogInModal = false
-    state.isConfirmModal = false
-    state.isRegisterModal = false
-  },
-  OPEN_LOG_IN_MODAL(state) {
-    state.isLogInModal = true
-  },
-  OPEN_CONFIRM_MODAL(state, nextActionInfo) {
-    state.isConfirmModal = true
-    state.nextActionInfo = nextActionInfo
-  },
-  OPEN_REGISTER_MODAL(state) {
-    state.isRegisterModal = true
-  },
   UPDATE_STOCK(state, stocks) {
     stocks.forEach((stock) => {
       let stockIndex = state.stocks.findIndex(stateStock => stateStock.symbol === stock.symbol)
@@ -57,10 +38,6 @@ const mutations = {
 }
 
 const actions = {
-  closeModal: ({ commit }) => commit('CLOSE_MODAL'),
-  openLogInModal: ({ commit }) => commit('OPEN_LOG_IN_MODAL'),
-  openRegisterModal: ({ commit }) => commit('OPEN_REGISTER_MODAL'),
-  openConfirmModal: ({ commit }, nextActionInfo) => commit('OPEN_CONFIRM_MODAL', nextActionInfo),
   updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
@@ -70,12 +47,7 @@ const actions = {
 }
 
 const getters = {
-  getIsModalOpen: state => { return state.isConfirmModal || state.isLogInModal || state.isRegisterModal },
-  getIsLogInModal: state => state.isLogInModal,
-  getIsRegisterModal: state => state.isRegisterModal,
-  getIsConfirmModal: state => state.isConfirmModal,
   getStock: state => state.stocks,
-  getNextActionInfo: state => state.nextActionInfo,
   getUsername: state => state.username,
   getCash: state => state.cash,
   getStep: state => state.step,

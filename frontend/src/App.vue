@@ -2,21 +2,12 @@
   <div id="app">
     <navbar></navbar>
     <router-view/>
-    <modal>
-      <logInModal v-show="getIsLogInModal"></logInModal>
-      <registerModal v-show="getIsRegisterModal"></registerModal>
-      <confirmModal v-show="getIsConfirmModal"></confirmModal>
-    </modal>
     <nextDayButton></nextDayButton>
   </div>
 </template>
 
 <script>
-  import modal from '@/components/Modal'
   import navbar from '@/components/Navbar'
-  import logInModal from '@/components/LogInModal'
-  import confirmModal from '@/components/ConfirmModal'
-  import registerModal from '@/components/RegisterModal'
   import { mapGetters, mapActions } from 'vuex'
   import nextDayButton from '@/components/NextDayButton'
   import cacheController from '@/controllers/Cache.controller'
@@ -27,11 +18,7 @@
   export default {
     name: 'app',
     components: {
-      modal,
       navbar,
-      logInModal,
-      confirmModal,
-      registerModal,
       nextDayButton
     },
     async created() {
@@ -44,9 +31,6 @@
     },
     computed: {
       ...mapGetters([
-        'getIsLogInModal',
-        'getIsConfirmModal',
-        'getIsRegisterModal',
         'isLoggedIn'
       ])
     },
@@ -72,13 +56,13 @@
       },
       setStockList() {
         stockController.getStockList()
-                .then(response => {
-                  let defaultStockList = response.stockList.map(stock => {
-                    return stockDatasource.createDefaultStockList(stock)
-                  })
+          .then(response => {
+            let defaultStockList = response.stockList.map(stock => {
+              return stockDatasource.createDefaultStockList(stock)
+            })
 
-                  this.setStock(defaultStockList)
-                })
+            this.setStock(defaultStockList)
+          })
       }
     }
   }

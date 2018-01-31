@@ -8,13 +8,13 @@
           Cash: {{getCash | currency}}
         </b-nav-item>
         
-        <b-nav-item @click="openLogInModal" v-show="!isLoggedIn" >Log in</b-nav-item>
-        <b-nav-item @click="openRegisterModal" v-show="!isLoggedIn" >Register</b-nav-item>
+        <logInComponent></logInComponent>
+        <registerComponent></registerComponent>
 
         <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
           <router-link to="/portfolio" class="dropdown-item"> Portfolio </router-link>
-            <b-dropdown-item @click="logout">Log out</b-dropdown-item>
-          </b-nav-item-dropdown>
+          <b-dropdown-item @click="logout">Log out</b-dropdown-item>
+        </b-nav-item-dropdown>
     </b-nav>
   </div>
 </template>
@@ -23,12 +23,18 @@
   import { mapActions, mapGetters } from 'vuex'
   import userController from '@/controllers/User.controller'
   import cacheController from '@/controllers/Cache.controller'
+  import logInComponent from '@/components/LogInComponent'
+  import registerComponent from '@/components/RegisterComponent'
 
   export default {
     props: {
       menuObjects : {
         type: Array
       }
+    },
+    components: {
+      logInComponent,
+      registerComponent
     },
     data() {
       return {
@@ -60,11 +66,9 @@
     },
     methods: {
       ...mapActions([
-        'openLogInModal',
         'setUsername',
         'setCash',
-        'setStep',
-        'openRegisterModal'
+        'setStep'
       ]),
       logout() {
         userController.logout()
