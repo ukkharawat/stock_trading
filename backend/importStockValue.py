@@ -40,6 +40,6 @@ for sym in syms:
 					stockvalue.volume = row[6]
 				insertList.append(stockvalue)
 		StockValue.objects.bulk_create(insertList)
-		print sym + " DONE"
-	except Exception, e:
-		print sym + " ERROR " + str(e)
+		print(sym, " DONE")
+	except Exception as e:
+		print(sym, " ERROR ", str(e))
