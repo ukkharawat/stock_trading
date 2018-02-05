@@ -10,14 +10,14 @@ from django.conf import settings
 # Create your models here.
 
 class UserDetail(models.Model):
-    username = models.CharField(max_length = 30, unique = True, primary_key = True)
+    username = models.CharField(max_length = 30, unique = True)
     cash = models.FloatField(blank = False, null = False)
     stepCount = models.IntegerField(blank = False, null = False)
     class Meta:
         ordering = ('username', )
         default_related_name = 'userDetail'
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s"%(self.username)
 
 class Portfolio(models.Model):
@@ -30,7 +30,7 @@ class Portfolio(models.Model):
         ordering = ('username', 'symbol', )
         default_related_name = 'portfolio'
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s"%(self.username)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

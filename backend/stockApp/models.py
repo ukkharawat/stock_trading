@@ -9,7 +9,7 @@ class Stock(models.Model):
     industry = models.CharField(max_length = 10, blank=True, null = True)
     sector = models.CharField(max_length = 10, blank=True, null = True)
    
-    def __unicode__(self):
+    def __str__(self):
         return "%s"%(self.name)
 
 class StockValue(models.Model):
@@ -26,5 +26,5 @@ class StockValue(models.Model):
         ordering = ('name', 'date', )
         default_related_name = 'stockValue'
    
-    def __unicode__(self):
+    def __str__(self):
         return "%s"%(self.name)
