@@ -24,7 +24,6 @@ class StockValue(models.Model):
 
     class Meta:
         ordering = ('name', 'date', )
-        default_related_name = 'stockValue'
    
     def __str__(self):
         return "%s"%(self.name)

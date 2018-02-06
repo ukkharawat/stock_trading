@@ -15,23 +15,21 @@ class UserDetail(models.Model):
     stepCount = models.IntegerField(blank = False, null = False)
     class Meta:
         ordering = ('username', )
-        default_related_name = 'userDetail'
 
     def __str__(self):
         return "%s"%(self.username)
 
 class Portfolio(models.Model):
-    username = models.ForeignKey(UserDetail , on_delete = models.CASCADE)
+    user = models.ForeignKey(UserDetail , on_delete = models.CASCADE)
     symbol = models.CharField(max_length = 10)
     volume = models.IntegerField(blank=True, null = True)
     averagePrice = models.FloatField(blank=True, null = True)
 
     class Meta:
-        ordering = ('username', 'symbol', )
-        default_related_name = 'portfolio'
+        ordering = ('user', 'symbol', )
 
     def __str__(self):
-        return "%s"%(self.username)
+        return "%s"%(self.user)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
