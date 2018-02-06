@@ -15,9 +15,9 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createPortfolio(actionData, username):
+    def createPortfolio(actionData, user):
         return {
-            'username': username,
+            'user': user.pk,
             'symbol': actionData['symbol'],
             'averagePrice': actionData['averagePrice'],
             'volume': actionData['volume']
@@ -40,11 +40,11 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createUserDetail(username, stepCount, cash):
+    def createUserDetail(user, cash):
         return {
-            'username': username,
+            'username': user.username,
             'cash': cash,
-            'stepCount': stepCount
+            'stepCount': user.stepCount
         }
 
     @staticmethod
