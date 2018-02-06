@@ -58,9 +58,9 @@ def logIn(request):
 
                 if user is not None:
                     token, _ = Token.objects.get_or_create(user=user)
-                    userData = UserDetail.objects.get(pk = username)
+                    userData = UserDetail.objects.get(username = username)
                     userSerializer = UserDetailSerializer(userData)
-                    portfolio = Portfolio.objects.filter(username = userData)
+                    portfolio = Portfolio.objects.filter(user = userData)
 
                     return ResponseObject.createSuccessLoginResponse(userSerializer.data, token.key, portfolio)
 
@@ -81,7 +81,7 @@ def logOut(request):
 @permission_classes((IsAuthenticated, ))
 def getUserDetail(request):
     if request.method == 'GET':
-        user = UserDetail.objects.get(pk = request.user)
+        user = UserDetail.objects.get(username = request.user)
         portfolio = Portfolio.objects.filter(username = user)
 
         return ResponseObject.createUserDetailResponse(portfolio, user)
@@ -90,7 +90,7 @@ def getUserDetail(request):
 @permission_classes((IsAuthenticated, ))
 def nextStep(request):
     if request.method == 'PUT':
-        user = UserDetail.objects.get(pk = request.user)
+        user = UserDetail.objects.get(username = request.user)
         newStepCount = request.data['stepCount']
         updateUser = Datasource.createUpdateUser(user, newStepCount)
         userSerializer = UserDetailSerializer(user, data = updateUser)
