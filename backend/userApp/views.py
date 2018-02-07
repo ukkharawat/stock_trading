@@ -82,7 +82,7 @@ def logOut(request):
 def getUserDetail(request):
     if request.method == 'GET':
         user = UserDetail.objects.get(username = request.user)
-        portfolio = Portfolio.objects.filter(username = user)
+        portfolio = Portfolio.objects.filter(user = user)
 
         return ResponseObject.createUserDetailResponse(portfolio, user)
         
