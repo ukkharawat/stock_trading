@@ -14,12 +14,11 @@
 
 ``` bash
   # Recommend
-  python: 2.7.*  
-  django: 1.11.*
+  python: 3.6.*  
+  django: 2.0.*
   djangorestframework 3.7.*  
   django-cors-headers 2.1.*  
-  markdown 2.6.*  
-  django-filter 1.1.*  
+  bcrypt 3.1.*
 ```
 
 ## Build Setup

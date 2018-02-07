@@ -15,36 +15,28 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createPortfolio(actionData, username):
+    def createPortfolio(actionData, user):
         return {
-            'username': username,
+            'user': user.pk,
             'symbol': actionData['symbol'],
             'averagePrice': actionData['averagePrice'],
             'volume': actionData['volume']
         }
 
     @staticmethod
-    def createPortfolioDetail(data):
-        return {
-            'symbol': data['symbol'],
-            'averagePrice': data['averagePrice'],
-            'volume': data['volume']
-        }
-
-    @staticmethod
-    def createDataDetail(symbol, averagePrice, volume):
+    def createTradingDetail(symbol, averagePrice, volume):
         return {
             'symbol': symbol,
-            'averagePrice': averagePrice,
+            'averagePrice': averagePrice if volume > 0 else 0,
             'volume': volume
         }
 
     @staticmethod
-    def createUserDetail(username, stepCount, cash):
+    def createUserDetail(user, cash):
         return {
-            'username': username,
+            'username': user.username,
             'cash': cash,
-            'stepCount': stepCount
+            'stepCount': user.stepCount
         }
 
     @staticmethod

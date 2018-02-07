@@ -8,11 +8,11 @@ from userApp.models import UserDetail , Portfolio
 
 
 class UserDetailAdmin(admin.ModelAdmin):
-    listDisplay = { user.name for user in UserDetail._meta.fields }
-
+    list_display = [ user.name for user in UserDetail._meta.fields ]
+    
 admin.site.register(UserDetail, UserDetailAdmin)
 
 class PortfolioAdmin(admin.ModelAdmin):
-    listDisplay = { user.name for user in Portfolio._meta.fields }
+    list_display = [ user.name for user in Portfolio._meta.fields ]
 
 admin.site.register(Portfolio, PortfolioAdmin)
