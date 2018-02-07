@@ -23,9 +23,10 @@ class Response(object):
         return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def createSuccessSellStock(user, symbol, averagePrice = 0, volume = 0):
+    def createSuccessSellStock(user, portfolio):
         action = 'sell'
-        response = Response.createSuccessActionWithStockResponse(user, action, symbol, averagePrice, volume)
+        response = Response.createSuccessActionWithStockResponse(user, action, portfolio['symbol']
+                                                    , portfolio['averagePrice'], portfolio['volume'])
 
         return JsonResponse(response, status = status.HTTP_200_OK)
     
