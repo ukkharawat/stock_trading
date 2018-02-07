@@ -44,10 +44,10 @@ def buyStock(request):
 	if request.method == 'POST':
 		data = JSONParser().parse(request)
 		username = str(request.user)
-		user = UserDetail.objects.get(pk = username)
+		user = UserDetail.objects.get(username = username)
 
 		try:
-			portfolio = Portfolio.objects.get(username = username, symbol = data['symbol'])
+			portfolio = Portfolio.objects.get(user = user, symbol = data['symbol'])
 			newAveragePrice = Utility.calculateAveragePrice(portfolio, data)
 			newVolume = portfolio.volume + data['volume']
 			newCash = user.cash - (data['averagePrice'] * data['volume'])
@@ -69,7 +69,7 @@ def buyStock(request):
 			newCash = user.cash - (data['averagePrice'] * data['volume'])
 			portfolio = Datasource.createPortfolio(data, user)
 			portfolioSerializer = PortfolioSerializer(data = portfolio)
-			updateUser = Controller.createUpdateUser(user, newCash)
+			updateUser = Datasource.createUserDetail(user, newCash)
 			userSerializer = UserDetailSerializer(user, data = updateUser)
 
 			if portfolioSerializer.is_valid() and userSerializer.is_valid() and newCash >= 0:
@@ -88,23 +88,24 @@ def sellStock(request):
 		username = str(request.user)
 		
 		try:
-			portfolio = Portfolio.objects.get(username = username, symbol = data['symbol'])
+			user = UserDetail.objects.get(username = username)
+			portfolio = Portfolio.objects.get(user = user, symbol = data['symbol'])
+
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
-				user = UserDetail.objects.get(pk = username)
 				newVolume = portfolio.volume - data['volume']
 				newCash = user.cash + (data['volume'] * data['averagePrice'])
 
-				updateUser = Controller.createUpdateUser(user, newCash)
+				updateUser =  Datasource.createUserDetail(user, newCash)
 				newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
 				userSerializer = UserDetailSerializer(user, data = updateUser)
 				portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 						
 				if portfolioSerializer.is_valid() and userSerializer.is_valid():
-					userSerializer.save()
-					portfolioSerializer.save()
-					
+					#userSerializer.save()
+					#portfolioSerializer.save()
+					print(portfolioSerializer.validated_data)
 					if newVolume == 0:
-						return Response.createSuccessSellStock(userSerializer.data, data['symbol'], 0, 0)
+						return Response.createSuccessSellStock(userSerializer.data, data['symbol'])
 					else:
 						return Response.createSuccessSellStock(userSerializer.data, data['symbol']
 										, portfolioSerializer.data['averagePrice'], portfolioSerializer.data['volume'])
