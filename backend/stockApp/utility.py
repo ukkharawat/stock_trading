@@ -14,3 +14,23 @@ class Utility(object):
     @staticmethod
     def isPortfolioStockEnough(portfolioVolume, actionVolume):
         return portfolioVolume >= actionVolume
+
+    @staticmethod
+    def calculateTotalBuyPrice(averagePrice, volume):
+        vatRate = 1.07
+        commissionRate = 0.001578
+        
+        commission = averagePrice * volume * commissionRate * vatRate
+        total = averagePrice * volume + commission
+
+        return total
+
+    @staticmethod
+    def calculateTotalSellPrice(averagePrice, volume):
+        vatRate = 1.07
+        commissionRate = 0.001578
+        
+        commission = averagePrice * volume * commissionRate * vatRate
+        total = averagePrice * volume - commission
+
+        return total
