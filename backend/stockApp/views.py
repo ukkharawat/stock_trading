@@ -96,19 +96,15 @@ def sellStock(request):
 				newCash = user.cash + (data['volume'] * data['averagePrice'])
 
 				updateUser =  Datasource.createUserDetail(user, newCash)
-				newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
 				userSerializer = UserDetailSerializer(user, data = updateUser)
+				newPortfolio = Controller.createNewPortfolio(portfolio.symbol, portfolio.averagePrice, newVolume, user)
 				portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 						
 				if portfolioSerializer.is_valid() and userSerializer.is_valid():
 					userSerializer.save()
 					portfolioSerializer.save()
-
-					if newVolume == 0:
-						return Response.createSuccessSellStock(userSerializer.data, data['symbol'])
-					else:
-						return Response.createSuccessSellStock(userSerializer.data, data['symbol']
-										, portfolioSerializer.data['averagePrice'], portfolioSerializer.data['volume'])
+					
+					return Response.createSuccessSellStock(userSerializer.data, portfolioSerializer.data)
 				else:
 					return Response.createFailedSellStock()
 				
