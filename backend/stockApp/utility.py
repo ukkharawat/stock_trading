@@ -14,7 +14,3 @@ class Utility(object):
     @staticmethod
     def isPortfolioStockEnough(portfolioVolume, actionVolume):
         return portfolioVolume >= actionVolume
-
-    @staticmethod
-    def isEmptyVolume(volume):
-        return volume == 0
