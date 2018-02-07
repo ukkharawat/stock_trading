@@ -24,15 +24,7 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createPortfolioDetail(data):
-        return {
-            'symbol': data['symbol'],
-            'averagePrice': data['averagePrice'],
-            'volume': data['volume']
-        }
-
-    @staticmethod
-    def createDataDetail(symbol, averagePrice, volume):
+    def createTradingDetail(symbol, averagePrice, volume):
         return {
             'symbol': symbol,
             'averagePrice': averagePrice,

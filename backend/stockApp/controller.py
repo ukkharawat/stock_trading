@@ -4,8 +4,7 @@ class Controller(object):
 
     @staticmethod
     def createNewPortfolio(symbol, averagePrice, volume, user):
-        dataDetail = Datasource.createDataDetail(symbol, averagePrice, volume)
-        portfolioDetail = Datasource.createPortfolioDetail(dataDetail)
-        newPortfolio = Datasource.createPortfolio(portfolioDetail, user)
+        tradingDetail = Datasource.createTradingDetail(symbol, averagePrice, volume)
+        portfolio = Datasource.createPortfolio(portfolioDetail, user)
 
-        return newPortfolio
+        return portfolio
