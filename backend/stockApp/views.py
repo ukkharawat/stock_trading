@@ -101,9 +101,9 @@ def sellStock(request):
 				portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 						
 				if portfolioSerializer.is_valid() and userSerializer.is_valid():
-					#userSerializer.save()
-					#portfolioSerializer.save()
-					print(portfolioSerializer.validated_data)
+					userSerializer.save()
+					portfolioSerializer.save()
+
 					if newVolume == 0:
 						return Response.createSuccessSellStock(userSerializer.data, data['symbol'])
 					else:
