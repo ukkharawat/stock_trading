@@ -27,7 +27,7 @@ class Datasource(object):
     def createTradingDetail(symbol, averagePrice, volume):
         return {
             'symbol': symbol,
-            'averagePrice': averagePrice,
+            'averagePrice': averagePrice if volume > 0 else 0,
             'volume': volume
         }
 
