@@ -53,7 +53,7 @@ def buyStock(request):
 			newCash = user.cash - (data['averagePrice'] * data['volume'])
 
 			newPortfolio = Controller.createNewPortfolio(portfolio.symbol, newAveragePrice, newVolume, user)
-			updateUser = Controller.createUpdateUser(user, newCash)
+			updateUser = Datasource.createUserDetail(user, newCash)
 			portfolioSerializer = PortfolioSerializer(portfolio, data = newPortfolio)
 			userSerializer = UserDetailSerializer(user, data = updateUser)
 
