@@ -5,7 +5,7 @@
 
 <script>
   import stockController from '@/controllers/Stock.controller'
-  import { mapActions, mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'app',
@@ -29,21 +29,22 @@
     watch: {
       getStep: {
         handler(val, oldVal) {
-          stockController.getStockValue(this.stockName, oldVal, val)
-            .then(response => response.stockValue)
-            .then(stockValue => {
-              for(let i = 0; i < stockValue.length; i++) {
-                stockValue[i]['BuyPrice'] = (stockValue[i]['Open'] + stockValue[i]['Close'])/2
-              }
-              return stockValue
-            })
-            .then(stockValue => {
-              this.displayData = this.displayData.concat(stockValue)
-              this.chart.dataSets[0].dataProvider = this.displayData
-              this.chart.validateData()
-              
-              this.$emit("dataChange", this.displayData[this.displayData.length - 1])
-            })
+          if(oldVal > val) {
+            this.chart.dataSets[0].dataProvider = this.displayData[0]
+            this.chart.validateData()
+          } else {
+            stockController.getStockValue(this.stockName, oldVal, val)
+              .then(response => response.stockValue)
+              .then(stockValue => this.findBuyPrice(stockValue))
+              .then(stockValue => {
+                this.displayData = this.displayData.concat(stockValue)
+                this.chart.dataSets[0].dataProvider = this.displayData
+                this.chart.validateData()
+                
+                this.$emit("dataChange", this.displayData[this.displayData.length - 1])
+              })
+              .catch(error => {})
+          } 
         },
         deep: true
       }
@@ -53,12 +54,7 @@
 
       await stockController.getStockValue(this.stockName, 0, end)
         .then(response => response.stockValue)
-        .then(stockValue => {
-          for(let i = 0; i < stockValue.length; i++) {
-            stockValue[i]['BuyPrice'] = (stockValue[i]['Open'] + stockValue[i]['Close'])/2
-          }
-          return stockValue
-        })
+        .then(stockValue => this.findBuyPrice(stockValue))
         .then(stockValue => {
           this.displayData = stockValue
           this.createChart()
@@ -70,9 +66,13 @@
         })
     },
     methods: {
-      ...mapActions([
-        'updateCapital'
-      ]),
+      findBuyPrice(stockValues) {
+        stockValues.forEach(stockValue => {
+          stockValue['BuyPrice'] = ((stockValue['Open'] + stockValue['Close'])/2).toFixed(2)
+        })
+
+        return stockValues
+      },
       createChart() {
         this.chart = AmCharts.makeChart(this.stockName, {
           "type": "stock",
