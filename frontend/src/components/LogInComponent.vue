@@ -1,6 +1,6 @@
 <template>
   <div>
-      <b-nav-item @click="openLogInModal" v-show="!isLoggedIn">Log In</b-nav-item>
+      <b-nav-item @click="openLogInModal" v-show="!isLoggedIn">Log in</b-nav-item>
 
       <logInModal ref="logInModal"></logInModal>
   </div>

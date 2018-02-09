@@ -3,7 +3,7 @@ import headerUtility from '@/utilities/Header.utility'
 
 export default class UserService {
 
-  static async register(apiURL, user) {
+  static async signUp(apiURL, user) {
 
     return axios.post(apiURL, user, {
         headers: headerUtility.createContentTypeJSON()

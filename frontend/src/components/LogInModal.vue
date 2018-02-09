@@ -2,7 +2,7 @@
   <div class="modal" @click="closeModal" :style="{'display': isModalOpen}">
     <div class="base-modal" @click.stop>
       <div class="modal-header">
-        <h4 class="modal-title">Log In</h4>
+        <h4 class="modal-title">Log in to begin trading</h4>
         <button class="close" @click="closeModal">x</button>
       </div>
 
@@ -32,8 +32,8 @@
                               placeholder="Password">
                 </b-form-input>
               </b-form-group>
-              <b-button type="submit" class="margin-top" variant="warning"
-                    :disabled="username == null || password == null">Log In</b-button>
+              <b-button type="submit" class="margin-top" variant="primary"
+                    :disabled="username == null || password == null">Log in</b-button>
             </b-form>
           </b-col>
         </b-row>
@@ -69,7 +69,8 @@
        ...mapActions([
         'setUsername',
         'setCash',
-        'setStep'
+        'setStep',
+        'updateStock'
       ]),
       openModal() {
         this.isModalOpen = 'flex'
@@ -81,31 +82,34 @@
         event.preventDefault()
         userController.login(this.username, this.password)
           .then(response => {
-            this.setUserCache(response)
+            this.fetchCache(response)
             this.closeModal()
           })
           .catch(error => {
             this.isLoginFailed = true
           })
       },
-      setUserCache(response) {
+      fetchCache(response) {
         this.setLocalStorage(response)
-        this.setVuex(response)
+        this.setUserDetail(response)
+        this.setPortfolio(response.portfolio)
       },
-      setVuex(data) {
-        this.setUsername(data.username)
-        this.setStep(data.stepCount)
-        this.setCash(data.cash)
-        
-        if(this.isPortfolioExist(data)) {
-          stockDatasource.createChangedStockObject(data.portfolio[0])
+      setPortfolio(portfolio) {
+        if(this.isPortfolioExist(portfolio)) {
+          let stocks = portfolio.map(stock => stockDatasource.createChangedStockObject(stock))
+          this.updateStock(stocks)
         }
       },
       setLocalStorage(data) {
         cacheController.setUserCache(data.username, data.Token)
       },
-      isPortfolioExist(data) {
-        return data.portfolio != null && data.portfolio != undefined && data.portfolio.length > 0
+      setUserDetail(data) {
+        this.setUsername(data.username)
+        this.setStep(data.stepCount)
+        this.setCash(data.cash)
+      },
+      isPortfolioExist(portfolio) {
+        return portfolio != null && portfolio != undefined && portfolio.length > 0
       }
     }
   }

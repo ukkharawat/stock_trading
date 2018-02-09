@@ -10,7 +10,7 @@
         <b-row class="justify-content-sm-center">
           <b-col cols="8" class="remove-padding">
             <h2 class="cautions">
-              Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
+              Are you sure to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
               ({{formatAveragePrice(totalPrice)}})
             </h2>
 
@@ -49,11 +49,9 @@
       ]),
       totalPrice() {
         if(this.actionInfo.action === "buy") {
-          return  (this.actionInfo.amount * this.actionInfo.averagePrice * this.commissionRate * this.vatRate) +
-                  (this.actionInfo.amount * this.actionInfo.averagePrice)
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice) * (1 + this.commissionRate * this.vatRate)
         } else {
-          return  (this.actionInfo.amount * this.actionInfo.averagePrice) - 
-                  (this.actionInfo.amount * this.actionInfo.averagePrice * this.commissionRate * this.vatRate)
+          return  (this.actionInfo.amount * this.actionInfo.averagePrice) * (1 - this.commissionRate * this.vatRate)
         }
       }
     },
@@ -99,7 +97,8 @@
       updateAfterTakeAction(response) {
         this.setCash(response.cash)
 
-        let updateDetail = stockDatasource.createChangedStockObject(response)
+        let updateDetail = []
+        updateDetail.push(stockDatasource.createChangedStockObject(response))
         this.updateStock(updateDetail)
       },
       formatAveragePrice(price) {

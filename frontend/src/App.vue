@@ -22,12 +22,15 @@
       nextDayButton
     },
     async created() {
-      await this.setStockList()
+      this.setStockList()
+        .then(() => {
+          if(cacheController.isLoggedIn()) {
+            this.setUsername(cacheController.getUsername())
+            this.updateUserDetail()
+          }
+        })
 
-      if(cacheController.isLoggedIn()) {
-        this.setUsername(cacheController.getUsername())
-        this.updateUserDetail()
-      }
+      
     },
     computed: {
       ...mapGetters([
@@ -45,24 +48,21 @@
       updateUserDetail() {
         userController.getUserDetail()
           .then(response => {
-            this.setStep(response.stepCount)
-            let stocks = response.portfolio.map(stock => {
-              return stockDatasource.createChangedStockObject(stock)
-            })
-
-            this.updateStock(stocks)
             this.setCash(response.cash)
+            this.setStep(response.stepCount)
+
+            let stocks = response.portfolio.map(stock => stockDatasource.createChangedStockObject(stock))
+            this.updateStock(stocks)
           })
       },
       setStockList() {
-        stockController.getStockList()
-          .then(response => {
-            let defaultStockList = response.stockList.map(stock => {
-              return stockDatasource.createDefaultStockList(stock)
-            })
+        return stockController.getStockList()
+                .then(response => response.stockList)
+                .then(stockLists => {
+                  let stockList = stockLists.map(stock => stockDatasource.createDefaultStockList(stock))
 
-            this.setStock(defaultStockList)
-          })
+                  this.setStock(stockList)
+                })
       }
     }
   }

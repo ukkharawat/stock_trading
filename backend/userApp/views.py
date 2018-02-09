@@ -20,7 +20,7 @@ from userApp.utility import Utility
 # Create your views here.
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
-def register(request):
+def signUp(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
 

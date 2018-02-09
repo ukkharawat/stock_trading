@@ -9,7 +9,7 @@
         </b-nav-item>
         
         <logInComponent></logInComponent>
-        <registerComponent></registerComponent>
+        <signUpComponent></signUpComponent>
 
         <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
           <router-link to="/portfolio" class="dropdown-item"> Portfolio </router-link>
@@ -24,7 +24,7 @@
   import userController from '@/controllers/User.controller'
   import cacheController from '@/controllers/Cache.controller'
   import logInComponent from '@/components/LogInComponent'
-  import registerComponent from '@/components/RegisterComponent'
+  import signUpComponent from '@/components/SignUpComponent'
 
   export default {
     props: {
@@ -34,7 +34,7 @@
     },
     components: {
       logInComponent,
-      registerComponent
+      signUpComponent
     },
     data() {
       return {
