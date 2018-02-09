@@ -2,7 +2,7 @@
   <div class="modal" @click="closeModal" :style="{'display': isModalOpen}">
     <div class="base-modal" @click.stop>
       <div class="modal-header">
-        <h4 class="modal-title">Log In</h4>
+        <h4 class="modal-title">Log in to begin trading</h4>
         <button class="close" @click="closeModal">x</button>
       </div>
 
@@ -32,8 +32,8 @@
                               placeholder="Password">
                 </b-form-input>
               </b-form-group>
-              <b-button type="submit" class="margin-top" variant="warning"
-                    :disabled="username == null || password == null">Log In</b-button>
+              <b-button type="submit" class="margin-top" variant="primary"
+                    :disabled="username == null || password == null">Log in</b-button>
             </b-form>
           </b-col>
         </b-row>
