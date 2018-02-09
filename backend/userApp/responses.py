@@ -28,8 +28,12 @@ class ResponseObject(object):
         return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def createSuccessCreateUserResponse():
+    def createSuccessCreateUserResponse(user, key):
         response = {
+            'username': user['username'],
+            'cash': user['cash'],
+            'stepCount': user['stepCount'],
+            'Token': key,
             'success': True
         }
 
