@@ -5,10 +5,10 @@ import apiURL from '@/utilities/ApiURL.utility'
 
 export default class UserController {
 
-  static register(username, password) {
+  static signUp(username, password) {
     let user = userDataSource.createUser(username, password)
 
-    return userService.register(apiURL.registerURL, user)
+    return userService.signUp(apiURL.signUpURL, user)
   }
 
   static login(username, password) {
