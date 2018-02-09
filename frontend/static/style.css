@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 #app {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,7 +21,7 @@
   margin-top: 24px;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 .modal {
@@ -32,10 +34,6 @@
   z-index: 1;
   left: 0;
   top: 0;
-  -webkit-animation: fade-in 1s; 
-  -moz-animation: fade-in 1s; 
-  -o-animation: fade-in 1s; 
-  animation: fade-in 1s; 
 }
 
 #index {
@@ -43,8 +41,8 @@
   margin-top: 24px;
   padding-bottom: 8px;
   border-radius: 8px;
-  background-color: rgba(144, 202, 249, 0.8);
-  box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.2);
+  background-color: #fff59d;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
   width: calc(100% - 24px);
   height: auto;
 }
@@ -64,7 +62,7 @@
 }
 
 .base-modal {
-  background-color: #f5f5f5;
+  background-color: #fafafa;
   width: 50%;
   height: auto;
   border-radius: 8px;
@@ -100,11 +98,11 @@
   font-size: 18px;
   background-color: #fdfdfd;
   margin-bottom: 16px;
-  color: #373737;
+  color: #424242;
 }
 
 a.main-menu {
-  color: #212121;
+  color: #373737;
   font-size: 16px;
   cursor: pointer;
   display: block;
@@ -112,7 +110,7 @@ a.main-menu {
 
 a.sub-menu {
   margin-left: 16px;
-  color: #424242;
+  color: #636363;
   font-size: 14px;
   cursor: pointer;
   display: block;
@@ -139,12 +137,7 @@ a.sub-menu {
 }
 
 .modal-header {
-  background-color: #42A5F5;
-}
-
-.modal-title {
-  font-weight: bold;
-  color: #212121;
+  background-color: #ffc400;
 }
 
 .cautions {
@@ -163,14 +156,13 @@ a.sub-menu {
 }
 
 .stock-navbar {
-  background-color: #42A5F5;
-  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.15);
+  background-color: #ffc400;
+  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.1);
   border-radius: 0 !important;
 }
 
 a.nav-link {
-  color: #212121 !important;
-  font-weight: 500;
+  color: #424242 !important;
   text-decoration: none;
 }
 
@@ -182,7 +174,7 @@ a.nav-link {
   padding-left: 16px;
   height: 40px;
   width: 120px;
-  background-color: #0D47A1;
+  background-color: #ffc400;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.1);
@@ -194,8 +186,7 @@ a.nav-link {
 
 .next-day-button {
   font-size: 16px;
-  color: #fefefe !important;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .next-day-button:hover {
@@ -237,27 +228,11 @@ a.nav-link {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
-    margin: 0;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 .extend-buttom {
   margin-bottom: 180px;
-}
-
-@-webkit-keyframes fade-in {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@-moz-keyframes fade-in {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@-o-keyframes fade-in {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes fade-in {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
 }

@@ -45,14 +45,12 @@ def buyStock(request):
 		data = JSONParser().parse(request)
 		username = str(request.user)
 		user = UserDetail.objects.get(username = username)
-	
-		totalBuyPrice = Utility.calculateTotalBuyPrice(data['averagePrice'], data['volume'])
-		newCash = user.cash - totalBuyPrice
 
 		try:
 			portfolio = Portfolio.objects.get(user = user, symbol = data['symbol'])
 			newAveragePrice = Utility.calculateAveragePrice(portfolio, data)
 			newVolume = portfolio.volume + data['volume']
+			newCash = user.cash - (data['averagePrice'] * data['volume'])
 
 			newPortfolio = Controller.createNewPortfolio(portfolio.symbol, newAveragePrice, newVolume, user)
 			updateUser = Datasource.createUserDetail(user, newCash)
@@ -68,6 +66,7 @@ def buyStock(request):
 			return Response.createFailedBuyStock()
 
 		except Portfolio.DoesNotExist:
+			newCash = user.cash - (data['averagePrice'] * data['volume'])
 			portfolio = Datasource.createPortfolio(data, user)
 			portfolioSerializer = PortfolioSerializer(data = portfolio)
 			updateUser = Datasource.createUserDetail(user, newCash)
@@ -94,8 +93,7 @@ def sellStock(request):
 
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
 				newVolume = portfolio.volume - data['volume']
-				totalSellPrice = utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
-				newCash = user.cash + totalSellPrice
+				newCash = user.cash + (data['volume'] * data['averagePrice'])
 
 				updateUser =  Datasource.createUserDetail(user, newCash)
 				userSerializer = UserDetailSerializer(user, data = updateUser)

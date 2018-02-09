@@ -2,14 +2,14 @@
   <div class="modal" @click="closeModal" :style="{'display': isModalOpen}">
     <div class="base-modal" @click.stop>
       <div class="modal-header">
-        <h4 class="modal-title">Become a part of us</h4>
+        <h4 class="modal-title">Register</h4>
         <button class="close" @click="closeModal">x</button>
       </div>
 
       <div class="modal-content">
         <b-row class="justify-content-sm-center">
           <b-col cols="8">
-            <b-form @submit="signUp">
+            <b-form @submit="register">
               <b-form-group id="registerUsernameInputGroup"
                             label="Your Username:"
                             label-for="registerUsernameInput">
@@ -18,12 +18,12 @@
                               name="username"
                               v-model="username"
                               v-validate="'required|min:8|alpha'"
-                              :class="{'is-invalid': errors.has('username') || isSignUpFailed }"
+                              :class="{'is-invalid': errors.has('username') || isRegisterFailed }"
                               placeholder="Username">
                 </b-form-input>
                 <span v-show="errors.has('username')" 
                       class="help text-danger">{{ errors.first('username') }}</span>
-                <span v-show="isSignUpFailed" 
+                <span v-show="isRegisterFailed" 
                       class="help text-danger">This username has been taken</span>
 
               </b-form-group>
@@ -57,8 +57,8 @@
                       class="help text-danger">Your password doesn't match</span>
               </b-form-group>
 
-              <b-button type="submit" class="margin-top" variant="primary"
-                  :disabled="!isFieldComplete || errors.any() || !isPasswordMatch">Sign up</b-button>
+              <b-button type="submit" class="margin-top" variant="warning"
+                  :disabled="!isFieldComplete || errors.any() || !isPasswordMatch">Register</b-button>
             </b-form>
           </b-col>
         </b-row>
@@ -76,7 +76,7 @@
         username: null,
         password: null,
         repassword: null,
-        isSignUpFailed: false,
+        isRegisterFailed: false,
         isModalOpen: 'none'
       }
     },
@@ -97,21 +97,21 @@
       closeModal() {
         this.isModalOpen = 'none'
       },
-      signUp(event) {
+      register(event) {
         event.preventDefault()
 
-        userController.signUp(this.username, this.password)
+        userController.register(this.username, this.password)
           .then(response => {
             this.closeModal()
           })
           .catch(error => {
-            this.isSignUpFailed = true
+            this.isRegisterFailed = true
           })
       }
     },
     watch: {
       username(val) {
-        this.isSignUpFailed = false
+        this.isRegisterFailed = false
       }
     }
   }
