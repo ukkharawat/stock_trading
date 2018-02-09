@@ -69,6 +69,8 @@
 
 <script>
   import userController from "@/controllers/User.controller"
+  import cacheController from "@/controllers/Cache.controller"
+  import { mapActions } from "vuex"
 
   export default {
     data() {
@@ -91,6 +93,11 @@
       }
     },
     methods:{
+      ...mapActions([
+        'setUsername',
+        'setCash',
+        'setStep'
+      ]),
       openModal() {
         this.isModalOpen = 'flex'
       },
@@ -102,11 +109,18 @@
 
         userController.signUp(this.username, this.password)
           .then(response => {
+            this.fetchUserDetail(response)
             this.closeModal()
           })
           .catch(error => {
             this.isSignUpFailed = true
           })
+      },
+      fetchUserDetail(user) {
+        cacheController.setUserCache(user.username, user.Token)
+        this.setUsername(user.username)
+        this.setStep(user.stepCount)
+        this.setCash(user.cash)
       }
     },
     watch: {

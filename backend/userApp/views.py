@@ -34,10 +34,12 @@ def signUp(request):
                 if userSerializer.is_valid():
                     user = User.objects.create_user(username = username)
                     user.set_password(password)
-                    userSerializer.save()
                     user.save()
+                    userSerializer.save()
 
-                    return ResponseObject.createSuccessCreateUserResponse()
+                    token, _ = Token.objects.get_or_create(user = user)
+
+                    return ResponseObject.createSuccessCreateUserResponse(userSerializer.data, token.key)
                 
                 return ResponseObject.createFailedResponse()
             except:

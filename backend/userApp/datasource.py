@@ -4,7 +4,7 @@ class Datasource(object):
     def createUserDetailSerializer(username):
         return {
             'username': username,
-            'cash': 10000,
+            'cash': 1000000,
             'stepCount': 1
         }
 
