@@ -10,7 +10,7 @@
         <b-row class="justify-content-sm-center">
           <b-col cols="8" class="remove-padding">
             <h2 class="cautions">
-              Do you want to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
+              Are you sure to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
               ({{formatAveragePrice(totalPrice)}})
             </h2>
 
