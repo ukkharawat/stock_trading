@@ -47,7 +47,7 @@ def buyStock(request):
 		user = UserDetail.objects.get(username = username)
 	
 		totalBuyPrice = Utility.calculateTotalBuyPrice(data['averagePrice'], data['volume'])
-		newCash = user.cash - totalBuyPrice
+		newCash = float("{0:.2f}".format(user.cash - totalBuyPrice))
 
 		try:
 			portfolio = Portfolio.objects.get(user = user, symbol = data['symbol'])
@@ -95,7 +95,7 @@ def sellStock(request):
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
 				newVolume = portfolio.volume - data['volume']
 				totalSellPrice = utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
-				newCash = user.cash + totalSellPrice
+				newCash = float("{0:.2f}".format(user.cash + totalBuyPrice))
 
 				updateUser =  Datasource.createUserDetail(user, newCash)
 				userSerializer = UserDetailSerializer(user, data = updateUser)
