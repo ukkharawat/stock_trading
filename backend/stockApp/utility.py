@@ -2,8 +2,11 @@ class Utility(object):
 
     @staticmethod
     def findStockPrice(stockValue):
-        price = (stockValue.openPrice + stockValue.closePrice) / 2
-        return "{0:.2f}".format(round(price,2))
+        if stockValue.openPrice is None:
+            return None
+        else:
+            price = (stockValue.openPrice + stockValue.closePrice) / 2
+            return "{0:.2f}".format(round(price,2))
 
     @staticmethod
     def calculateAveragePrice(portfolio, current):
