@@ -61,9 +61,11 @@ class Response(object):
 
     @staticmethod
     def createStockValueList(stockValue):
-        stockValueList = Datasource.createStockValueList(stockValue)
+        value = [Datasource.createStockValue(x) for x in stockValue]
+
         response = {
-            'stockValue': stockValueList
+            'symbol': str(stockValue[0]),
+            'stockValue': value
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
