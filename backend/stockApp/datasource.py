@@ -1,3 +1,5 @@
+from stockApp.utility import Utility
+
 class Datasource(object):
 
     @staticmethod
@@ -40,21 +42,15 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createStockValueList(stockValues):
-        result = []
-        
-        for i in range(stockValues.count()):
-            temp = {
-                'Date': stockValues[i].date.strftime('%Y-%m-%d'),
-                'shortname': str(stockValues[i].name),
-                'Open': stockValues[i].openPrice,
-                'Close': stockValues[i].closePrice,
-                'High': stockValues[i].high,
-                'Low': stockValues[i].low,
-                'Adj': stockValues[i].adjClose,
-                'Volume': stockValues[i].volume,
-            }
+    def createStockValue(stockValue):
 
-            result.append(temp)
-
-        return result
+        return {
+            'Date': str(stockValue.date),
+            'Open': stockValue.openPrice,
+            'Close': stockValue.closePrice,
+            'BuyPrice': Utility.findStockPrice(stockValue),
+            'High': stockValue.high,
+            'Low': stockValue.low,
+            'Adj': stockValue.adjClose,
+            'Volume': stockValue.volume,
+        }
