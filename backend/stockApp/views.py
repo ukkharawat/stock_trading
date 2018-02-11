@@ -33,14 +33,14 @@ def getCurrentValue(request):
 		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 
-		startDate = datetime.date(2015, 12, 31) + datetime.timedelta(days = step)
+		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		endDate = startDate + datetime.timedelta(days = 1)
-		stockValue = StockValue.objects.filter(name = stock , date__gt=startDate)[:2]
-
+		stockValue = StockValue.objects.filter(name = stock , date__gte=startDate)[:2]
+		
 		if stockValue[0].date == endDate:
 			return Response.createUncomparedStockValue(stockValue[0])
 
-		elif stockValue[1].date == endDate:
+		elif stockValue[0].date == startDate:
 			return Response.createComparedStockValue(stockValue)
 		
 		else:
