@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from rest_framework.views import status
 from stockApp.datasource import Datasource
+from stockApp.utility import Utility
 
 class Response(object):
 
@@ -74,3 +75,35 @@ class Response(object):
         }
 
         return JsonResponse(response, status = status.HTTP_404_NOT_FOUND)
+
+    @staticmethod
+    def createNotFoundStockValue():
+        response = {
+            'status': False,
+            'diff': None,
+            'currentPrice': None
+        }
+
+        return JsonResponse(response, status = status.HTTP_404_NOT_FOUND)
+
+    @staticmethod
+    def createUncomparedStockValue(stockValue):
+        response = {
+            'status': False,
+            'diff': 0,
+            'currentPrice': Utility.findStockPrice(stockValue),
+            'symbol': str(stockValue.name)
+        }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)
+
+    @staticmethod
+    def createComparedStockValue(stockValues):
+        response = {
+            'status': False,
+            'diff': float(Utility.findStockPrice(stockValues[1])) - float(Utility.findStockPrice(stockValues[0])),
+            'currentPrice': Utility.findStockPrice(stockValues[1]),
+            'symbol': str(stockValues[1].name)
+        }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)

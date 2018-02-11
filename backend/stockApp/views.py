@@ -14,6 +14,7 @@ from stockApp.controller import Controller
 from stockApp.response import Response
 from userApp.models import Portfolio, UserDetail
 from userApp.serializers import PortfolioSerializer, UserDetailSerializer
+import datetime
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
@@ -23,6 +24,27 @@ def list(request):
 		serializer = StockSerializer(stocks, many=True)
 
 		return Response.createStockList(serializer.data)
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
+def getCurrentValue(request):
+	if request.method == 'GET':
+		symbol = request.GET['symbol']
+		step = int(request.GET['step'])
+		stock = Stock.objects.get(name = symbol)
+
+		startDate = datetime.date(2015, 12, 31) + datetime.timedelta(days = step)
+		endDate = startDate + datetime.timedelta(days = 1)
+		stockValue = StockValue.objects.filter(name = stock , date__gt=startDate)[:2]
+
+		if stockValue[0].date == endDate:
+			return Response.createUncomparedStockValue(stockValue[0])
+
+		elif stockValue[1].date == endDate:
+			return Response.createComparedStockValue(stockValue)
+		
+		else:
+			return Response.createNotFoundStockValue()
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
