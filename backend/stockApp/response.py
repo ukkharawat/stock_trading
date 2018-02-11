@@ -91,6 +91,7 @@ class Response(object):
         response = {
             'status': False,
             'diff': 0,
+            'diffPer': 0,
             'currentPrice': Utility.findStockPrice(stockValue),
             'symbol': str(stockValue.name)
         }
@@ -99,10 +100,15 @@ class Response(object):
 
     @staticmethod
     def createComparedStockValue(stockValues):
+        oldPrice = float(Utility.findStockPrice(stockValues[0]))
+        currentPrice = float(Utility.findStockPrice(stockValues[1]))
+        diff = oldPrice - currentPrice
+
         response = {
             'status': False,
-            'diff': float(Utility.findStockPrice(stockValues[1])) - float(Utility.findStockPrice(stockValues[0])),
-            'currentPrice': Utility.findStockPrice(stockValues[1]),
+            'diff': diff,
+            'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)),
+            'currentPrice': currentPrice,
             'symbol': str(stockValues[1].name)
         }
 
