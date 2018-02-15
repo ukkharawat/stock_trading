@@ -16,14 +16,6 @@ class Response(object):
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
-    def createFailedBuyStock():
-        response = {
-            'success': False
-        }
-
-        return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
-
-    @staticmethod
     def createSuccessSellStock(user, portfolio):
         action = 'sell'
         response = Response.createSuccessActionWithStockResponse(user, action, portfolio['symbol']
@@ -32,7 +24,7 @@ class Response(object):
         return JsonResponse(response, status = status.HTTP_200_OK)
     
     @staticmethod
-    def craeteFailedSellStock():
+    def craeteFailedAction():
         response = {
             'success': False
         }
@@ -50,6 +42,17 @@ class Response(object):
             'averagePrice': averagePrice,
             'volume': volume
         }
+
+    @staticmethod
+    def createStockData(stockData):
+        value = Datasource.createStockValue(stockData)
+
+        response = {
+            'symbol': str(stockData),
+            'stockValue': value
+        }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
     def createStockList(data):

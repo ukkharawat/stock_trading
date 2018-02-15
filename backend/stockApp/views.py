@@ -27,6 +27,23 @@ def list(request):
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
+def getCurrentStockData(request):
+	if request.method == 'GET':
+		symbol = request.GET['symbol']
+		step = int(request.GET['step'])
+		stock = Stock.objects.get(name = symbol)
+		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
+		
+		stockValue = StockValue.objects.filter(name = stock, date__gte = date)[:1]
+
+		if stockValue is not None:
+			return Response.createStockData(stockValue[0])
+		
+		else:
+			return Response.createNotFoundStockValue()
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
 def getComparedValue(request):
 	if request.method == 'GET':
 		symbol = request.GET['symbol']
@@ -88,7 +105,7 @@ def buyStock(request):
 
 				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
 
-			return Response.createFailedBuyStock()
+			return Response.craeteFailedAction()
 
 		except Portfolio.DoesNotExist:
 			portfolio = Datasource.createPortfolio(data, user)
@@ -102,7 +119,7 @@ def buyStock(request):
 
 				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
 
-			return Response.createFailedBuyStock()
+			return Response.craeteFailedAction()
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -131,11 +148,11 @@ def sellStock(request):
 					
 					return Response.createSuccessSellStock(userSerializer.data, portfolioSerializer.data)
 				else:
-					return Response.createFailedSellStock()
+					return Response.craeteFailedAction()
 				
 			else:
-				return Response.createFailedSellStock()
+				return Response.craeteFailedAction()
 
 		except Portfolio.DoesNotExist:
 
-			return Response.createFailedSellStock()
+			return Response.craeteFailedAction()
