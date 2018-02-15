@@ -4,24 +4,6 @@ from stockApp.datasource import Datasource
 from stockApp.utility import Utility
 
 class Response(object):
-
-    @staticmethod
-    def createSuccessBuyStock(user, portfolio):
-        action = 'buy'
-        symbol = portfolio['symbol']
-        averagePrice = portfolio['averagePrice']
-        volume = portfolio['volume']
-        response = Response.createSuccessActionWithStockResponse(user, action, symbol, averagePrice, volume)
-
-        return JsonResponse(response, status = status.HTTP_200_OK)
-
-    @staticmethod
-    def createSuccessSellStock(user, portfolio):
-        action = 'sell'
-        response = Response.createSuccessActionWithStockResponse(user, action, portfolio['symbol']
-                                                    , portfolio['averagePrice'], portfolio['volume'])
-
-        return JsonResponse(response, status = status.HTTP_200_OK)
     
     @staticmethod
     def craeteFailedAction():
@@ -32,16 +14,18 @@ class Response(object):
         return JsonResponse(response, status = status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def createSuccessActionWithStockResponse(userDetail, action, symbol, averagePrice, volume):
-        return {
-            'username': userDetail['username'],
-            'cash': userDetail['cash'],
+    def createSuccessAction(user, action, portfolio):
+        response = {
+            'username': user['username'],
+            'cash': user['cash'],
             'action': action,
             'success': True,
-            'symbol': symbol,
-            'averagePrice': averagePrice,
-            'volume': volume
+            'symbol': portfolio['symbol'],
+            'averagePrice': portfolio['averagePrice'],
+            'volume': portfolio['volume']
         }
+
+        return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
     def createStockData(stockData):

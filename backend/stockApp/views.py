@@ -84,6 +84,7 @@ def buyStock(request):
 	if request.method == 'POST':
 		data = JSONParser().parse(request)
 		username = str(request.user)
+		action = 'BUY'
 		user = UserDetail.objects.get(username = username)
 	
 		totalBuyPrice = Utility.calculateTotalBuyPrice(data['averagePrice'], data['volume'])
@@ -103,9 +104,7 @@ def buyStock(request):
 				portfolioSerializer.save()
 				userSerializer.save()
 
-				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
-
-			return Response.craeteFailedAction()
+				return Response.createSuccessAction(userSerializer.data, action, portfolioSerializer.data)
 
 		except Portfolio.DoesNotExist:
 			portfolio = Datasource.createPortfolio(data, user)
@@ -117,15 +116,16 @@ def buyStock(request):
 				portfolioSerializer.save()
 				userSerializer.save()
 
-				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
+				return Response.createSuccessAction(userSerializer.data, action, portfolioSerializer.data)
 
-			return Response.craeteFailedAction()
+		return Response.craeteFailedAction()
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def sellStock(request):
 	if request.method == 'POST':
 		data = JSONParser().parse(request)
+		action = 'SELL'
 		username = str(request.user)
 		
 		try:
@@ -146,13 +146,10 @@ def sellStock(request):
 					userSerializer.save()
 					portfolioSerializer.save()
 					
-					return Response.createSuccessSellStock(userSerializer.data, portfolioSerializer.data)
-				else:
-					return Response.craeteFailedAction()
-				
-			else:
-				return Response.craeteFailedAction()
+					return Response.createSuccessAction(userSerializer.data, action, portfolioSerializer.data)
 
 		except Portfolio.DoesNotExist:
 
 			return Response.craeteFailedAction()
+
+		return Response.craeteFailedAction()
