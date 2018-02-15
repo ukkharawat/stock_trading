@@ -27,7 +27,7 @@ def list(request):
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
-def getCurrentValue(request):
+def getComparedValue(request):
 	if request.method == 'GET':
 		symbol = request.GET['symbol']
 		step = int(request.GET['step'])
