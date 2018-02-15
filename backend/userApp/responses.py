@@ -30,11 +30,11 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessCreateUserResponse(user, key):
         response = {
-            'success': True
+            'success': True,
             'username': user['username'],
             'cash': user['cash'],
             'stepCount': user['stepCount'],
-            'Token': key,
+            'Token': key
         }
 
         return JsonResponse(response, status = status.HTTP_201_CREATED)
@@ -60,11 +60,11 @@ class ResponseObject(object):
         portfolioList = Datasource.createUserPortfolio(portfolio)
 
         response = {
-            'success': True
+            'success': True,
             'username': str(user.username),
             'cash': user.cash,
             'stepCount': user.stepCount,
-            'portfolio': portfolioList,
+            'portfolio': portfolioList
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
