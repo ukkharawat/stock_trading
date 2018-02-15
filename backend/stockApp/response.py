@@ -16,10 +16,10 @@ class Response(object):
     @staticmethod
     def createSuccessAction(user, action, portfolio):
         response = {
+            'success': True,
             'username': user['username'],
             'cash': user['cash'],
             'action': action,
-            'success': True,
             'symbol': portfolio['symbol'],
             'averagePrice': portfolio['averagePrice'],
             'volume': portfolio['volume']
@@ -32,6 +32,7 @@ class Response(object):
         value = Datasource.createStockValue(stockData)
 
         response = {
+            'success': True,
             'symbol': str(stockData),
             'stockValue': value
         }
@@ -41,6 +42,7 @@ class Response(object):
     @staticmethod
     def createStockList(data):
         response = {
+            'success': True,
             'stockList': data
         }
 
@@ -51,6 +53,7 @@ class Response(object):
         value = [Datasource.createStockValue(x) for x in stockValue]
 
         response = {
+            'success': True,
             'symbol': str(stockValue[0]),
             'stockValue': value
         }
@@ -60,7 +63,7 @@ class Response(object):
     @staticmethod
     def createNotFoundStock():
         response = {
-            'status': False
+            'success': False
         }
 
         return JsonResponse(response, status = status.HTTP_404_NOT_FOUND)
@@ -68,7 +71,7 @@ class Response(object):
     @staticmethod
     def createNotFoundStockValue():
         response = {
-            'status': False,
+            'success': False,
             'diff': None,
             'currentPrice': None
         }
@@ -78,7 +81,7 @@ class Response(object):
     @staticmethod
     def createUncomparedStockValue(stockValue):
         response = {
-            'status': False,
+            'success': False,
             'diff': 0,
             'diffPer': 0,
             'currentPrice': Utility.findStockPrice(stockValue),
@@ -94,7 +97,7 @@ class Response(object):
         diff = oldPrice - currentPrice
 
         response = {
-            'status': False,
+            'success': False,
             'diff': diff,
             'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)),
             'currentPrice': currentPrice,
