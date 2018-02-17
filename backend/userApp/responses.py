@@ -9,11 +9,11 @@ class ResponseObject(object):
         portfolioList = Datasource.createUserPortfolio(portfolio)
 
         response = {
+            'success': True,
             'username': userSerializer['username'],
             'cash': userSerializer['cash'],
             'stepCount': userSerializer['stepCount'],
             'Token': key,
-            'success': True,
             'portfolio': portfolioList
         }
 
@@ -30,11 +30,11 @@ class ResponseObject(object):
     @staticmethod
     def createSuccessCreateUserResponse(user, key):
         response = {
+            'success': True,
             'username': user['username'],
             'cash': user['cash'],
             'stepCount': user['stepCount'],
-            'Token': key,
-            'success': True
+            'Token': key
         }
 
         return JsonResponse(response, status = status.HTTP_201_CREATED)
@@ -60,11 +60,11 @@ class ResponseObject(object):
         portfolioList = Datasource.createUserPortfolio(portfolio)
 
         response = {
+            'success': True,
             'username': str(user.username),
             'cash': user.cash,
             'stepCount': user.stepCount,
-            'portfolio': portfolioList,
-            'success': True
+            'portfolio': portfolioList
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
