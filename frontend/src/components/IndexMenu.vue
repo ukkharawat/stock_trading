@@ -4,7 +4,7 @@
       <b-col cols="3">
         <h4>{{ stock.symbol }}</h4>
       </b-col>
-      <b-col cols="4" class="text-right">
+      <b-col cols="4" class="text-right disable-padding">
         <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
           {{ stock.price }}
         </h4>
