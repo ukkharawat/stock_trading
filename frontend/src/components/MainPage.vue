@@ -1,19 +1,17 @@
 <template>
-  <b-row id="main-page" v-show="getStock !== null">
-    <b-col cols="2">
+  <b-row id="main-page" >
+    <b-col cols="4">
       <index>
-        <div v-for="menuItem in menuItems" v-bind:key="menuItem.industry">
+        <div v-for="stock in stocks" v-bind:key="stock.symbol">
           <indexMenu
-            :industry="menuItem.industry"
-            :sectors="menuItem.sectors"
-            @industryClick="industryClick"
+            :stock="stock"
             @sectorClick="sectorClick">
           </indexMenu>
         </div>
       </index>
     </b-col>
-    <b-col cols="10">
-      <stock v-for="stock in filteredStock"
+    <b-col cols="8"> 
+      <stock v-for="stock in filteredStock" v-show="getStock !== null"
              :key="stock.symbol"
              :stock="stock"></stock>
     </b-col>
@@ -29,42 +27,23 @@
   export default {
     data() {
       return {
-        menuItems: [
+        stocks: [
           {
-            industry: "AGRO",
-            sectors: ["AGRI", "FOOD"]
+            'symbol': 'TEST',
+            'price': 255,
+            'diff': 0.74,
+            'diffPer': 0.1,
+            'amount': 50
           },
           {
-            industry: "CONSUMP",
-            sectors: ["FASHION", "HOME", "PERSON"]
-          },
-          {
-            industry: "FINCIAL",
-            sectors: ["BANK", "FIN", "INSUR"]
-          },
-          {
-            industry: "INDUS",
-            sectors: ["AUTO", "IMM", "PAPER", "PETRO", "PKG", "STEEL"]
-          },
-          {
-            industry: "PROPCON",
-            sectors: ["CONMAT", "PROP", "PF&REITs", "CONS"]
-          },
-          {
-            industry: "RESOURC",
-            sectors: ["ENERG", "MINE"]
-          },
-          {
-            industry: "SERVICE",
-            sectors: ["COMM", "HELTH", "MEDIA", "PROF", "TOURISM", "TRANS"]
-          },
-          {
-            industry: "TECH",
-            sectors: ["ETRON", "ICT"]
+            'symbol': 'TEST2',
+            'price': 255,
+            'diff': -0.74,
+            'diffPer': 0.1,
+            'amount': 50
           }
         ],
-        sector: "AGRI",
-        industry: null
+        sector: "AGRI"
       }
     },
     components: {
