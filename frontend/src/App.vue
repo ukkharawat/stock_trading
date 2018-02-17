@@ -2,14 +2,12 @@
   <div id="app">
     <navbar></navbar>
     <router-view/>
-    <nextDayButton></nextDayButton>
   </div>
 </template>
 
 <script>
   import navbar from '@/components/Navbar'
   import { mapGetters, mapActions } from 'vuex'
-  import nextDayButton from '@/components/NextDayButton'
   import cacheController from '@/controllers/Cache.controller'
   import stockController from '@/controllers/Stock.controller'
   import userController from '@/controllers/User.controller'
@@ -18,8 +16,7 @@
   export default {
     name: 'app',
     components: {
-      navbar,
-      nextDayButton
+      navbar
     },
     async created() {
       this.setStockList()
