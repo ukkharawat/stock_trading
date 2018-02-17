@@ -1,11 +1,32 @@
 <template>
   <div id="index-menu">
-    <a class="main-menu" @click="onClickIndustry"
-        :class="{'bold-text': getCurrentCategory === industry}">{{industry}}</a>
-    <a class="sub-menu" v-for="(sector, index) in sectors"
-        v-bind:key="sector"
-        :class="{'bold-text': getCurrentCategory === sector}"
-        @click="onClickSector(index)">{{sector}}</a>
+    <b-row class="stock-list-margin">
+      <b-col cols="3">
+        <h4>{{ stock.symbol }}</h4>
+      </b-col>
+      <b-col cols="4" class="text-right">
+        <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
+          {{ stock.price }}
+        </h4>
+        <p class="disable-margin" :class="{'green-percent': isPriceUp, 'red-percent': !isPriceUp}">
+          {{isPlusSign}}{{ stock.diff }} ( {{ stock.diffPer }}% )
+        </p>
+      </b-col>
+      <b-col cols="5" class="fix-padding">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn decrease-btn" @click="decrease" type="button" :disabled="!isAmountEnough">
+                <i class="fas fa-minus" />
+              </button>
+            </span>
+            <input type="number" class="form-control text-right amount-input" v-model="stock.amount">
+            <span class="input-group-btn">
+              <button class="btn increase-btn" @click="increase" type="button"><i class="fas fa-plus" /></button>
+            </span>
+          </div>
+      </b-col>
+    </b-row>
+    <hr class="disable-margin">
   </div>
 </template>
 
@@ -14,29 +35,33 @@
 
   export default {
     props: {
-      industry: {
-        type: String
-      },
-      sectors: {
-        type: Array
+      stock: {
+        type: Object
       }
     },
     computed: {
       ...mapGetters([
         'getCurrentCategory'
-      ])
+      ]),
+      isPriceUp() {
+        return this.stock.diff > 0
+      },
+      isPlusSign() {
+        return this.isPriceUp? '+': ''
+      },
+      isAmountEnough() {
+        return this.stock.amount >= 100
+      }
     },
     methods: {
       ...mapActions([
         'setCurrentCategory'
       ]),
-      onClickIndustry() {
-        this.setCurrentCategory(this.industry)
-        this.$emit("industryClick", this.industry)
+      increase() {
+        this.stock.amount += 100
       },
-      onClickSector(index) {
-        this.setCurrentCategory(this.sectors[index])
-        this.$emit("sectorClick", this.sectors[index])
+      decrease() {
+        this.stock.amount -= 100
       }
     }
   }

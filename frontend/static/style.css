@@ -43,7 +43,7 @@
   margin-top: 24px;
   padding-bottom: 8px;
   border-radius: 8px;
-  background-color: rgba(144, 202, 249, 0.8);
+  background-color: rgba(255, 255, 255, 0.6);
   box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.2);
   width: calc(100% - 24px);
   height: auto;
@@ -51,7 +51,7 @@
 
 #index-menu {
   padding-top: 8px;
-  margin-left: 16px;
+  margin: 0 16px;
   text-align: left;
 }
 
@@ -243,6 +243,69 @@ input::-webkit-inner-spin-button {
 
 .extend-buttom {
   margin-bottom: 180px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.disable-margin {
+  margin: 0 !important;
+}
+
+.stock-list-margin {
+  margin-bottom: 8px;
+}
+
+.green-price {
+  color: #1b5e20;
+  font-size: 24px;
+}
+
+.green-percent {
+  font-size: 16px;
+  color: #4caf50;
+}
+
+.red-price {
+  color: #b71c1c;
+  font-size: 24px;
+}
+
+.red-percent {
+  font-size: 16px;
+  color: #d84315;
+}
+
+.decrease-btn, .increase-btn {
+  font-size: 24px;
+  margin: 0 !important;
+  padding: 0 4px !important;
+}
+
+.decrease-btn {
+  color: #b71c1c;
+  border: 1px solid #929292 !important;
+  border-radius: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.increase-btn {
+  color: #1b5e20;
+  border: 1px solid #929292 !important;
+  border-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.amount-input {
+  border-top: 1px solid #929292 !important;
+  border-bottom: 1px solid #929292 !important;
+}
+
+.fix-padding {
+  padding: 0 0 0 24px !important;
 }
 
 @-webkit-keyframes fade-in {
