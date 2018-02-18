@@ -1,5 +1,5 @@
 <template>
-  <div id="index-menu">
+  <div id="index-menu" @click="selectSymbol">
     <b-row class="stock-list-margin">
       <b-col cols="3" class="cursor-pointer">
         <h4>{{ stock.symbol }}</h4>
@@ -62,6 +62,9 @@
       },
       decrease() {
         this.stock.amount -= 100
+      },
+      selectSymbol() {
+        this.$emit('selectSymbol', this.stock.symbol)
       }
     }
   }

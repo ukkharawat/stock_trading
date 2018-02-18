@@ -15,16 +15,16 @@
           <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
             <indexMenu
               :stock="stock"
-              @sectorClick="sectorClick">
+              @selectSymbol="selectSymbol">
             </indexMenu>
           </div>
         </div>
       </index>
     </b-col>
     <b-col cols="8"> 
-      <stock v-for="stock in filteredStock" v-show="getStock !== null"
-             :key="stock.symbol"
-             :stock="stock"></stock>
+      <!-- <stock v-show="selectedSymbol !== null"
+             :symbol="selectedSymbol">
+            </stock> -->
     </b-col>
   </b-row>
 </template>
@@ -39,6 +39,7 @@
     data() {
       return {
         symbol: "",
+        selectedSymbol: null,
         stocks: [
           {
             'symbol': 'TEST',
@@ -54,8 +55,7 @@
             'diffPer': 0.1,
             'amount': 50
           }
-        ],
-        sector: "AGRI"
+        ]
       }
     },
     components: {
@@ -64,32 +64,19 @@
       indexMenu
     },
     created() {
-      this.setCurrentCategory("AGRI")
+      this.selectedStock = this.stocks[0]
     },
     computed: {
       ...mapGetters([
         'getStock'
       ]),
-      filteredStock() {
-        if(this.getStock != null) {
-          return this.getStock.filter(stock => stock.sector === this.sector || stock.industry == this.industry)
-        }
-      },
       filteredStockBySearch() {
         return this.stocks.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
       }
     },
     methods: {
-      ...mapActions([
-        'setCurrentCategory'
-      ]),
-      sectorClick(sector) {
-        this.sector = sector
-        this.industry = null
-      },
-      industryClick(industry) {
-        this.industry = industry
-        this.sector = null
+      selectSymbol(symbol) {
+        this.selectedSymbol = symbol
       }
     }
   }
