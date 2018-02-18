@@ -76,7 +76,7 @@
         }
       },
       filteredStockBySearch() {
-        return this.stocks.filter(stock => stock.symbol.includes(this.symbol))
+        return this.stocks.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
       }
     },
     methods: {
