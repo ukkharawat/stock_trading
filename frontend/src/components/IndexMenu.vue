@@ -1,10 +1,10 @@
 <template>
   <div id="index-menu">
     <b-row class="stock-list-margin">
-      <b-col cols="3">
+      <b-col cols="3" class="cursor-pointer">
         <h4>{{ stock.symbol }}</h4>
       </b-col>
-      <b-col cols="4" class="text-right disable-padding">
+      <b-col cols="4" class="text-right disable-padding cursor-pointer">
         <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
           {{ stock.price }}
         </h4>
