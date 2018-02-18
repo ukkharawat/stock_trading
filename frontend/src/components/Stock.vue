@@ -12,8 +12,6 @@
           </amChart>
         </div>
         <b-col cols="2" class="vertical-center" v-show="isLoggedIn">
-          <holdingInfo :amount="formatAmount(stock.amount)"></holdingInfo>
-        <averagePriceInfo :price="formatAveragePrice(stock.averagePrice)"></averagePriceInfo>
           <b-form-input type="number"
                         name="amount"
                         v-model="amount"
@@ -37,8 +35,6 @@
   import stockDatasource from '@/datasources/Stock.datasource'
   import stockHeader from '@/components/StockHeader'
   import amChart from '@/components/AmChart'
-  import holdingInfo from '@/components/HoldingInfo'
-  import averagePriceInfo from '@/components/AveragePriceInfo'
   import confirmModal from '@/components/ConfirmModal'
 
   export default {
@@ -59,8 +55,6 @@
     components: {
       stockHeader,
       amChart,
-      holdingInfo,
-      averagePriceInfo,
       confirmModal
     },
     computed: {

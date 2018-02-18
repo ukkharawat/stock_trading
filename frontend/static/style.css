@@ -89,10 +89,6 @@
   padding: 0 !important;
 }
 
-#info-base {
-  margin-bottom: 16px;
-}
-
 .row {
   margin-right: 0 !important;
 }
@@ -113,15 +109,6 @@
 .dropdown-menu  {
   min-width: 0 !important;
   top: 80% !important;
-}
-
-.info {
-  text-align: left;
-  font-size: 18px;
-}
-
-.info-amount {
-  font-size: 14px;
 }
 
 .form-group {
