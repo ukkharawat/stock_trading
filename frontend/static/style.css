@@ -319,6 +319,10 @@ input::-webkit-inner-spin-button {
   cursor: pointer !important;
 }
 
+.warning {
+  color: #b71c1c;
+}
+
 @-webkit-keyframes fade-in {
   0%   { opacity: 0; }
   100% { opacity: 1; }

@@ -2,11 +2,22 @@
   <b-row id="main-page" >
     <b-col cols="4">
       <index>
-        <div v-for="stock in stocks" v-bind:key="stock.symbol">
-          <indexMenu
-            :stock="stock"
-            @sectorClick="sectorClick">
-          </indexMenu>
+        <div class="margin-top">
+          <b-form-input id="searchInput"
+                        type="text"
+                        name="symbol"
+                        v-model="symbol"
+                        placeholder="Type symbol">
+          </b-form-input>
+        </div>
+        <div class="scrollable">
+          <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
+          <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
+            <indexMenu
+              :stock="stock"
+              @sectorClick="sectorClick">
+            </indexMenu>
+          </div>
         </div>
       </index>
     </b-col>
@@ -27,6 +38,7 @@
   export default {
     data() {
       return {
+        symbol: "",
         stocks: [
           {
             'symbol': 'TEST',
@@ -62,6 +74,9 @@
         if(this.getStock != null) {
           return this.getStock.filter(stock => stock.sector === this.sector || stock.industry == this.industry)
         }
+      },
+      filteredStockBySearch() {
+        return this.stocks.filter(stock => stock.symbol.includes(this.symbol))
       }
     },
     methods: {
