@@ -7,8 +7,7 @@ const state = {
   stocks: null,
   step: 1,
   cash: null,
-  username: null,
-  category: null
+  username: null
 }
 
 const mutations = {
@@ -31,9 +30,6 @@ const mutations = {
   },
   SET_CASH(state, cash) {
     state.cash = cash
-  },
-  SET_CURRENT_CATEGORY(state, category) {
-    state.category = category
   }
 }
 
@@ -42,8 +38,7 @@ const actions = {
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
   setStep: ({ commit }, step) => commit('SET_STEP', step),
-  setCash: ({ commit }, cash) => commit('SET_CASH', cash),
-  setCurrentCategory: ({ commit }, category) => commit('SET_CURRENT_CATEGORY', category)
+  setCash: ({ commit }, cash) => commit('SET_CASH', cash)
 }
 
 const getters = {
@@ -51,7 +46,6 @@ const getters = {
   getUsername: state => state.username,
   getCash: state => state.cash,
   getStep: state => state.step,
-  getCurrentCategory: state => state.category,
   isLoggedIn: state => state.username !== null
 }
 

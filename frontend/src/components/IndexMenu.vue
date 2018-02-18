@@ -31,8 +31,6 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
-
   export default {
     props: {
       stock: {
@@ -40,9 +38,6 @@
       }
     },
     computed: {
-      ...mapGetters([
-        'getCurrentCategory'
-      ]),
       isPriceUp() {
         return this.stock.diff > 0
       },
@@ -54,9 +49,6 @@
       }
     },
     methods: {
-      ...mapActions([
-        'setCurrentCategory'
-      ]),
       increase() {
         this.stock.amount += 100
       },
