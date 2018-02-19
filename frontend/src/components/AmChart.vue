@@ -1,5 +1,5 @@
 <template>
-  <div :id="stockName" class="chartdiv">
+  <div :id="symbol" class="chartdiv">
   </div>
 </template>
 
@@ -10,7 +10,7 @@
   export default {
     name: 'app',
     props: {
-      stockName: {
+      symbol: {
         type: String
       }
     },
@@ -30,57 +30,50 @@
       getStep: {
         handler(val, oldVal) {
           if(oldVal > val) {
-            this.chart.dataSets[0].dataProvider = this.displayData[0]
+            this.chart.dataSets[0].dataProvider = this.displayData.slice(0, this.displayData.length - val)
             this.chart.validateData()
           } else {
-            stockController.getStockValue(this.stockName, oldVal, val)
+            // getCurrentStep
+            stockController.getStockValue(this.symbol, val)
               .then(response => response.stockValue)
-              .then(stockValue => this.findBuyPrice(stockValue))
               .then(stockValue => {
                 this.displayData = this.displayData.concat(stockValue)
                 this.chart.dataSets[0].dataProvider = this.displayData
                 this.chart.validateData()
-                
-                this.$emit("dataChange", this.displayData[this.displayData.length - 1])
               })
-              .catch(error => {})
           } 
         },
         deep: true
+      },
+      symbol: {
+        handler(val, oldVal) {
+          stockController.getStockValue(val, this.getStep)
+            .then(response => response.stockValue)
+            .then(stockValue => {
+              this.displayData = stockValue
+              this.chart.dataSets[0].dataProvider = this.displayData
+              this.chart.validateData()
+            })
+        }
       }
     },
     async created() {
-      let end = this.getStep
-
-      await stockController.getStockValue(this.stockName, 0, end)
+      await stockController.getStockValue(this.symbol, this.getStep)
         .then(response => response.stockValue)
-        .then(stockValue => this.findBuyPrice(stockValue))
         .then(stockValue => {
           this.displayData = stockValue
           this.createChart()
-
-          this.$emit("dataChange", this.displayData[this.displayData.length - 1])
-        })
-        .catch(error => {
-          this.$emit("displayChange", false)
         })
     },
     methods: {
-      findBuyPrice(stockValues) {
-        stockValues.forEach(stockValue => {
-          stockValue['BuyPrice'] = ((stockValue['Open'] + stockValue['Close'])/2).toFixed(2)
-        })
-
-        return stockValues
-      },
       createChart() {
-        this.chart = AmCharts.makeChart(this.stockName, {
+        this.chart = AmCharts.makeChart(this.symbol, {
           "type": "stock",
           "theme": "light",
           "glueToTheEnd": true,
 
           "dataSets": [{
-            "title": this.stockName,
+            "title": this.symbol,
             "fieldMappings": [{
               "fromField": "Open",
               "toField": "open"
