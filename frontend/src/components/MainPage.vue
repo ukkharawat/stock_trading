@@ -22,9 +22,9 @@
       </index>
     </b-col>
     <b-col cols="8"> 
-      <!-- <stock v-show="selectedSymbol !== null"
+      <stock v-show="selectedSymbol !== null"
              :symbol="selectedSymbol">
-            </stock> -->
+      </stock>
     </b-col>
   </b-row>
 </template>
