@@ -43,9 +43,9 @@ class Response(object):
     def createStockList(data):
         response = {
             'success': True,
-            'stockList': data
+            'stockList': [Datasource.createStockDetail(x) for x in data]
         }
-
+        
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
