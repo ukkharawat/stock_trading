@@ -2,11 +2,13 @@
   <div id="app">
     <navbar></navbar>
     <router-view/>
+    <summaryFooter></summaryFooter>
   </div>
 </template>
 
 <script>
   import navbar from '@/components/Navbar'
+  import summaryFooter from '@/components/SummaryFooter'
   import { mapGetters, mapActions } from 'vuex'
   import cacheController from '@/controllers/Cache.controller'
   import stockController from '@/controllers/Stock.controller'
@@ -16,7 +18,8 @@
   export default {
     name: 'app',
     components: {
-      navbar
+      navbar,
+      summaryFooter
     },
     async created() {
       this.setStockList()
