@@ -7,7 +7,8 @@ const state = {
   stocks: null,
   step: 1,
   cash: null,
-  username: null
+  username: null,
+  unchangedStocks: []
 }
 
 const mutations = {
@@ -30,11 +31,21 @@ const mutations = {
   },
   SET_CASH(state, cash) {
     state.cash = cash
+  },
+  UPDATE_UNCHANGED_STOCK(state, updatedStock) {
+    let stockIndex = state.unchangedStocks.findIndex(stock => stock.symbol === updatedStock.symbol)
+
+    if( stockIndex != -1)
+      state.unchangedStocks.splice(stockIndex, 1)
+
+    if( updatedStock.newAmount != updatedStock.oldAmount)
+      state.unchangedStocks.push(updatedStock)
   }
 }
 
 const actions = {
   updateStock: ({ commit }, stocks) => commit('UPDATE_STOCK', stocks),
+  updateUnchangedStock: ({ commit }, updatedStock) => commit('UPDATE_UNCHANGED_STOCK', updatedStock),
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
   setStep: ({ commit }, step) => commit('SET_STEP', step),
@@ -46,7 +57,8 @@ const getters = {
   getUsername: state => state.username,
   getCash: state => state.cash,
   getStep: state => state.step,
-  isLoggedIn: state => state.username !== null
+  isLoggedIn: state => state.username !== null,
+  getUnchangedStocks: state => state.unchangedStocks
 }
 
 export default new Vuex.Store({

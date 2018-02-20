@@ -13,14 +13,14 @@
         </p>
       </b-col>
       <b-col cols="5" class="fix-padding">
-          <div class="input-group">
+          <div class="input-group" @click.stop>
             <span class="input-group-btn">
               <button class="btn decrease-btn" @click="decrease" type="button" :disabled="!isAmountEnough">
                 <i class="fas fa-minus" />
               </button>
             </span>
-            <input type="number" class="form-control text-right amount-input" v-model="stock.amount">
-            <span class="input-group-btn">
+            <input type="number" class="form-control text-right amount-input" v-model="newAmount" disabled @click.stop>
+            <span class="input-group-btn" @click.stop>
               <button class="btn increase-btn" @click="increase" type="button"><i class="fas fa-plus" /></button>
             </span>
           </div>
@@ -31,10 +31,18 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
+  import stockDatasource from '@/datasources/Stock.datasource'
+
   export default {
     props: {
       stock: {
         type: Object
+      }
+    },
+    data() {
+      return {
+        newAmount: this.stock.amount
       }
     },
     computed: {
@@ -45,15 +53,25 @@
         return this.isPriceUp? '+': ''
       },
       isAmountEnough() {
-        return this.stock.amount >= 100
+        return this.newAmount >= 100
       }
     },
     methods: {
+      ...mapActions([
+        'updateUnchangedStock'
+      ]),
       increase() {
-        this.stock.amount += 100
+        this.newAmount += 100
+        this.updateStock()
       },
       decrease() {
-        this.stock.amount -= 100
+        this.newAmount -= 100
+        this.updateStock()
+      },
+      updateStock() {
+        let stock = stockDatasource.createUpdatedStock(this.stock, this.newAmount)
+
+        this.updateUnchangedStock(stock)
       },
       selectSymbol() {
         this.$emit('selectSymbol', this.stock.symbol)
