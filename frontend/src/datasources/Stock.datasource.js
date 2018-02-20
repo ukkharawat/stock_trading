@@ -27,13 +27,20 @@ export default class StockDatasource {
 
   static createDefaultStockList(stock) {
     return {
-      "symbol": stock.name,
+      "symbol": stock.symbol,
       "fullName": stock.fullname,
-      "industry": stock.industry,
-      "sector": stock.sector,
       "amount": 0,
       "price": 0,
       "averagePrice": 0
+    }
+  }
+
+  static createUpdatedStock(stock, newAmount) {
+    return {
+      "symbol": stock.symbol,
+      "oldAmount": stock.amount,
+      "newAmount": newAmount,
+      "price": stock.price
     }
   }
 }
