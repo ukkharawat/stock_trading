@@ -38,8 +38,7 @@ export default class StockDatasource {
   static createUpdatedStock(stock, newAmount) {
     return {
       "symbol": stock.symbol,
-      "oldAmount": stock.amount,
-      "newAmount": newAmount,
+      "changedAmount": newAmount - stock.amount,
       "price": stock.price
     }
   }

@@ -38,7 +38,7 @@ const mutations = {
     if( stockIndex != -1)
       state.unchangedStocks.splice(stockIndex, 1)
 
-    if( updatedStock.newAmount != updatedStock.oldAmount)
+    if( updatedStock.changedAmount != 0)
       state.unchangedStocks.push(updatedStock)
   }
 }
