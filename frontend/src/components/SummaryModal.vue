@@ -2,24 +2,61 @@
   <div class="modal" @click="closeModal" :style="{'display': isModalOpen}">
     <div class="base-modal" @click.stop>
       <div class="modal-header">
-        <h4 class="modal-title">Confirmation</h4>
+        <h4 class="modal-title">Trading Summary</h4>
         <button class="close" @click="closeModal">x</button>
       </div>
 
-      <div class="modal-content" v-if="actionInfo != null">
+      <div class="modal-content">
         <b-row class="justify-content-sm-center">
-          <b-col cols="8" class="remove-padding">
-            <h2 class="cautions">
-              Are you sure to {{actionInfo.action}} {{actionInfo.amount}} shares of {{actionInfo.symbol}} ?
-              ({{formatAveragePrice(totalPrice)}})
-            </h2>
+          <b-col cols="12" class="margin-col">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <h4 class="text-left table-header">Items</h4>
+                  </th>
+                  <th>
+                    <h4 class="text-right table-header">Price</h4>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="stock in getUnchangedStocks" :key="stock.symbol">
+                  <td>
+                    <p class="trading-stock text-left">
+                      {{isBuyOrSell(stock)}} {{Math.abs(stock.changedAmount)}} shares of {{stock.symbol}}
+                    </p>
+                  </td>
+                  <td>
+                    <p class="trading-stock text-right">
+                      {{ formatPrice(Math.abs(findPrice(stock))) }} ฿
+                    </p>
+                  </td>
+                </tr>
+                <tr class="double-underline">
+                  <td>
+                    <p class="trading-stock text-left"> Total </p>
+                  </td>
+                  <td>
+                    <p class="trading-stock text-right"> {{findTotalPrice()}} ฿</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </b-col>
+        </b-row>
 
+        <h6 class="cautions">* including commission (0.157%)</h6>
+        <h6 class="cautions padding-bottom">* including VAT (7% of commision)</h6>
+
+        <b-row class="justify-content-sm-center">
+          <b-col cols="8">
             <b-row>
               <b-col cols="6">
-                <b-button variant="primary" @click="submit">YES</b-button>
+                <b-button variant="primary" @click="submit">Proceed</b-button>
               </b-col>
               <b-col cols="6">
-                <b-button variant="danger" @click="closeModal">No</b-button>
+                <b-button variant="danger" @click="closeModal">Cancel</b-button>
               </b-col>
             </b-row>
           </b-col>
@@ -38,14 +75,13 @@
     data() {
       return {
         isModalOpen: 'none',
-        commissionRate: 0.001578,
-        vatRate: 1.07,
-        actionInfo: null
+        commissionRate: 0.00157,
+        vatRate: 1.07
       }
     },
     computed: {
       ...mapGetters([
-        'getCash'
+        'getUnchangedStocks'
       ]),
       totalPrice() {
         if(this.actionInfo.action === "buy") {
@@ -60,12 +96,27 @@
         'setCash',
         'updateStock'
       ]),
-      openModal(actionInfo) {
-        this.actionInfo = actionInfo
+      openModal() {
         this.isModalOpen = 'flex'
       },
       closeModal() {
         this.isModalOpen = 'none'
+      },
+      isBuyOrSell(stock) {
+        return stock.changedAmount > 0? 'Buy': 'Sell'
+      },
+      findPrice(stock) {
+        let price = stock.changedAmount * stock.price * (1 + this.commissionRate * this.vatRate)
+
+        return price
+      },
+      findTotalPrice() {
+        let totalPrice = this.getUnchangedStocks.map(stock => this.findPrice(stock))
+                                .reduce((sum, e) => sum + e, 0)
+
+        let result = totalPrice > 0 ? '': '-'
+
+        return result + this.formatPrice(Math.abs(totalPrice))
       },
       submit() {
         let action = this.actionInfo.action
@@ -101,12 +152,12 @@
         updateDetail.push(stockDatasource.createChangedStockObject(response))
         this.updateStock(updateDetail)
       },
-      formatAveragePrice(price) {
+      formatPrice(price) {
         if(!price)
           return '0'
         price = price.toFixed(2).toString()
 
-        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,') + " ฿"
+        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       }
     }
   }
