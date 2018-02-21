@@ -1,15 +1,30 @@
 <template>
-  <b-row id="portfolio-page" v-if="getStock !== null">
-    <b-col cols="2" v-if="getHoldingStock !== null">
+  <b-row id="portfolio-page" >
+    <b-col cols="4">
       <index>
-          <portfolioIndex
-            :title="title"
-            :stocksName="getStocksName">
-          </portfolioIndex>
+        <div class="margin-top">
+          <b-form-input id="searchInput"
+                        type="text"
+                        name="symbol"
+                        v-model="symbol"
+                        placeholder="Type symbol">
+          </b-form-input>
+        </div>
+        <div class="scrollable">
+          <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
+          <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
+            <indexMenu
+              :stock="stock"
+              @selectSymbol="selectSymbol">
+            </indexMenu>
+          </div>
+        </div>
       </index>
     </b-col>
-    <b-col cols="10" :class="{'extend-buttom': isExtendButtom}">
-      <stock v-for="stock in getHoldingStock" :key="stock.symbol" :stock="stock"></stock>
+    <b-col cols="8"> 
+      <stock v-show="selectedSymbol !== null"
+             :symbol="selectedSymbol">
+      </stock>
     </b-col>
   </b-row>
 </template>
@@ -17,32 +32,54 @@
 <script>
   import index from '@/components/Index'
   import stock from '@/components/Stock'
-  import portfolioIndex from '@/components/PortfolioIndex'
+  import indexMenu from '@/components/IndexMenu'
   import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
-        title: "Holding Stock"
+        symbol: "",
+        selectedSymbol: null,
+        stocks: [
+          {
+            'symbol': 'TEST',
+            'price': 255,
+            'diff': 0.74,
+            'diffPer': 0.1,
+            'amount': 50
+          },
+          {
+            'symbol': 'TEST2',
+            'price': 255,
+            'diff': -0.74,
+            'diffPer': 0.1,
+            'amount': 0
+          }
+        ]
       }
     },
     components: {
       index,
       stock,
-      portfolioIndex
+      indexMenu
+    },
+    created() {
+      this.selectedStock = this.stocks[0]
     },
     computed: {
       ...mapGetters([
-        "getStock"
+        'getStock'
       ]),
-      getHoldingStock() {
-        return this.getStock.filter(stock => stock.amount != 0)
+      filteredStockBySearch() {
+        return this.getPortfolio.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
       },
-      getStocksName() {
-        return this.getHoldingStock.map(stock => stock.symbol)
-      },
-      isExtendButtom() {
-        return this.getHoldingStock.length == 1
+      getPortfolio() {
+        return this.stocks.filter(stock => stock.amount > 0)
+      }
+    },
+    methods: {
+      selectSymbol(symbol) {
+        this.selectedSymbol = symbol
       }
     }
   }
