@@ -52,15 +52,19 @@ def getComparedValue(request):
 
 		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		endDate = startDate + datetime.timedelta(days = 1)
-		stockValue = StockValue.objects.filter(name = stock , date__gte=startDate)[:2]
+		try:
+			stockValue = StockValue.objects.filter(name = stock , date__gte=startDate)[:2]
 
-		if stockValue[0].date == endDate:
-			return Response.createUncomparedStockValue(stockValue[0])
+			if stockValue[0].date == endDate:
+				return Response.createUncomparedStockValue(stockValue[0])
 
-		elif stockValue[0].date == startDate:
-			return Response.createComparedStockValue(stockValue)
-		
-		else:
+			elif stockValue[0].date == startDate:
+				return Response.createComparedStockValue(stockValue)
+			
+			else:
+				return Response.createNotFoundStockValue()
+		except:
+			
 			return Response.createNotFoundStockValue()
 
 @api_view(['GET'])
