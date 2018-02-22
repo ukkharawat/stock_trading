@@ -6,10 +6,10 @@
       </b-col>
       <b-col cols="4" class="text-right disable-padding cursor-pointer">
         <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
-          {{ stock.price }}
+          {{ price }}
         </h4>
         <p class="disable-margin" :class="{'green-percent': isPriceUp, 'red-percent': !isPriceUp}">
-          {{isPlusSign}}{{ stock.diff }} ( {{ stock.diffPer }}% )
+          {{isPlusSign}}{{ diff }}( {{ diffPer }}% )
         </p>
       </b-col>
       <b-col cols="5" class="fix-padding">
@@ -19,7 +19,7 @@
                 <i class="fas fa-minus" />
               </button>
             </span>
-            <input type="number" class="form-control text-right amount-input" v-model="newAmount" disabled @click.stop>
+            <input type="number" class="form-control text-right amount-input" v-model="stock.amount" disabled @click.stop>
             <span class="input-group-btn" @click.stop>
               <button class="btn increase-btn" @click="increase" type="button"><i class="fas fa-plus" /></button>
             </span>
@@ -31,8 +31,9 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import stockDatasource from '@/datasources/Stock.datasource'
+  import stockController from '@/controllers/Stock.controller'
 
   export default {
     props: {
@@ -40,20 +41,34 @@
         type: Object
       }
     },
+    created() {
+      stockController.getComparedValue(this.stock.symbol, this.getStep)
+        .then(response => {
+          this.diff = response.diff
+          this.diffPer = response.diffPer
+          this.price = response.currentPrice
+        })
+    },
     data() {
       return {
-        newAmount: this.stock.amount
+        diff: null,
+        diffPer: null,
+        price: null,
+        changed: 0
       }
     },
     computed: {
+      ...mapGetters([
+        'getStep'
+      ]),
       isPriceUp() {
-        return this.stock.diff > 0
+        return this.diff > 0
       },
       isPlusSign() {
         return this.isPriceUp? '+': ''
       },
       isAmountEnough() {
-        return this.newAmount >= 100
+        return this.stock.amount >= 100
       }
     },
     methods: {
@@ -61,15 +76,19 @@
         'updateUnchangedStock'
       ]),
       increase() {
-        this.newAmount += 100
+        this.changed += 100
+        this.stock.amount += 100
+
         this.updateStock()
       },
       decrease() {
-        this.newAmount -= 100
+        this.changed -= 100
+        this.stock.amount -= 100
+
         this.updateStock()
       },
       updateStock() {
-        let stock = stockDatasource.createUpdatedStock(this.stock, this.newAmount)
+        let stock = stockDatasource.createUpdatedStock(this.stock, this.changed, this.price)
 
         this.updateUnchangedStock(stock)
       },
