@@ -5,7 +5,6 @@ Vue.use(Vuex)
 
 const state = {
   stocks: null,
-  step: 1,
   cash: null,
   username: null,
   unchangedStocks: []
@@ -26,9 +25,6 @@ const mutations = {
   SET_USERNAME(state, username) {
     state.username = username
   },
-  SET_STEP(state, step) {
-    state.step = step
-  },
   SET_CASH(state, cash) {
     state.cash = cash
   },
@@ -48,7 +44,6 @@ const actions = {
   updateUnchangedStock: ({ commit }, updatedStock) => commit('UPDATE_UNCHANGED_STOCK', updatedStock),
   setStock: ({ commit }, stocks) => commit('SET_STOCK', stocks),
   setUsername: ({ commit }, username) => commit('SET_USERNAME', username),
-  setStep: ({ commit }, step) => commit('SET_STEP', step),
   setCash: ({ commit }, cash) => commit('SET_CASH', cash)
 }
 
@@ -56,7 +51,6 @@ const getters = {
   getStock: state => state.stocks,
   getUsername: state => state.username,
   getCash: state => state.cash,
-  getStep: state => state.step,
   isLoggedIn: state => state.username !== null,
   getUnchangedStocks: state => state.unchangedStocks
 }

@@ -3,9 +3,10 @@ import headerUtility from '@/utilities/Header.utility'
 
 export default class StockService {
 
-  static async getStockValue(URL, params) {
+  static async getStockValue(URL, params, token) {
     return axios.get(URL, {
-        params: params
+        params: params,
+        headers: headerUtility.createAuthorzation(token)
       })
       .then(response => response.data)
   }
@@ -30,9 +31,10 @@ export default class StockService {
     return axios.get(URL).then(response => response.data)
   }
 
-  static async getComparedValue(URL, params) {
+  static async getComparedValue(URL, params, token) {
     return axios.get(URL, {
-              params: params
+              params: params,
+              headers: headerUtility.createAuthorzation(token)
             })
             .then(response => response.data)
   }

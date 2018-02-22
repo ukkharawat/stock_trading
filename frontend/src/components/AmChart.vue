@@ -5,7 +5,6 @@
 
 <script>
   import stockController from '@/controllers/Stock.controller'
-  import { mapGetters } from 'vuex'
 
   export default {
     name: 'app',
@@ -17,37 +16,13 @@
     data() {
       return {
         chart: null,
-        displayData: [],
-        stockData: []
+        displayData: []
       }
     },
-    computed: {
-      ...mapGetters([
-        'getStep'
-      ])
-    },
     watch: {
-      getStep: {
-        handler(val, oldVal) {
-          if(oldVal > val) {
-            this.chart.dataSets[0].dataProvider = this.displayData.slice(0, this.displayData.length - val)
-            this.chart.validateData()
-          } else {
-            // getCurrentStep
-            stockController.getStockValue(this.symbol, val)
-              .then(response => response.stockValue)
-              .then(stockValue => {
-                this.displayData = this.displayData.concat(stockValue)
-                this.chart.dataSets[0].dataProvider = this.displayData
-                this.chart.validateData()
-              })
-          } 
-        },
-        deep: true
-      },
       symbol: {
         handler(val, oldVal) {
-          stockController.getStockValue(val, this.getStep)
+          stockController.getStockValue(val)
             .then(response => response.stockValue)
             .then(stockValue => {
               this.displayData = stockValue
@@ -58,7 +33,7 @@
       }
     },
     async created() {
-      await stockController.getStockValue(this.symbol, this.getStep)
+      await stockController.getStockValue(this.symbol)
         .then(response => response.stockValue)
         .then(stockValue => {
           this.displayData = stockValue
@@ -66,6 +41,15 @@
         })
     },
     methods: {
+      updateChart() {
+        stockController.getStockValue(this.symbol)
+          .then(response => response.stockValue)
+          .then(stockValue => {
+            this.displayData = stockValue
+            this.chart.dataSets[0].dataProvider = this.displayData
+            this.chart.validateData()
+          })
+      },
       createChart() {
         this.chart = AmCharts.makeChart(this.symbol, {
           "type": "stock",

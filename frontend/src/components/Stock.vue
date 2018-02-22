@@ -1,5 +1,5 @@
 <template>
-  <div id="stock" v-show="symbol != null">
+  <div id="stock" v-if="symbol != null && getStock != null">
       <stockHeader :symbol="symbol"
                    :fullname="fullname">
       </stockHeader>

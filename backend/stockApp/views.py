@@ -29,8 +29,15 @@ def list(request):
 @permission_classes((AllowAny, ))
 def getCurrentStockData(request):
 	if request.method == 'GET':
+		if request.user is not None:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		else:
+			step = 1
+			
 		symbol = request.GET['symbol']
-		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		
@@ -43,11 +50,18 @@ def getCurrentStockData(request):
 			return Response.createNotFoundStockValue()
 
 @api_view(['GET'])
-@permission_classes((AllowAny, ))
+@permission_classes((AllowAny,))
 def getComparedValue(request):
 	if request.method == 'GET':
+		if request.user is not None:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		else:
+			step = 1
+		
 		symbol = request.GET['symbol']
-		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 
 		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
@@ -71,8 +85,15 @@ def getComparedValue(request):
 @permission_classes((AllowAny, ))
 def getStockValue(request):
 	if request.method == 'GET':
+		if request.user is not None:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		else:
+			step = 1
+
 		symbol = request.GET['symbol']
-		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 

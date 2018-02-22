@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
   import stockDatasource from '@/datasources/Stock.datasource'
   import stockController from '@/controllers/Stock.controller'
 
@@ -42,7 +42,7 @@
       }
     },
     created() {
-      stockController.getComparedValue(this.stock.symbol, this.getStep)
+      stockController.getComparedValue(this.stock.symbol)
         .then(response => {
           this.diff = response.diff
           this.diffPer = response.diffPer
@@ -58,9 +58,6 @@
       }
     },
     computed: {
-      ...mapGetters([
-        'getStep'
-      ]),
       isPriceUp() {
         return this.diff > 0
       },

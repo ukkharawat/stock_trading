@@ -6,13 +6,14 @@ import ApiURL from '../utilities/ApiURL.utility';
 
 export default class StockController {
 
-  static getStockValue(symbol, step) {
+  static getStockValue(symbol) {
     let params = {
-      'symbol': symbol,
-      'step': step
+      'symbol': symbol
     }
 
-    return stockService.getStockValue(ApiURL.getStockValueURL, params)
+    let token = cacheController.getToken()
+
+    return stockService.getStockValue(ApiURL.getStockValueURL, params, token)
   }
 
   static findStockTradingCost(tradingAction) {
@@ -35,12 +36,13 @@ export default class StockController {
     return stockService.getStockList(ApiURL.getStockListURL)
   }
 
-  static getComparedValue(symbol, step) {
+  static getComparedValue(symbol) {
     let params = {
-      'symbol': symbol,
-      'step': step
+      'symbol': symbol
     }
-    
-    return stockService.getComparedValue(ApiURL.getComparedValueURL, params)
+
+    let token = cacheController.getToken()
+
+    return stockService.getComparedValue(ApiURL.getComparedValueURL, params, token)
   }
 }

@@ -40,7 +40,6 @@
     methods: {
       ...mapActions([
         'setUsername',
-        'setStep',
         'updateStock',
         'setStock',
         'setCash'
@@ -49,7 +48,6 @@
         userController.getUserDetail()
           .then(response => {
             this.setCash(response.cash)
-            this.setStep(response.stepCount)
 
             let stocks = response.portfolio.map(stock => stockDatasource.createChangedStockObject(stock))
             this.updateStock(stocks)

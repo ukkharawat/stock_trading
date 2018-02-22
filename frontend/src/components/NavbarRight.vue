@@ -67,8 +67,7 @@
     methods: {
       ...mapActions([
         'setUsername',
-        'setCash',
-        'setStep'
+        'setCash'
       ]),
       logout() {
         userController.logout()
@@ -82,7 +81,6 @@
       clearVuex() {
         this.setUsername(null)
         this.setCash(null)
-        this.setStep(1)
       }
     },
     filters: {
