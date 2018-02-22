@@ -11,4 +11,5 @@ export default class ApiURL {
   static sellStockURL = `${baseURL}/stock/sell`
   static getStockListURL = `${baseURL}/stock/list`
   static getStockValueURL = `${baseURL}/stock/stockValue`
+  static getComparedValueURL = `${baseURL}/stock/comparedValue`
 }

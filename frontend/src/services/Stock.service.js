@@ -29,4 +29,11 @@ export default class StockService {
   static async getStockList(URL) {
     return axios.get(URL).then(response => response.data)
   }
+
+  static async getComparedValue(URL, params) {
+    return axios.get(URL, {
+              params: params
+            })
+            .then(response => response.data)
+  }
 }

@@ -6,11 +6,10 @@ import ApiURL from '../utilities/ApiURL.utility';
 
 export default class StockController {
 
-  static getStockValue(symbol, start, end) {
+  static getStockValue(symbol, step) {
     let params = {
       'symbol': symbol,
-      'start': start,
-      'end': end
+      'step': step
     }
 
     return stockService.getStockValue(ApiURL.getStockValueURL, params)
@@ -34,5 +33,14 @@ export default class StockController {
 
   static getStockList() {
     return stockService.getStockList(ApiURL.getStockListURL)
+  }
+
+  static getComparedValue(symbol, step) {
+    let params = {
+      'symbol': symbol,
+      'step': step
+    }
+    
+    return stockService.getComparedValue(ApiURL.getComparedValueURL, params)
   }
 }
