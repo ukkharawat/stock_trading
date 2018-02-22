@@ -3,7 +3,7 @@
       <stockHeader :symbol="symbol"
                    :fullname="fullname">
       </stockHeader>
-
+      
       <b-row>
         <b-col cols="12">
           <amChart :symbol="symbol"></amChart>
@@ -22,14 +22,19 @@
     props: {
       symbol: {
         type: String
-      },
-      fullname: {
-        type: String
       }
     },
     components: {
       stockHeader,
       amChart
+    },
+    computed: {
+      ...mapGetters([
+        'getStock'
+      ]),
+      fullname() {
+        return this.getStock.find(stock => stock.symbol === this.symbol).fullname
+      }
     }
   }
 </script>
