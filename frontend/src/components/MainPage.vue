@@ -1,5 +1,5 @@
 <template>
-  <b-row id="main-page" >
+  <b-row id="main-page" v-if="getStock != null">
     <b-col cols="4">
       <index>
         <div class="margin-top">
@@ -38,24 +38,7 @@
   export default {
     data() {
       return {
-        symbol: "",
-        selectedSymbol: null,
-        stocks: [
-          {
-            'symbol': 'TEST',
-            'price': 255,
-            'diff': 0.74,
-            'diffPer': 0.1,
-            'amount': 50
-          },
-          {
-            'symbol': 'TEST2',
-            'price': 255,
-            'diff': -0.74,
-            'diffPer': 0.1,
-            'amount': 50
-          }
-        ]
+        symbol: ""
       }
     },
     components: {
@@ -63,15 +46,20 @@
       stock,
       indexMenu
     },
-    created() {
-      this.selectedStock = this.stocks[0]
-    },
     computed: {
       ...mapGetters([
         'getStock'
       ]),
       filteredStockBySearch() {
-        return this.stocks.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
+        return this.getStock.slice(0,1)
+        //.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
+      }
+    },
+    watch: {
+      getStock: {
+        handler(stock) {
+          this.selectedSymbol = stock[0].symbol
+        }
       }
     },
     methods: {
