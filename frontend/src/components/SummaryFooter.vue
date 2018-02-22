@@ -2,13 +2,15 @@
   <div>
     <div class="footer" v-show="isUnchangedStock">
       <div class="row">
-          <b-col cols="7" class="text-left">
+          <b-col cols="7" class="text-left" >
               <p class="summary" v-show="buyAmount != 0">Buy {{ formatNumber(buyAmount) }} shares,</p>
               <p class="summary" v-show="sellAmount != 0">Sell {{ formatNumber(sellAmount) }} shares,</p>
-              <p class="summary" v-show="totalPrice != 0">Total price {{ totalPrice }} baht</p>
+              <p class="summary" v-show="totalPrice > 0">Total price {{ formatPrice(totalPrice) }} baht</p>
+              <p class="summary" v-show="totalPrice < 0">Gain {{ formatPrice(Math.abs(totalPrice)) }} baht</p>
           </b-col>
           <b-col cols="5" class="text-right">
-              <p class="summary complete-trading" @click="openModal">complete trading</p>
+              <p class="summary complete-trading" v-if="totalPrice <= getCash " @click="openModal">complete trading</p>
+              <p class="summary" v-else>check your cash</p>
           </b-col>
       </div>
     </div>
@@ -34,7 +36,8 @@
     },
     computed: {
         ...mapGetters([
-            'getUnchangedStocks'
+            'getUnchangedStocks',
+            'getCash'
         ]),
         isUnchangedStock() {
             return this.getUnchangedStocks.length != 0
@@ -56,15 +59,19 @@
                                    .reduce((sum, e) => sum + e, 0)
         },
         updateSellAmount(stocks) {
-            this.sellAmount = stocks.map(stock => stock.changedAmount)
+            this.sellAmount = stocks.map(stock => Math.abs(stock.changedAmount))
                                     .reduce((sum, e) => sum + e, 0)
         },
         findTotalPrice(stocks) {
             this.totalPrice = stocks.map(stock => stock.changedAmount * stock.price)
-                                    .map(price => parseInt(price) * (1 + this.commissionRate * this.vatRate))
+                                    .map(price => {
+                                        if(price > 0) {
+                                            return parseInt(price) * (1 + this.commissionRate * this.vatRate)
+                                        } else {
+                                            return parseInt(price) * (1 - this.commissionRate * this.vatRate)
+                                        }
+                                    })
                                     .reduce((sum, e) => sum + e, 0)
-
-            this.totalPrice = this.formatPrice(this.totalPrice)
         },
         formatPrice(price) {
             if(!price)
