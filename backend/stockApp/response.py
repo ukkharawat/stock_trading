@@ -97,7 +97,7 @@ class Response(object):
         diff = oldPrice - currentPrice
 
         response = {
-            'success': False,
+            'success': True,
             'diff': diff,
             'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)),
             'currentPrice': currentPrice,
