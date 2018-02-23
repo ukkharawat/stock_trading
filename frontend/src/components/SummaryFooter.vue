@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="footer" v-show="isUnchangedStock">
+    <div class="footer" v-show="isUnchangedStock && isLoggedIn">
       <div class="row">
           <b-col cols="7" class="text-left" >
               <p class="summary" v-show="buyAmount != 0">Buy {{ formatNumber(buyAmount) }} shares,</p>
@@ -37,7 +37,8 @@
     computed: {
         ...mapGetters([
             'getUnchangedStocks',
-            'getCash'
+            'getCash',
+            'isLoggedIn'
         ]),
         isUnchangedStock() {
             return this.getUnchangedStocks.length != 0

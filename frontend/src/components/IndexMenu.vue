@@ -15,13 +15,15 @@
       <b-col cols="5" class="fix-padding">
           <div class="input-group" @click.stop>
             <span class="input-group-btn">
-              <button class="btn decrease-btn" @click="decrease" type="button" :disabled="!isAmountEnough">
+              <button class="btn decrease-btn" @click="decrease" type="button" :disabled="!isAmountEnough || !isLoggedIn">
                 <i class="fas fa-minus" />
               </button>
             </span>
-            <input type="number" class="form-control text-right amount-input" v-model="changedAmount" disabled @click.stop>
+            <input type="number" class="form-control text-right amount-input" v-model="stock.amount" disabled @click.stop>
             <span class="input-group-btn" @click.stop>
-              <button class="btn increase-btn" @click="increase" type="button"><i class="fas fa-plus" /></button>
+              <button class="btn increase-btn" @click="increase" type="button" :disabled="!isLoggedIn">
+                <i class="fas fa-plus" />
+              </button>
             </span>
           </div>
       </b-col>
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import stockDatasource from '@/datasources/Stock.datasource'
   import stockController from '@/controllers/Stock.controller'
 
@@ -48,19 +50,19 @@
                   this.diffPer = response.diffPer
                   this.averagePrice = response.currentPrice
                 })
-                .then(() => {
-                  this.changedAmount = this.stock.amount
-                })
     },
     data() {
       return {
         diff: null,
         diffPer: null,
-        averagePrice: null,
-        changedAmount: 0
+        averagePrice: null
       }
     },
     computed: {
+      ...mapGetters([
+        'isLoggedIn',
+        'getTrackingDay'
+      ]),
       isPriceUp() {
         return this.diff > 0
       },
@@ -68,7 +70,19 @@
         return this.isPriceUp? '+': ''
       },
       isAmountEnough() {
-        return this.changedAmount >= 100
+        return this.stock.amount >= 100
+      }
+    },
+    watch: {
+      getTrackingDay: {
+        async handler() {
+          await stockController.getComparedValue(this.stock.symbol)
+                  .then(response => {
+                    this.diff = response.diff
+                    this.diffPer = response.diffPer
+                    this.averagePrice = response.currentPrice
+                  })
+        }
       }
     },
     methods: {
@@ -76,17 +90,19 @@
         'updateUnchangedStock'
       ]),
       increase() {
-        this.changedAmount += 100
+        this.stock.changedAmount += 100
+        this.stock.amount += 100
 
         this.updateStock()
       },
       decrease() {
-        this.changedAmount -= 100
+        this.stock.changedAmount -= 100
+        this.stock.amount -= 100
 
         this.updateStock()
       },
       updateStock() {
-        let stock = stockDatasource.createUpdatedStock(this.stock, this.changedAmount, this.averagePrice)
+        let stock = stockDatasource.createUpdatedStock(this.stock, this.averagePrice)
 
         this.updateUnchangedStock(stock)
       },

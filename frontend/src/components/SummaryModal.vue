@@ -87,8 +87,8 @@
     },
     methods: {
       ...mapActions([
-        'setCash',
-        'updateStock'
+        'clearUnchangedStock',
+        'increaseTrackingDay'
       ]),
       openModal() {
         this.isModalOpen = 'flex'
@@ -120,9 +120,12 @@
         return result + price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       },
       async proceed() {
-        await this.sellStock()
-        await this.buyStock()
-
+        //await this.sellStock()
+        //await this.buyStock()
+        await this.nextDay()
+        
+        this.clearUnchangedStock()
+        this.closeModal()
       },
       sellStock() {
         let sellStock = this.getUnchangedStocks.filter(stock => stock.changedAmount < 0)
@@ -137,6 +140,9 @@
 
         if(buyStock.length != 0)
           return stockController.buyStock(buyStock)
+      },
+      nextDay() {
+        userController.nextDay().then(() => this.increaseTrackingDay())
       }
     }
   }

@@ -34,8 +34,16 @@
     },
     computed: {
       ...mapGetters([
-        'isLoggedIn'
+        'isLoggedIn',
+        'getTrackingDay'
       ])
+    },
+    watch: {
+      getTrackingDay: {
+        handler() {
+          this.updateUserDetail()
+        }
+      }
     },
     methods: {
       ...mapActions([

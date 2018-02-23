@@ -5,6 +5,7 @@
 
 <script>
   import stockController from '@/controllers/Stock.controller'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'app',
@@ -19,6 +20,11 @@
         displayData: []
       }
     },
+    computed: {
+      ...mapGetters([
+        'getTrackingDay'
+      ])
+    },
     watch: {
       symbol: {
         handler(val, oldVal) {
@@ -29,6 +35,11 @@
               this.chart.dataSets[0].dataProvider = this.displayData
               this.chart.validateData()
             })
+        }
+      },
+      getTrackingDay: {
+        handler() {
+          this.updateChart()
         }
       }
     },
