@@ -39,7 +39,7 @@ export default class StockService {
 
   static async axiosMultiObject(objects) {
     return axios.all(objects).then(axios.spread((acct, perms) => {
-      console.log(acct, perms)
+      return acct
     }))
   }
 }
