@@ -111,7 +111,7 @@ def buyStock(request):
 		username = str(request.user)
 		action = 'BUY'
 		user = UserDetail.objects.get(username = username)
-	
+		
 		totalBuyPrice = Utility.calculateTotalBuyPrice(data['averagePrice'], data['volume'])
 		newCash = float("{0:.2f}".format(user.cash - totalBuyPrice))
 
@@ -159,7 +159,7 @@ def sellStock(request):
 
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
 				newVolume = portfolio.volume - data['volume']
-				totalSellPrice = utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
+				totalSellPrice = Utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
 				newCash = float("{0:.2f}".format(user.cash + totalBuyPrice))
 
 				updateUser =  Datasource.createUserDetail(user, newCash)
