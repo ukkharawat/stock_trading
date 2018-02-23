@@ -12,7 +12,7 @@ export default class StockDatasource {
   static createTradingStock(stock) {
     return {
       "symbol": stock.symbol,
-      "volume": stock.amount,
+      "volume": stock.changedAmount,
       "averagePrice": stock.averagePrice
     }
   }
@@ -27,13 +27,21 @@ export default class StockDatasource {
 
   static createDefaultStockList(stock) {
     return {
-      "symbol": stock.name,
-      "fullName": stock.fullname,
-      "industry": stock.industry,
-      "sector": stock.sector,
+      "symbol": stock.symbol,
+      "fullname": stock.fullname,
       "amount": 0,
+      "changedAmount": 0,
       "price": 0,
       "averagePrice": 0
+    }
+  }
+
+  static createUpdatedStock(stock, averagePrice) {
+    return {
+      "symbol": stock.symbol,
+      "amount": stock.amount,
+      "changedAmount": stock.changedAmount,
+      "averagePrice": averagePrice
     }
   }
 }

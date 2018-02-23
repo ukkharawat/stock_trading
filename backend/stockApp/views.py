@@ -29,8 +29,15 @@ def list(request):
 @permission_classes((AllowAny, ))
 def getCurrentStockData(request):
 	if request.method == 'GET':
+		if request.user is not None:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		else:
+			step = 1
+			
 		symbol = request.GET['symbol']
-		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		
@@ -43,32 +50,50 @@ def getCurrentStockData(request):
 			return Response.createNotFoundStockValue()
 
 @api_view(['GET'])
-@permission_classes((AllowAny, ))
+@permission_classes((AllowAny,))
 def getComparedValue(request):
 	if request.method == 'GET':
+		if request.user is not None:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		else:
+			step = 1
+		
 		symbol = request.GET['symbol']
-		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 
 		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		endDate = startDate + datetime.timedelta(days = 1)
-		stockValue = StockValue.objects.filter(name = stock , date__gte=startDate)[:2]
+		try:
+			stockValue = StockValue.objects.filter(name = stock , date__gte=startDate)[:2]
 
-		if stockValue[0].date == endDate:
-			return Response.createUncomparedStockValue(stockValue[0])
+			if stockValue[0].date == endDate:
+				return Response.createUncomparedStockValue(stockValue[0])
 
-		elif stockValue[0].date == startDate:
-			return Response.createComparedStockValue(stockValue)
-		
-		else:
+			elif stockValue[0].date == startDate:
+				return Response.createComparedStockValue(stockValue)
+			
+			else:
+				return Response.createNotFoundStockValue()
+		except:
+			
 			return Response.createNotFoundStockValue()
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
 def getStockValue(request):
 	if request.method == 'GET':
+		if request.user is not None:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		else:
+			step = 1
+
 		symbol = request.GET['symbol']
-		step = int(request.GET['step'])
 		stock = Stock.objects.get(name = symbol)
 		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 
@@ -86,7 +111,7 @@ def buyStock(request):
 		username = str(request.user)
 		action = 'BUY'
 		user = UserDetail.objects.get(username = username)
-	
+		
 		totalBuyPrice = Utility.calculateTotalBuyPrice(data['averagePrice'], data['volume'])
 		newCash = float("{0:.2f}".format(user.cash - totalBuyPrice))
 
@@ -134,7 +159,7 @@ def sellStock(request):
 
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
 				newVolume = portfolio.volume - data['volume']
-				totalSellPrice = utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
+				totalSellPrice = Utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
 				newCash = float("{0:.2f}".format(user.cash + totalBuyPrice))
 
 				updateUser =  Datasource.createUserDetail(user, newCash)

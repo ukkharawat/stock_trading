@@ -12,7 +12,6 @@ class ResponseObject(object):
             'success': True,
             'username': userSerializer['username'],
             'cash': userSerializer['cash'],
-            'stepCount': userSerializer['stepCount'],
             'Token': key,
             'portfolio': portfolioList
         }
@@ -33,7 +32,6 @@ class ResponseObject(object):
             'success': True,
             'username': user['username'],
             'cash': user['cash'],
-            'stepCount': user['stepCount'],
             'Token': key
         }
 
@@ -63,7 +61,6 @@ class ResponseObject(object):
             'success': True,
             'username': str(user.username),
             'cash': user.cash,
-            'stepCount': user.stepCount,
             'portfolio': portfolioList
         }
 

@@ -95,8 +95,7 @@
     methods:{
       ...mapActions([
         'setUsername',
-        'setCash',
-        'setStep'
+        'setCash'
       ]),
       openModal() {
         this.isModalOpen = 'flex'
@@ -119,7 +118,6 @@
       fetchUserDetail(user) {
         cacheController.setUserCache(user.username, user.Token)
         this.setUsername(user.username)
-        this.setStep(user.stepCount)
         this.setCash(user.cash)
       }
     },

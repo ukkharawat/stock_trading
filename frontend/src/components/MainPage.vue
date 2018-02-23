@@ -1,21 +1,30 @@
 <template>
-  <b-row id="main-page" v-show="getStock !== null">
-    <b-col cols="2">
+  <b-row id="main-page" v-if="getStock != null">
+    <b-col cols="4">
       <index>
-        <div v-for="menuItem in menuItems" v-bind:key="menuItem.industry">
-          <indexMenu
-            :industry="menuItem.industry"
-            :sectors="menuItem.sectors"
-            @industryClick="industryClick"
-            @sectorClick="sectorClick">
-          </indexMenu>
+        <div class="margin-top">
+          <b-form-input id="searchInput"
+                        type="text"
+                        name="symbol"
+                        v-model="symbol"
+                        placeholder="Type symbol">
+          </b-form-input>
+        </div>
+        <div class="scrollable">
+          <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
+          <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
+            <indexMenu
+              :stock="stock"
+              @selectSymbol="selectSymbol">
+            </indexMenu>
+          </div>
         </div>
       </index>
     </b-col>
-    <b-col cols="10">
-      <stock v-for="stock in filteredStock"
-             :key="stock.symbol"
-             :stock="stock"></stock>
+    <b-col cols="8"> 
+      <stock v-show="selectedSymbol !== null"
+             :symbol="selectedSymbol">
+      </stock>
     </b-col>
   </b-row>
 </template>
@@ -24,47 +33,13 @@
   import index from '@/components/Index'
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
-        menuItems: [
-          {
-            industry: "AGRO",
-            sectors: ["AGRI", "FOOD"]
-          },
-          {
-            industry: "CONSUMP",
-            sectors: ["FASHION", "HOME", "PERSON"]
-          },
-          {
-            industry: "FINCIAL",
-            sectors: ["BANK", "FIN", "INSUR"]
-          },
-          {
-            industry: "INDUS",
-            sectors: ["AUTO", "IMM", "PAPER", "PETRO", "PKG", "STEEL"]
-          },
-          {
-            industry: "PROPCON",
-            sectors: ["CONMAT", "PROP", "PF&REITs", "CONS"]
-          },
-          {
-            industry: "RESOURC",
-            sectors: ["ENERG", "MINE"]
-          },
-          {
-            industry: "SERVICE",
-            sectors: ["COMM", "HELTH", "MEDIA", "PROF", "TOURISM", "TRANS"]
-          },
-          {
-            industry: "TECH",
-            sectors: ["ETRON", "ICT"]
-          }
-        ],
-        sector: "AGRI",
-        industry: null
+        symbol: "",
+        selectedSymbol: null
       }
     },
     components: {
@@ -72,30 +47,25 @@
       stock,
       indexMenu
     },
-    created() {
-      this.setCurrentCategory("AGRI")
-    },
     computed: {
       ...mapGetters([
         'getStock'
       ]),
-      filteredStock() {
-        if(this.getStock != null) {
-          return this.getStock.filter(stock => stock.sector === this.sector || stock.industry == this.industry)
+      filteredStockBySearch() {
+        return this.getStock.slice(0,1)
+        //.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
+      }
+    },
+    watch: {
+      getStock: {
+        handler(stock) {
+          this.selectedSymbol = stock[0].symbol
         }
       }
     },
     methods: {
-      ...mapActions([
-        'setCurrentCategory'
-      ]),
-      sectorClick(sector) {
-        this.sector = sector
-        this.industry = null
-      },
-      industryClick(industry) {
-        this.industry = industry
-        this.sector = null
+      selectSymbol(symbol) {
+        this.selectedSymbol = symbol
       }
     }
   }

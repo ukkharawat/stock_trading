@@ -56,7 +56,7 @@
           let holdingStock = this.getStock.filter(stock => stock.amount > 0)
           
           if(holdingStock.length > 0) {
-            this.capital += holdingStock.map(stock => stock.amount * stock.averagePrice)
+            this.capital += holdingStock.map(stock => (stock.amount - stock.changedAmount) * stock.averagePrice)
                               .reduce((sum, current) => sum + current)
           }
           
@@ -67,8 +67,7 @@
     methods: {
       ...mapActions([
         'setUsername',
-        'setCash',
-        'setStep'
+        'setCash'
       ]),
       logout() {
         userController.logout()
@@ -82,7 +81,6 @@
       clearVuex() {
         this.setUsername(null)
         this.setCash(null)
-        this.setStep(1)
       }
     },
     filters: {

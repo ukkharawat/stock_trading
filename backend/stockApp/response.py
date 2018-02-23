@@ -43,9 +43,9 @@ class Response(object):
     def createStockList(data):
         response = {
             'success': True,
-            'stockList': data
+            'stockList': [Datasource.createStockDetail(x) for x in data]
         }
-
+        
         return JsonResponse(response, status = status.HTTP_200_OK)
 
     @staticmethod
@@ -97,7 +97,7 @@ class Response(object):
         diff = oldPrice - currentPrice
 
         response = {
-            'success': False,
+            'success': True,
             'diff': diff,
             'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)),
             'currentPrice': currentPrice,

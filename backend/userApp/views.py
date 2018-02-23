@@ -93,7 +93,7 @@ def getUserDetail(request):
 def nextStep(request):
     if request.method == 'PUT':
         user = UserDetail.objects.get(username = request.user)
-        newStepCount = request.data['stepCount']
+        newStepCount = user.stepCount + 1
         updateUser = Datasource.createUpdateUser(user, newStepCount)
         userSerializer = UserDetailSerializer(user, data = updateUser)
 
