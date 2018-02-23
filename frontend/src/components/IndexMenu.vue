@@ -6,7 +6,7 @@
       </b-col>
       <b-col cols="4" class="text-right disable-padding cursor-pointer">
         <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
-          {{ price }}
+          {{ averagePrice }}
         </h4>
         <p class="disable-margin" :class="{'green-percent': isPriceUp, 'red-percent': !isPriceUp}">
           {{isPlusSign}}{{ diff }}( {{ diffPer }}% )
@@ -19,7 +19,7 @@
                 <i class="fas fa-minus" />
               </button>
             </span>
-            <input type="number" class="form-control text-right amount-input" v-model="stock.amount" disabled @click.stop>
+            <input type="number" class="form-control text-right amount-input" v-model="changedAmount" disabled @click.stop>
             <span class="input-group-btn" @click.stop>
               <button class="btn increase-btn" @click="increase" type="button"><i class="fas fa-plus" /></button>
             </span>
@@ -41,20 +41,23 @@
         type: Object
       }
     },
-    created() {
-      stockController.getComparedValue(this.stock.symbol)
-        .then(response => {
-          this.diff = response.diff
-          this.diffPer = response.diffPer
-          this.price = response.currentPrice
-        })
+    async created() {
+      await stockController.getComparedValue(this.stock.symbol)
+                .then(response => {
+                  this.diff = response.diff
+                  this.diffPer = response.diffPer
+                  this.averagePrice = response.currentPrice
+                })
+                .then(() => {
+                  this.changedAmount = this.stock.amount
+                })
     },
     data() {
       return {
         diff: null,
         diffPer: null,
-        price: null,
-        changed: 0
+        averagePrice: null,
+        changedAmount: 0
       }
     },
     computed: {
@@ -65,7 +68,7 @@
         return this.isPriceUp? '+': ''
       },
       isAmountEnough() {
-        return this.stock.amount >= 100
+        return this.changedAmount >= 100
       }
     },
     methods: {
@@ -73,19 +76,17 @@
         'updateUnchangedStock'
       ]),
       increase() {
-        this.changed += 100
-        this.stock.amount += 100
+        this.changedAmount += 100
 
         this.updateStock()
       },
       decrease() {
-        this.changed -= 100
-        this.stock.amount -= 100
+        this.changedAmount -= 100
 
         this.updateStock()
       },
       updateStock() {
-        let stock = stockDatasource.createUpdatedStock(this.stock, this.changed, this.price)
+        let stock = stockDatasource.createUpdatedStock(this.stock, this.changedAmount, this.averagePrice)
 
         this.updateUnchangedStock(stock)
       },

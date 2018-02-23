@@ -63,7 +63,7 @@
                                     .reduce((sum, e) => sum + e, 0)
         },
         findTotalPrice(stocks) {
-            this.totalPrice = stocks.map(stock => stock.changedAmount * stock.price)
+            this.totalPrice = stocks.map(stock => stock.changedAmount * stock.averagePrice)
                                     .map(price => {
                                         if(price > 0) {
                                             return parseInt(price) * (1 + this.commissionRate * this.vatRate)
