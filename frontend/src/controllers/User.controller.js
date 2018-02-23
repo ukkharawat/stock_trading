@@ -23,7 +23,7 @@ export default class UserController {
     return userService.logout(apiURL.logoutURL, token)
   }
 
-  static nextDay(cash) {
+  static nextDay() {
     let token = cacheController.getToken()
 
     return userService.nextDay(apiURL.nextDayURL, token)
