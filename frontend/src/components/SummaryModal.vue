@@ -29,7 +29,7 @@
                   </td>
                   <td>
                     <p class="trading-stock text-right">
-                      {{ formatPrice(Math.abs(findPrice(stock))) }} ฿
+                      {{ formatPrice(findPrice(stock)) }} ฿
                     </p>
                   </td>
                 </tr>
@@ -38,7 +38,7 @@
                     <p class="trading-stock text-left"> Total </p>
                   </td>
                   <td>
-                    <p class="trading-stock text-right"> {{findTotalPrice()}} ฿</p>
+                    <p class="trading-stock text-right"> {{ formatPrice(findTotalPrice()) }} ฿</p>
                   </td>
                 </tr>
               </tbody>
@@ -53,7 +53,7 @@
           <b-col cols="8">
             <b-row>
               <b-col cols="6">
-                <b-button variant="primary" @click="submit">Proceed</b-button>
+                <b-button variant="primary" @click="proceed">Proceed</b-button>
               </b-col>
               <b-col cols="6">
                 <b-button variant="danger" @click="closeModal">Cancel</b-button>
@@ -68,6 +68,7 @@
 
 <script>
   import stockController from '@/controllers/Stock.controller'
+  import userController from '@/controllers/User.controller'
   import stockDatasource from '@/datasources/Stock.datasource'
   import { mapActions, mapGetters } from 'vuex'
 
@@ -82,14 +83,7 @@
     computed: {
       ...mapGetters([
         'getUnchangedStocks'
-      ]),
-      totalPrice() {
-        if(this.actionInfo.action === "buy") {
-          return  (this.actionInfo.amount * this.actionInfo.averagePrice) * (1 + this.commissionRate * this.vatRate)
-        } else {
-          return  (this.actionInfo.amount * this.actionInfo.averagePrice) * (1 - this.commissionRate * this.vatRate)
-        }
-      }
+      ])
     },
     methods: {
       ...mapActions([
@@ -106,7 +100,7 @@
         return stock.changedAmount > 0? 'Buy': 'Sell'
       },
       findPrice(stock) {
-        let price = stock.changedAmount * stock.price * (1 + this.commissionRate * this.vatRate)
+        let price = stock.changedAmount * stock.averagePrice * (1 + this.commissionRate * this.vatRate)
 
         return price
       },
@@ -114,50 +108,35 @@
         let totalPrice = this.getUnchangedStocks.map(stock => this.findPrice(stock))
                                 .reduce((sum, e) => sum + e, 0)
 
-        let result = totalPrice > 0 ? '': '-'
-
-        return result + this.formatPrice(Math.abs(totalPrice))
-      },
-      submit() {
-        let action = this.actionInfo.action
-
-        if(action === "buy") {
-          this.buyStock(this.actionInfo)
-        } else {
-          this.sellStock(this.actionInfo)
-        }
-      },
-      buyStock(tradingAction) {
-        let tradingObject = stockDatasource.createTradingStock(tradingAction)
-        
-        stockController.buyStock(tradingObject)
-          .then(response => {
-            this.updateAfterTakeAction(response)
-            this.closeModal()
-          })
-      },
-      sellStock(tradingAction) {
-        let tradingObject = stockDatasource.createTradingStock(tradingAction)
-
-        stockController.sellStock(tradingObject)
-          .then(response => {
-            this.updateAfterTakeAction(response)
-            this.closeModal()
-          })
-      },
-      updateAfterTakeAction(response) {
-        this.setCash(response.cash)
-
-        let updateDetail = []
-        updateDetail.push(stockDatasource.createChangedStockObject(response))
-        this.updateStock(updateDetail)
+        return totalPrice
       },
       formatPrice(price) {
         if(!price)
           return '0'
-        price = price.toFixed(2).toString()
 
-        return price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+        let result = price > 0 ? '-':'+'
+        price = Math.abs(price).toFixed(2).toString()
+
+        return result + price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+      },
+      async proceed() {
+        await this.sellStock()
+        await this.buyStock()
+
+      },
+      sellStock() {
+        let sellStock = this.getUnchangedStocks.filter(stock => stock.changedAmount < 0)
+                          .map(stock => stockDatasource.createTradingStock(stock))
+
+        if(sellStock.length != 0) 
+          return stockController.sellStock(sellStock)
+      },
+      buyStock() {
+        let buyStock = this.getUnchangedStocks.filter(stock => stock.changedAmount > 0)
+                          .map(stock => stockDatasource.createTradingStock(stock))
+
+        if(buyStock.length != 0)
+          return stockController.buyStock(buyStock)
       }
     }
   }
