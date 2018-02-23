@@ -30,16 +30,17 @@ export default class StockDatasource {
       "symbol": stock.symbol,
       "fullname": stock.fullname,
       "amount": 0,
+      "changedAmount": 0,
       "price": 0,
       "averagePrice": 0
     }
   }
 
-  static createUpdatedStock(stock, changedAmount, averagePrice) {
+  static createUpdatedStock(stock, averagePrice) {
     return {
       "symbol": stock.symbol,
       "amount": stock.amount,
-      "changedAmount": changedAmount - stock.amount,
+      "changedAmount": stock.changedAmount,
       "averagePrice": averagePrice
     }
   }
