@@ -12,11 +12,10 @@ export default class StockService {
   }
 
   static async buyStock(URL, tradingDetail, token) {
-
+    
     return axios.post(URL, tradingDetail, {
         headers: headerUtility.createAuthorzation(token)
       })
-      .then(response => response.data)
   }
 
   static async sellStock(URL, tradingDetail, token) {
@@ -24,7 +23,6 @@ export default class StockService {
     return axios.post(URL, tradingDetail, {
         headers: headerUtility.createAuthorzation(token)
       })
-      .then(response => response.data)
   }
 
   static async getStockList(URL) {
@@ -37,5 +35,11 @@ export default class StockService {
               headers: headerUtility.createAuthorzation(token)
             })
             .then(response => response.data)
+  }
+
+  static async axiosMultiObject(objects) {
+    return axios.all(objects).then(axios.spread((acct, perms) => {
+      console.log(acct, perms)
+    }))
   }
 }

@@ -2,7 +2,6 @@ import stockService from '@/services/Stock.service'
 import stockDataSource from '@/datasources/Stock.datasource'
 import cacheController from '@/controllers/Cache.controller'
 import apiURL from '@/utilities/ApiURL.utility'
-import ApiURL from '../utilities/ApiURL.utility';
 
 export default class StockController {
 
@@ -13,27 +12,33 @@ export default class StockController {
 
     let token = cacheController.getToken()
 
-    return stockService.getStockValue(ApiURL.getStockValueURL, params, token)
+    return stockService.getStockValue(apiURL.getStockValueURL, params, token)
   }
 
   static findStockTradingCost(tradingAction) {
     return tradingAction.amount * tradingAction.price
   }
 
-  static buyStock(tradingAction) {
+  static buyStock(tradingActions) {
     let token = cacheController.getToken()
+    let axiosObjects = tradingActions.map(action => {
+      return stockService.buyStock(apiURL.buyStockURL, action, token)
+    })
 
-    return stockService.buyStock(ApiURL.buyStockURL, tradingAction, token)
+    return stockService.axiosMultiObject(axiosObjects)
   }
 
-  static sellStock(tradingAction) {
+  static sellStock(tradingActions) {
     let token = cacheController.getToken()
+    let axiosObjects = tradingActions.map(action => {
+      return stockService.sellStock(apiURL.sellStockURL, action, token)
+    })
 
-    return stockService.sellStock(ApiURL.sellStockURL, tradingAction, token)
+    return stockService.axiosMultiObject(axiosObjects)
   }
 
   static getStockList() {
-    return stockService.getStockList(ApiURL.getStockListURL)
+    return stockService.getStockList(apiURL.getStockListURL)
   }
 
   static getComparedValue(symbol) {
@@ -43,6 +48,6 @@ export default class StockController {
 
     let token = cacheController.getToken()
 
-    return stockService.getComparedValue(ApiURL.getComparedValueURL, params, token)
+    return stockService.getComparedValue(apiURL.getComparedValueURL, params, token)
   }
 }
