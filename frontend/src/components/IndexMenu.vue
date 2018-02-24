@@ -80,7 +80,7 @@
         this.updateStock()
       },
       updateStock() {
-        let stock = stockDatasource.createUpdatedStock(this.stock, this.averagePrice)
+        let stock = stockDatasource.createUpdatedStock(this.stock, this.value.currentPrice)
 
         this.updateUnchangedStock(stock)
       },
