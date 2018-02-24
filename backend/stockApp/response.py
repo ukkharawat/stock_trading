@@ -92,16 +92,12 @@ class Response(object):
 
     @staticmethod
     def createComparedStockValue(stockValues):
-        oldPrice = float(Utility.findStockPrice(stockValues[0]))
-        currentPrice = float(Utility.findStockPrice(stockValues[1]))
-        diff = oldPrice - currentPrice
-
+        
+        comparedValues = [ Datasource.createComparedStockValue(x, y) for (x, y) in zip(stockValues[::2], stockValues[1::2])]
+        
         response = {
             'success': True,
-            'diff': diff,
-            'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)),
-            'currentPrice': currentPrice,
-            'symbol': str(stockValues[1].name)
+            'comparedValues': comparedValues
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
