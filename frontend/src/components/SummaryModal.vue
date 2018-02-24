@@ -120,8 +120,8 @@
         return result + price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       },
       async proceed() {
-        //await this.sellStock()
-        //await this.buyStock()
+        await this.sellStock()
+        await this.buyStock()
         await this.nextDay()
         
         this.clearUnchangedStock()
