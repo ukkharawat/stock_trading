@@ -15,13 +15,14 @@
           <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
             <indexMenu
               :stock="stock"
+              :value="values.find(e => e.symbol === stock.symbol)"
               @selectSymbol="selectSymbol">
             </indexMenu>
           </div>
         </div>
       </index>
     </b-col>
-    <b-col cols="8"> 
+    <b-col cols="8">
       <stock v-show="selectedSymbol !== null"
              :symbol="selectedSymbol">
       </stock>
@@ -33,14 +34,22 @@
   import index from '@/components/Index'
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
+  import stockController from '@/controllers/Stock.controller'
   import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
         symbol: "",
-        selectedSymbol: null
+        selectedSymbol: null,
+        values: []
       }
+    },
+    async created() {
+      await stockController.getComparedValue()
+                .then(response => {
+                  this.values = response.comparedValues
+                })
     },
     components: {
       index,
@@ -49,17 +58,25 @@
     },
     computed: {
       ...mapGetters([
-        'getStock'
+        'getStock',
+        'getTrackingDay'
       ]),
       filteredStockBySearch() {
-        return this.getStock.slice(0,1)
-        //.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
+        return this.getStock.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
       }
     },
     watch: {
       getStock: {
         handler(stock) {
           this.selectedSymbol = stock[0].symbol
+        }
+      },
+      getTrackingDay: {
+        async handler() {
+          await stockController.getComparedValue()
+                .then(response => {
+                  this.values = response.comparedValues
+                })
         }
       }
     },

@@ -1,15 +1,15 @@
 <template>
-  <div id="index-menu" @click="selectSymbol">
+  <div id="index-menu" @click="selectSymbol" v-if="isDisplay">
     <b-row class="stock-list-margin">
       <b-col cols="3" class="cursor-pointer">
         <h4>{{ stock.symbol }}</h4>
       </b-col>
       <b-col cols="4" class="text-right disable-padding cursor-pointer">
         <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
-          {{ averagePrice }}
+          {{ value.currentPrice }}
         </h4>
         <p class="disable-margin" :class="{'green-percent': isPriceUp, 'red-percent': !isPriceUp}">
-          {{isPlusSign}}{{ diff }}( {{ diffPer }}% )
+          {{isPlusSign}}{{ value.diff }}( {{ value.diffPer }}% )
         </p>
       </b-col>
       <b-col cols="5" class="fix-padding">
@@ -35,27 +35,14 @@
 <script>
   import { mapActions, mapGetters } from 'vuex'
   import stockDatasource from '@/datasources/Stock.datasource'
-  import stockController from '@/controllers/Stock.controller'
 
   export default {
     props: {
       stock: {
         type: Object
-      }
-    },
-    async created() {
-      await stockController.getComparedValue(this.stock.symbol)
-                .then(response => {
-                  this.diff = response.diff
-                  this.diffPer = response.diffPer
-                  this.averagePrice = response.currentPrice
-                })
-    },
-    data() {
-      return {
-        diff: null,
-        diffPer: null,
-        averagePrice: null
+      },
+      value: {
+        type: Object
       }
     },
     computed: {
@@ -64,25 +51,16 @@
         'getTrackingDay'
       ]),
       isPriceUp() {
-        return this.diff > 0
+        return this.value.diff >= 0
       },
       isPlusSign() {
         return this.isPriceUp? '+': ''
       },
       isAmountEnough() {
         return this.stock.amount >= 100
-      }
-    },
-    watch: {
-      getTrackingDay: {
-        async handler() {
-          await stockController.getComparedValue(this.stock.symbol)
-                  .then(response => {
-                    this.diff = response.diff
-                    this.diffPer = response.diffPer
-                    this.averagePrice = response.currentPrice
-                  })
-        }
+      },
+      isDisplay() {
+        return this.value != null && this.value.diff != null
       }
     },
     methods: {
