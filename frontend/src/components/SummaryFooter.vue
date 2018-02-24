@@ -1,15 +1,17 @@
 <template>
   <div>
-    <div class="footer" v-show="isUnchangedStock && isLoggedIn">
+    <div class="footer" v-if="isLoggedIn">
       <div class="row">
           <b-col cols="7" class="text-left" >
-              <p class="summary" v-show="buyAmount != 0">Buy {{ formatNumber(buyAmount) }} shares,</p>
-              <p class="summary" v-show="sellAmount != 0">Sell {{ formatNumber(sellAmount) }} shares,</p>
-              <p class="summary" v-show="totalPrice > 0">Total price {{ formatPrice(totalPrice) }} baht</p>
-              <p class="summary" v-show="totalPrice < 0">Gain {{ formatPrice(Math.abs(totalPrice)) }} baht</p>
+              <p class="summary" v-if="buyAmount == 0 && sellAmount == 0">No Trading Today?</p>
+              <p class="summary" v-if="buyAmount != 0">Buy {{ formatNumber(buyAmount) }} shares,</p>
+              <p class="summary" v-if="sellAmount != 0">Sell {{ formatNumber(sellAmount) }} shares,</p>
+              <p class="summary" v-if="totalPrice > 0">Total price {{ formatPrice(totalPrice) }} baht</p>
+              <p class="summary" v-if="totalPrice < 0">Gain {{ formatPrice(Math.abs(totalPrice)) }} baht</p>
           </b-col>
           <b-col cols="5" class="text-right">
-              <p class="summary complete-trading" v-if="totalPrice <= getCash " @click="openModal">complete trading</p>
+              <p class="summary complete-trading" v-if="buyAmount == 0 && sellAmount == 0" @click="nextDay">Skip This Day</p>
+              <p class="summary complete-trading" v-else-if="totalPrice <= getCash" @click="openModal">complete trading</p>
               <p class="summary" v-else>check your cash</p>
           </b-col>
       </div>
@@ -18,15 +20,16 @@
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
   import summaryModal from '@/components/SummaryModal'
+  import userController from '@/controllers/User.controller'
 
   export default {
     data() {
         return {
-            buyAmount: null,
-            sellAmount: null,
-            totalPrice: null,
+            buyAmount: 0,
+            sellAmount: 0,
+            totalPrice: 0,
             vatRate: 1.07,
             commissionRate: 0.00157
         }
@@ -55,6 +58,9 @@
         deep: true
     },
     methods: {
+        ...mapActions([
+            'increaseTrackingDay'
+        ]),
         updateBuyAmount(stocks) {
             this.buyAmount = stocks.map(stock => stock.changedAmount)
                                    .reduce((sum, e) => sum + e, 0)
@@ -89,6 +95,9 @@
         },
         openModal() {
             this.$refs.summaryModal.openModal()
+        },
+        nextDay() {
+            userController.nextDay().then(() => this.increaseTrackingDay())
         }
     }
   }
