@@ -12,13 +12,15 @@
         </div>
         <div class="scrollable">
           <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
-          <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
-            <indexMenu
-              :stock="stock"
-              :value="values.find(e => e.symbol === stock.symbol)"
-              @selectSymbol="selectSymbol">
-            </indexMenu>
-          </div>
+          <virtualList class="scroll" :size="40" :remain="8" :bench="32" :startIndex="startIndex">
+            <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
+              <indexMenu
+                :stock="stock"
+                :value="values.find(e => e.symbol === stock.symbol)"
+                @selectSymbol="selectSymbol">
+              </indexMenu>
+            </div>
+          </virtualList>
         </div>
       </index>
     </b-col>
@@ -34,6 +36,7 @@
   import index from '@/components/Index'
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
+  import virtualList from 'vue-virtual-scroll-list'
   import stockController from '@/controllers/Stock.controller'
   import { mapGetters } from 'vuex'
 
@@ -42,7 +45,8 @@
       return {
         symbol: "",
         selectedSymbol: null,
-        values: []
+        values: [],
+        startIndex: 0
       }
     },
     async created() {
@@ -54,7 +58,8 @@
     components: {
       index,
       stock,
-      indexMenu
+      indexMenu,
+      virtualList
     },
     computed: {
       ...mapGetters([
