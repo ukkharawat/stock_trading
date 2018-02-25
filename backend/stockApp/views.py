@@ -29,12 +29,12 @@ def list(request):
 @permission_classes((AllowAny, ))
 def getCurrentStockData(request):
 	if request.method == 'GET':
-		if request.user is not None:
+		try:
 			username = str(request.user)
 			user = UserDetail.objects.get(username = username)
 			step = int(user.stepCount)
 		
-		else:
+		except:
 			step = 1
 			
 		symbol = request.GET['symbol']
@@ -53,44 +53,35 @@ def getCurrentStockData(request):
 @permission_classes((AllowAny,))
 def getComparedValue(request):
 	if request.method == 'GET':
-		if request.user is not None:
+		try:
 			username = str(request.user)
 			user = UserDetail.objects.get(username = username)
 			step = int(user.stepCount)
 		
-		else:
+		except:
 			step = 1
-		
-		symbol = request.GET['symbol']
-		stock = Stock.objects.get(name = symbol)
 
 		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		endDate = startDate + datetime.timedelta(days = 1)
 		try:
-			stockValue = StockValue.objects.filter(name = stock , date__gte=startDate)[:2]
+			stockValue = StockValue.objects.filter(date__gte=startDate, date__lte=endDate)
 
-			if stockValue[0].date == endDate:
-				return Response.createUncomparedStockValue(stockValue[0])
+			return Response.createComparedStockValue(stockValue)
 
-			elif stockValue[0].date == startDate:
-				return Response.createComparedStockValue(stockValue)
-			
-			else:
-				return Response.createNotFoundStockValue()
-		except:
-			
+		except Exception as e:
+			print(e)
 			return Response.createNotFoundStockValue()
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
 def getStockValue(request):
 	if request.method == 'GET':
-		if request.user is not None:
+		try:
 			username = str(request.user)
 			user = UserDetail.objects.get(username = username)
 			step = int(user.stepCount)
 		
-		else:
+		except:
 			step = 1
 
 		symbol = request.GET['symbol']
@@ -160,7 +151,7 @@ def sellStock(request):
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
 				newVolume = portfolio.volume - data['volume']
 				totalSellPrice = Utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
-				newCash = float("{0:.2f}".format(user.cash + totalBuyPrice))
+				newCash = float("{0:.2f}".format(user.cash + totalSellPrice))
 
 				updateUser =  Datasource.createUserDetail(user, newCash)
 				userSerializer = UserDetailSerializer(user, data = updateUser)

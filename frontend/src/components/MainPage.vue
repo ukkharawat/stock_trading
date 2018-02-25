@@ -12,16 +12,19 @@
         </div>
         <div class="scrollable">
           <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
-          <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
-            <indexMenu
-              :stock="stock"
-              @selectSymbol="selectSymbol">
-            </indexMenu>
-          </div>
+          <virtualList class="scroll" :size="40" :remain="8" :bench="32" :startIndex="startIndex">
+            <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
+              <indexMenu
+                :stock="stock"
+                :value="values.find(e => e.symbol === stock.symbol)"
+                @selectSymbol="selectSymbol">
+              </indexMenu>
+            </div>
+          </virtualList>
         </div>
       </index>
     </b-col>
-    <b-col cols="8"> 
+    <b-col cols="8">
       <stock v-show="selectedSymbol !== null"
              :symbol="selectedSymbol">
       </stock>
@@ -33,33 +36,52 @@
   import index from '@/components/Index'
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
+  import virtualList from 'vue-virtual-scroll-list'
+  import stockController from '@/controllers/Stock.controller'
   import { mapGetters } from 'vuex'
 
   export default {
     data() {
       return {
         symbol: "",
-        selectedSymbol: null
+        selectedSymbol: null,
+        values: [],
+        startIndex: 0
       }
+    },
+    async created() {
+      await stockController.getComparedValue()
+                .then(response => {
+                  this.values = response.comparedValues
+                })
     },
     components: {
       index,
       stock,
-      indexMenu
+      indexMenu,
+      virtualList
     },
     computed: {
       ...mapGetters([
-        'getStock'
+        'getStock',
+        'getTrackingDay'
       ]),
       filteredStockBySearch() {
-        return this.getStock.slice(0,1)
-        //.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
+        return this.getStock.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
       }
     },
     watch: {
       getStock: {
         handler(stock) {
           this.selectedSymbol = stock[0].symbol
+        }
+      },
+      getTrackingDay: {
+        async handler() {
+          await stockController.getComparedValue()
+                .then(response => {
+                  this.values = response.comparedValues
+                })
         }
       }
     },

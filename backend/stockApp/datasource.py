@@ -47,3 +47,16 @@ class Datasource(object):
             'Adj': stockValue.adjClose,
             'Volume': stockValue.volume,
         }
+
+    @staticmethod
+    def createComparedStockValue(before, after):
+        oldPrice = float(Utility.findStockPrice(before))
+        currentPrice = float(Utility.findStockPrice(after))
+        diff = currentPrice - oldPrice
+
+        return {
+            'diff': "{0:.2f}".format(diff),
+            'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)) if oldPrice > 0 else 0,
+            'currentPrice': currentPrice,
+            'symbol': str(after.name)
+        }

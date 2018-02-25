@@ -41,13 +41,9 @@ export default class StockController {
     return stockService.getStockList(apiURL.getStockListURL)
   }
 
-  static getComparedValue(symbol) {
-    let params = {
-      'symbol': symbol
-    }
-
+  static getComparedValue() {
     let token = cacheController.getToken()
 
-    return stockService.getComparedValue(apiURL.getComparedValueURL, params, token)
+    return stockService.getComparedValue(apiURL.getComparedValueURL, token)
   }
 }

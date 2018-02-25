@@ -29,9 +29,8 @@ export default class StockService {
     return axios.get(URL).then(response => response.data)
   }
 
-  static async getComparedValue(URL, params, token) {
+  static async getComparedValue(URL, token) {
     return axios.get(URL, {
-              params: params,
               headers: headerUtility.createAuthorzation(token)
             })
             .then(response => response.data)
