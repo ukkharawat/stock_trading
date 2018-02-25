@@ -1,17 +1,12 @@
+from stockApp.utility import Utility
+
 class Datasource(object):
 
     @staticmethod
-    def createStockDetail(stockValue, stockName):
+    def createStockDetail(stock):
         return {
-            'fullname': str(stockName.fullname),
-            'shortname': str(stockValue.name),
-            'date': stockValue.date.strftime('%Y-%m-%d'),
-            'openPrice': stockValue.openPrice,
-            'closePrice': stockValue.closePrice,
-            'high': stockValue.high,
-            'low': stockValue.low,
-            'adjClose': stockValue.adjClose,
-            'volume': stockValue.volume
+            'fullname': str(stock['fullname']),
+            'symbol': str(stock['name'])
         }
 
     @staticmethod
@@ -40,21 +35,28 @@ class Datasource(object):
         }
 
     @staticmethod
-    def createStockValueList(stockValues):
-        result = []
-        
-        for i in range(stockValues.count()):
-            temp = {
-                'Date': stockValues[i].date.strftime('%Y-%m-%d'),
-                'shortname': str(stockValues[i].name),
-                'Open': stockValues[i].openPrice,
-                'Close': stockValues[i].closePrice,
-                'High': stockValues[i].high,
-                'Low': stockValues[i].low,
-                'Adj': stockValues[i].adjClose,
-                'Volume': stockValues[i].volume,
-            }
+    def createStockValue(stockValue):
 
-            result.append(temp)
+        return {
+            'Date': str(stockValue.date),
+            'Open': stockValue.openPrice,
+            'Close': stockValue.closePrice,
+            'BuyPrice': Utility.findStockPrice(stockValue),
+            'High': stockValue.high,
+            'Low': stockValue.low,
+            'Adj': stockValue.adjClose,
+            'Volume': stockValue.volume,
+        }
 
-        return result
+    @staticmethod
+    def createComparedStockValue(before, after):
+        oldPrice = float(Utility.findStockPrice(before))
+        currentPrice = float(Utility.findStockPrice(after))
+        diff = currentPrice - oldPrice
+
+        return {
+            'diff': "{0:.2f}".format(diff),
+            'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)) if oldPrice > 0 else 0,
+            'currentPrice': currentPrice,
+            'symbol': str(after.name)
+        }

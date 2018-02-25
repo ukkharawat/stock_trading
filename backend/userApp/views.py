@@ -34,10 +34,12 @@ def signUp(request):
                 if userSerializer.is_valid():
                     user = User.objects.create_user(username = username)
                     user.set_password(password)
-                    userSerializer.save()
                     user.save()
+                    userSerializer.save()
 
-                    return ResponseObject.createSuccessCreateUserResponse()
+                    token, _ = Token.objects.get_or_create(user = user)
+
+                    return ResponseObject.createSuccessCreateUserResponse(userSerializer.data, token.key)
                 
                 return ResponseObject.createFailedResponse()
             except:
@@ -91,7 +93,7 @@ def getUserDetail(request):
 def nextStep(request):
     if request.method == 'PUT':
         user = UserDetail.objects.get(username = request.user)
-        newStepCount = request.data['stepCount']
+        newStepCount = user.stepCount + 1
         updateUser = Datasource.createUpdateUser(user, newStepCount)
         userSerializer = UserDetailSerializer(user, data = updateUser)
 

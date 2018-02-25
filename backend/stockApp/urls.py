@@ -4,6 +4,8 @@ from stockApp import views
 
 urlpatterns = [
     url(r'^list', views.list),
+    url(r'^currentStockData', views.getCurrentStockData),
+    url(r'^comparedValue', views.getComparedValue),
     url(r'^stockValue', views.getStockValue),
     url(r'^buy', views.buyStock),
     url(r'^sell', views.sellStock)

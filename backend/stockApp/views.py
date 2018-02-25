@@ -14,6 +14,7 @@ from stockApp.controller import Controller
 from stockApp.response import Response
 from userApp.models import Portfolio, UserDetail
 from userApp.serializers import PortfolioSerializer, UserDetailSerializer
+import datetime
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
@@ -26,13 +27,68 @@ def list(request):
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
+def getCurrentStockData(request):
+	if request.method == 'GET':
+		try:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		except:
+			step = 1
+			
+		symbol = request.GET['symbol']
+		stock = Stock.objects.get(name = symbol)
+		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
+		
+		stockValue = StockValue.objects.filter(name = stock, date__gte = date)[:1]
+
+		if stockValue is not None:
+			return Response.createStockData(stockValue[0])
+		
+		else:
+			return Response.createNotFoundStockValue()
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def getComparedValue(request):
+	if request.method == 'GET':
+		try:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		except:
+			step = 1
+
+		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
+		endDate = startDate + datetime.timedelta(days = 1)
+		try:
+			stockValue = StockValue.objects.filter(date__gte=startDate, date__lte=endDate)
+
+			return Response.createComparedStockValue(stockValue)
+
+		except Exception as e:
+			print(e)
+			return Response.createNotFoundStockValue()
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
 def getStockValue(request):
 	if request.method == 'GET':
+		try:
+			username = str(request.user)
+			user = UserDetail.objects.get(username = username)
+			step = int(user.stepCount)
+		
+		except:
+			step = 1
+
 		symbol = request.GET['symbol']
-		start = int(request.GET['start'])
-		end = int(request.GET['end'])
 		stock = Stock.objects.get(name = symbol)
-		stockValue = StockValue.objects.filter(name = stock)[start:end]
+		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
+
+		stockValue = StockValue.objects.filter(name = stock, date__lte=date)
 		if stockValue.exists():
 			return Response.createStockValueList(stockValue)
 		else:
@@ -44,10 +100,11 @@ def buyStock(request):
 	if request.method == 'POST':
 		data = JSONParser().parse(request)
 		username = str(request.user)
+		action = 'BUY'
 		user = UserDetail.objects.get(username = username)
-	
+		
 		totalBuyPrice = Utility.calculateTotalBuyPrice(data['averagePrice'], data['volume'])
-		newCash = user.cash - totalBuyPrice
+		newCash = float("{0:.2f}".format(user.cash - totalBuyPrice))
 
 		try:
 			portfolio = Portfolio.objects.get(user = user, symbol = data['symbol'])
@@ -63,9 +120,7 @@ def buyStock(request):
 				portfolioSerializer.save()
 				userSerializer.save()
 
-				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
-
-			return Response.createFailedBuyStock()
+				return Response.createSuccessAction(userSerializer.data, action, portfolioSerializer.data)
 
 		except Portfolio.DoesNotExist:
 			portfolio = Datasource.createPortfolio(data, user)
@@ -77,15 +132,16 @@ def buyStock(request):
 				portfolioSerializer.save()
 				userSerializer.save()
 
-				return Response.createSuccessBuyStock(userSerializer.data, portfolioSerializer.data)
+				return Response.createSuccessAction(userSerializer.data, action, portfolioSerializer.data)
 
-			return Response.createFailedBuyStock()
+		return Response.craeteFailedAction()
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def sellStock(request):
 	if request.method == 'POST':
 		data = JSONParser().parse(request)
+		action = 'SELL'
 		username = str(request.user)
 		
 		try:
@@ -94,8 +150,8 @@ def sellStock(request):
 
 			if Utility.isPortfolioStockEnough(portfolio.volume, data['volume']):
 				newVolume = portfolio.volume - data['volume']
-				totalSellPrice = utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
-				newCash = user.cash + totalSellPrice
+				totalSellPrice = Utility.calculateTotalSellPrice(data['averagePrice'], data['volume'])
+				newCash = float("{0:.2f}".format(user.cash + totalSellPrice))
 
 				updateUser =  Datasource.createUserDetail(user, newCash)
 				userSerializer = UserDetailSerializer(user, data = updateUser)
@@ -106,13 +162,10 @@ def sellStock(request):
 					userSerializer.save()
 					portfolioSerializer.save()
 					
-					return Response.createSuccessSellStock(userSerializer.data, portfolioSerializer.data)
-				else:
-					return Response.createFailedSellStock()
-				
-			else:
-				return Response.createFailedSellStock()
+					return Response.createSuccessAction(userSerializer.data, action, portfolioSerializer.data)
 
 		except Portfolio.DoesNotExist:
 
-			return Response.createFailedSellStock()
+			return Response.craeteFailedAction()
+
+		return Response.craeteFailedAction()

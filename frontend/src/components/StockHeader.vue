@@ -1,7 +1,7 @@
 <template>
   <div id="stock-header">
-    <h2 class="symbol">{{corpSymbol}}</h2>
-    <h3 class="fullname">{{corpFullThaiName}}</h3>
+    <h2 class="symbol">{{symbol}}</h2>
+    <h3 class="fullname">{{fullname}}</h3>
   </div>
 </template>
 
@@ -9,10 +9,10 @@
 
   export default {
     props: {
-      corpSymbol: {
+      symbol: {
         type: String
       },
-      corpFullThaiName: {
+      fullname: {
         type: String
       }
     }

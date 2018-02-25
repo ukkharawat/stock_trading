@@ -2,14 +2,14 @@
   <div id="app">
     <navbar></navbar>
     <router-view/>
-    <nextDayButton></nextDayButton>
+    <summaryFooter></summaryFooter>
   </div>
 </template>
 
 <script>
   import navbar from '@/components/Navbar'
+  import summaryFooter from '@/components/SummaryFooter'
   import { mapGetters, mapActions } from 'vuex'
-  import nextDayButton from '@/components/NextDayButton'
   import cacheController from '@/controllers/Cache.controller'
   import stockController from '@/controllers/Stock.controller'
   import userController from '@/controllers/User.controller'
@@ -19,7 +19,7 @@
     name: 'app',
     components: {
       navbar,
-      nextDayButton
+      summaryFooter
     },
     async created() {
       this.setStockList()
@@ -34,13 +34,20 @@
     },
     computed: {
       ...mapGetters([
-        'isLoggedIn'
+        'isLoggedIn',
+        'getTrackingDay'
       ])
+    },
+    watch: {
+      getTrackingDay: {
+        handler() {
+          this.updateUserDetail()
+        }
+      }
     },
     methods: {
       ...mapActions([
         'setUsername',
-        'setStep',
         'updateStock',
         'setStock',
         'setCash'
@@ -49,7 +56,6 @@
         userController.getUserDetail()
           .then(response => {
             this.setCash(response.cash)
-            this.setStep(response.stepCount)
 
             let stocks = response.portfolio.map(stock => stockDatasource.createChangedStockObject(stock))
             this.updateStock(stocks)

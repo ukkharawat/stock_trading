@@ -69,7 +69,6 @@
        ...mapActions([
         'setUsername',
         'setCash',
-        'setStep',
         'updateStock'
       ]),
       openModal() {
@@ -105,7 +104,6 @@
       },
       setUserDetail(data) {
         this.setUsername(data.username)
-        this.setStep(data.stepCount)
         this.setCash(data.cash)
       },
       isPortfolioExist(portfolio) {

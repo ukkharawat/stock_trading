@@ -23,11 +23,10 @@ export default class UserController {
     return userService.logout(apiURL.logoutURL, token)
   }
 
-  static nextDay(cash, step) {
+  static nextDay() {
     let token = cacheController.getToken()
-    let nextDayForm = userDataSource.createNextDayForm(cacheController.getUsername(), cash, step)
 
-    return userService.nextDay(apiURL.nextDayURL, nextDayForm, token)
+    return userService.nextDay(apiURL.nextDayURL, token)
   }
 
   static getUserDetail() {

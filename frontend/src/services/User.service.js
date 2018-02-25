@@ -27,15 +27,16 @@ export default class UserService {
       .then(response => response.data)
   }
 
-  static async nextDay(apiURL, nextDayObject, token) {
+  static async nextDay(apiURL, token) {
 
-    return axios.put(apiURL, nextDayObject, {
+    return axios.put(apiURL, {}, {
         headers: headerUtility.createAuthorzation(token)
       })
       .then(response => response.data)
   }
 
   static async getUserDetail(apiURL, token) {
+    
     return axios.get(apiURL, {
         headers: headerUtility.createAuthorzation(token)
       }).then(response => response.data)
