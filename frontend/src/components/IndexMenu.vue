@@ -4,7 +4,7 @@
       <b-col cols="3" class="cursor-pointer">
         <h4>{{ stock.symbol }}</h4>
       </b-col>
-      <b-col cols="4" class="text-right disable-padding cursor-pointer">
+      <b-col :cols="columnGrid" class="text-right disable-padding cursor-pointer">
         <h4 :class="{'green-price': isPriceUp, 'red-price': !isPriceUp}">
           {{ value.currentPrice }}
         </h4>
@@ -12,7 +12,7 @@
           {{isPlusSign}}{{ value.diff }}( {{ value.diffPer }}% )
         </p>
       </b-col>
-      <b-col cols="5" class="fix-padding">
+      <b-col cols="5" class="fix-padding" v-show="isLoggedIn">
           <div class="input-group" @click.stop>
             <span class="input-group-btn">
               <button class="btn decrease-btn" @click="decrease" type="button" :disabled="!isAmountEnough || !isLoggedIn">
@@ -61,6 +61,9 @@
       },
       isDisplay() {
         return this.value != null && this.value.diff != null
+      },
+      columnGrid() {
+        return this.isLoggedIn? "4": "9"
       }
     },
     methods: {

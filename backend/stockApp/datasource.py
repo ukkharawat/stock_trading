@@ -36,7 +36,6 @@ class Datasource(object):
 
     @staticmethod
     def createStockValue(stockValue):
-
         return {
             'Date': str(stockValue.date),
             'Open': stockValue.openPrice,
@@ -51,7 +50,9 @@ class Datasource(object):
     @staticmethod
     def createComparedStockValue(before, after):
         oldPrice = float(Utility.findStockPrice(before))
+        oldPrice = oldPrice if oldPrice == oldPrice else 0
         currentPrice = float(Utility.findStockPrice(after))
+        currentPrice = currentPrice if currentPrice == currentPrice else 0
         diff = currentPrice - oldPrice
 
         return {
