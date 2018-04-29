@@ -10,9 +10,7 @@ export default class StockController {
       'symbol': symbol
     }
 
-    let token = cacheController.getToken()
-
-    return stockService.getStockValue(apiURL.getStockValueURL, params, token)
+    return stockService.getStockValue(apiURL.getStockValueURL, params)
   }
 
   static findStockTradingCost(tradingAction) {
@@ -42,8 +40,6 @@ export default class StockController {
   }
 
   static getComparedValue() {
-    let token = cacheController.getToken()
-
-    return stockService.getComparedValue(apiURL.getComparedValueURL, token)
+    return stockService.getComparedValue(apiURL.getComparedValueURL)
   }
 }

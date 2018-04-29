@@ -4,10 +4,7 @@ import headerUtility from '@/utilities/Header.utility'
 export default class StockService {
 
   static async getStockValue(URL, params, token) {
-    return axios.get(URL, {
-        params: params,
-        headers: headerUtility.createAuthorzation(token)
-      })
+    return axios.get(URL, { params: params })
       .then(response => response.data)
   }
 
@@ -30,10 +27,7 @@ export default class StockService {
   }
 
   static async getComparedValue(URL, token) {
-    return axios.get(URL, {
-              headers: headerUtility.createAuthorzation(token)
-            })
-            .then(response => response.data)
+    return axios.get(URL).then(response => response.data)
   }
 
   static async axiosMultiObject(objects) {
