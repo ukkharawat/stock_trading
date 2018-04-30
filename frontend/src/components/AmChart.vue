@@ -28,12 +28,11 @@
     watch: {
       symbol: {
         handler(val, oldVal) {
+          this.chart.clear()
           stockController.getStockValue(val)
-            .then(response => response.stockValue)
-            .then(stockValue => {
-              this.displayData = stockValue
-              this.chart.dataSets[0].dataProvider = this.displayData
-              this.chart.validateData()
+            .then(response => {
+              this.displayData = response.stockValue
+              this.createChart()
             })
         }
       },
