@@ -36,7 +36,8 @@ class Datasource(object):
 
     @staticmethod
     def createStockValue(stockValue):
-        return {
+        if (stockValue.openPrice == stockValue.openPrice):
+            return {
             'Date': str(stockValue.date),
             'Open': stockValue.openPrice,
             'Close': stockValue.closePrice,
@@ -44,8 +45,10 @@ class Datasource(object):
             'High': stockValue.high,
             'Low': stockValue.low,
             'Adj': stockValue.adjClose,
-            'Volume': stockValue.volume,
-        }
+            'Volume': stockValue.volume
+            }
+        else:
+            return {}
 
     @staticmethod
     def createComparedStockValue(before, after):
