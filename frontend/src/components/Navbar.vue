@@ -14,7 +14,7 @@
   export default {
     data() {
       return {
-        brandTitle: "HudTrade.com"
+        brandTitle: "HudTrade"
       }
     },
     components: {
