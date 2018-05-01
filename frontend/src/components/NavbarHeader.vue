@@ -1,8 +1,8 @@
 <template>
   <div id="navbar-header">
-    <router-link to="/">
+    <a href="/">
       <b-navbar-brand>{{ brandTitle }}</b-navbar-brand>
-    </router-link>
+    </a>
   </div>
 </template>
 
