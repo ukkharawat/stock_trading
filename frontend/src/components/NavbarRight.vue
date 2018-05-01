@@ -12,7 +12,7 @@
         <signUpComponent></signUpComponent>
 
         <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
-          <router-link to="/portfolio" class="dropdown-item"> Portfolio </router-link>
+          <a href="/portfolio" class="dropdown-item"> Portfolio </a>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
         </b-nav-item-dropdown>
     </b-nav>
@@ -38,7 +38,7 @@
     },
     data() {
       return {
-        'capital': null
+        capital: 1000000
       }
     },
     computed: {
