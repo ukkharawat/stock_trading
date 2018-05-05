@@ -18,8 +18,7 @@
   width: 100%;
   height: calc(100vh - 130px);
   margin-top: 24px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: #fefefe;
   box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -50,8 +49,7 @@
   margin-left: 24px;
   margin-top: 24px;
   padding-bottom: 8px;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: #fefefe;
   box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.2);
   width: calc(100% - 48px);
   height: calc(100vh - 130px);
@@ -283,9 +281,9 @@ input::-webkit-inner-spin-button {
   margin-left: 36px;
   height: 36px;
   bottom: 0;
-  background-color: #3f85b2;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  background-color: rgba(	63, 133, 178, 0.75);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
