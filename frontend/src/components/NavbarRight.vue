@@ -2,7 +2,7 @@
   <div id="navbar-right">
     <b-nav>
         <b-nav-item v-show="isLoggedIn">
-          Capital: {{capital | currency}} 
+          Capital: {{capital?capital:getCash | currency}} 
         </b-nav-item>
         <b-nav-item v-show="isLoggedIn">
           Cash: {{getCash | currency}}
