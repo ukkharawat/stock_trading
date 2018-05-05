@@ -9,7 +9,7 @@
           {{ value.currentPrice }}
         </h4>
         <p class="disable-margin" :class="{'green-percent': isPriceUp, 'red-percent': !isPriceUp}">
-          {{isPlusSign}}{{ value.diff }}( {{ value.diffPer }}% )
+          {{isPlusSign}}{{ value.diff }} ({{ value.diffPer }}%)
         </p>
       </b-col>
       <b-col cols="5" class="fix-padding" v-show="isLoggedIn">
