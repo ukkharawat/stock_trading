@@ -1,6 +1,6 @@
 <template>
   <b-row id="main-page" v-if="getStock != null">
-    <b-col cols="4">
+    <b-col cols="4" class="remove-right-padding">
       <index>
         <div class="margin-top">
           <b-form-input id="searchInput"
@@ -24,7 +24,7 @@
         </div>
       </index>
     </b-col>
-    <b-col cols="8">
+    <b-col cols="8" class="remove-left-padding">
       <stock v-show="selectedSymbol !== null"
              :symbol="selectedSymbol">
       </stock>
