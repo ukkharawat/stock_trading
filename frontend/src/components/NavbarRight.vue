@@ -1,20 +1,19 @@
 <template>
   <div id="navbar-right">
     <b-nav>
-        <b-nav-item v-show="isLoggedIn">
-          Capital: {{capital?capital:getCash | currency}} 
-        </b-nav-item>
-        <b-nav-item v-show="isLoggedIn">
-          Cash: {{getCash | currency}}
-        </b-nav-item>
-        
-        <logInComponent></logInComponent>
-        <signUpComponent></signUpComponent>
+      <li class="nav-item" v-show="isLoggedIn">
+        <a class="nav-link cursor-default">Capital: {{capital?capital:getCash | currency}} </a>
+      </li>
+      <li class="nav-item" v-show="isLoggedIn">
+        <a class="nav-link cursor-default">Cash: {{getCash | currency}} </a>
+      </li>
+      <logInComponent></logInComponent>
+      <signUpComponent></signUpComponent>
 
-        <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
-          <a href="/portfolio" class="dropdown-item"> Portfolio </a>
-          <b-dropdown-item @click="logout">Log out</b-dropdown-item>
-        </b-nav-item-dropdown>
+      <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
+        <a href="/portfolio" class="dropdown-item"> Portfolio </a>
+        <b-dropdown-item @click="logout">Log out</b-dropdown-item>
+      </b-nav-item-dropdown>
     </b-nav>
   </div>
 </template>
