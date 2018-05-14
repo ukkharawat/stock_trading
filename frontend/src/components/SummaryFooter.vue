@@ -10,8 +10,8 @@
               <p class="summary" v-if="totalPrice < 0">Gain {{ formatPrice(Math.abs(totalPrice)) }} baht</p>
           </b-col>
           <b-col cols="5" class="text-right">
-              <p class="summary complete-trading" v-if="buyAmount == 0 && sellAmount == 0" @click="nextDay">Skip This Day</p>
-              <p class="summary complete-trading" v-else-if="totalPrice <= getCash" @click="openModal">complete trading</p>
+              <p class="summary complete-trading" v-if="buyAmount == 0 && sellAmount == 0" @click="nextDay">next <i class="fas fa-angle-right"></i></p>
+              <p class="summary complete-trading" v-else-if="totalPrice <= getCash" @click="openModal">complete trading <i class="fas fa-check"></i></p>
               <p class="summary" v-else>check your cash</p>
           </b-col>
       </div>
