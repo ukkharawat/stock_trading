@@ -61,8 +61,8 @@ def getComparedValue(request):
 		except:
 			step = 1
 
-		startDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
-		endDate = startDate + datetime.timedelta(days = 1)
+		startDate =  datetime.date(2016, 1, 3) + datetime.timedelta(days = step - 7)
+		endDate = datetime.date(2016, 1, 3) + datetime.timedelta(days = 1 + step)
 		try:
 			stockValue = StockValue.objects.filter(date__gte=startDate, date__lte=endDate)
 
