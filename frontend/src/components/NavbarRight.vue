@@ -74,6 +74,7 @@
             if(response.success) {
               cacheController.clearUserCache()
               this.clearVuex()
+              this.$router.go(-1)
             }
           })
       },
