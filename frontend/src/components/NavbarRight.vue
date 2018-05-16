@@ -10,7 +10,10 @@
       <logInComponent></logInComponent>
       <signUpComponent></signUpComponent>
 
-      <b-nav-item-dropdown v-bind:text="getUsername" right v-show="isLoggedIn">
+      <b-nav-item-dropdown right v-show="isLoggedIn">
+        <template slot="button-content">
+          <em>{{getUsername}}</em>
+        </template>
         <a href="/portfolio" class="dropdown-item"> Portfolio </a>
         <b-dropdown-item @click="logout">Log out</b-dropdown-item>
       </b-nav-item-dropdown>
@@ -74,7 +77,7 @@
             if(response.success) {
               cacheController.clearUserCache()
               this.clearVuex()
-              this.$router.go(-1)
+              window.location.replace('/');
             }
           })
       },

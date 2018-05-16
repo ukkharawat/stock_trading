@@ -46,7 +46,8 @@
         symbol: "",
         selectedSymbol: null,
         values: [],
-        startIndex: 0
+        startIndex: 0,
+        portfolio: []
       }
     },
     async created() {
@@ -67,19 +68,17 @@
         'getTrackingDay'
       ]),
       filteredStockBySearch() {
-        return this.getPortfolio.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
-      },
-      getPortfolio() {
-        return this.getStock.filter(stock => stock.amount > 0)
+        return this.portfolio.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
       }
     },
     watch: {
       getStock: {
         handler(stocks) {
-          let portfolio = stocks.filter(stock => stock.amount > 0)
-
-          if(portfolio.length != 0)
-            this.selectedSymbol = portfolio[0].symbol
+          if(this.portfolio.length == 0)
+            this.portfolio = stocks.filter(stock => stock.amount > 0)
+            
+          if(this.portfolio.length != 0)
+            this.selectedSymbol = this.portfolio[0].symbol
         },
         deep: true
       },
