@@ -3,16 +3,16 @@
     <div class="footer" v-if="isLoggedIn">
       <div class="row">
           <b-col cols="7" class="text-left" >
-              <p class="summary" v-if="buyAmount == 0 && sellAmount == 0">No Trading Today?</p>
-              <p class="summary" v-if="buyAmount != 0">Buy {{ formatNumber(buyAmount) }} shares,</p>
-              <p class="summary" v-if="sellAmount != 0">Sell {{ formatNumber(sellAmount) }} shares,</p>
-              <p class="summary" v-if="totalPrice > 0">Total price {{ formatPrice(totalPrice) }} baht</p>
-              <p class="summary" v-if="totalPrice < 0">Gain {{ formatPrice(Math.abs(totalPrice)) }} baht</p>
+              <p class="summary cursor-default" v-if="buyAmount == 0 && sellAmount == 0">No Trading Today?</p>
+              <p class="summary cursor-default" v-if="buyAmount != 0">Buy {{ formatNumber(buyAmount) }} shares,</p>
+              <p class="summary cursor-default" v-if="sellAmount != 0">Sell {{ formatNumber(sellAmount) }} shares,</p>
+              <p class="summary cursor-default" v-if="totalPrice > 0">Total price {{ formatPrice(totalPrice) }} baht</p>
+              <p class="summary cursor-default" v-if="totalPrice < 0">Gain {{ formatPrice(Math.abs(totalPrice)) }} baht</p>
           </b-col>
           <b-col cols="5" class="text-right">
-              <p class="summary complete-trading" v-if="buyAmount == 0 && sellAmount == 0" @click="nextDay">next <i class="fas fa-angle-right"></i></p>
-              <p class="summary complete-trading" v-else-if="totalPrice <= getCash" @click="openModal">complete trading <i class="fas fa-check"></i></p>
-              <p class="summary" v-else>check your cash</p>
+              <p class="summary complete-trading footer-button" v-if="buyAmount == 0 && sellAmount == 0" @click="nextDay">next <i class="fas fa-angle-right"></i></p>
+              <p class="summary complete-trading footer-button" v-else-if="totalPrice <= getCash" @click="openModal">complete trading <i class="fas fa-check"></i></p>
+              <p class="summary footer-button" v-else>check your cash</p>
           </b-col>
       </div>
     </div>

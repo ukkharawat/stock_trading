@@ -5,9 +5,8 @@
 
 ``` bash
   1. Display stock in graph
-  2. Buy Stock (WIP)
-  3. Sell Stock (WIP)
-  4. Open data for MACHINE LEARNING (WIP)
+  2. Buy Stock
+  3. Sell Stock
 ```
 
 ## Prerequisite
