@@ -37,7 +37,6 @@
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
   import virtualList from 'vue-virtual-scroll-list'
-  import stockController from '@/controllers/Stock.controller'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -49,12 +48,6 @@
         startIndex: 0
       }
     },
-    async created() {
-      await stockController.getComparedValue()
-                .then(response => {
-                  this.values = response.comparedValues
-                })
-    },
     components: {
       index,
       stock,
@@ -63,8 +56,7 @@
     },
     computed: {
       ...mapGetters([
-        'getStock',
-        'getTrackingDay'
+        'getStock'
       ]),
       filteredStockBySearch() {
         return this.getStock.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
@@ -72,22 +64,26 @@
     },
     watch: {
       getStock: {
-        handler(stock) {
-          this.selectedSymbol = stock[0].symbol
-        }
-      },
-      getTrackingDay: {
-        async handler() {
-          await stockController.getComparedValue()
-                .then(response => {
-                  this.values = response.comparedValues
-                })
-        }
+        handler(stocks) {
+          this.updateValues(stocks)
+          this.selectedSymbol = stocks[0].symbol
+        },
+        deep: true
       }
     },
     methods: {
       selectSymbol(symbol) {
         this.selectedSymbol = symbol
+      },
+      updateValues(stocks) {
+        this.values = stocks.map(stock => {
+            return {
+              symbol: stock.symbol,
+              diff: stock.diff,
+              diffPer: stock.diffPer,
+              currentPrice: stock.averagePrice
+            }
+          })
       }
     }
   }

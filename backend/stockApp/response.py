@@ -94,10 +94,11 @@ class Response(object):
     def createComparedStockValue(stockValues):
         
         comparedValues = [ Datasource.createComparedStockValue(x, y) for (x, y) in zip(stockValues[::2], stockValues[1::2])]
+        temp = [ comparedValues[i] for i in range(len(comparedValues) - 1) if i + 1 == len(comparedValues) or comparedValues[i]['symbol'] != comparedValues[i + 1]['symbol'] ]
         
         response = {
             'success': True,
-            'comparedValues': comparedValues
+            'comparedValues': temp
         }
 
         return JsonResponse(response, status = status.HTTP_200_OK)
