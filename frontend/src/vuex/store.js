@@ -16,9 +16,11 @@ const mutations = {
     stocks.forEach((stock) => {
       let stockIndex = state.stocks.findIndex(stateStock => stateStock.symbol === stock.symbol)
 
-      state.stocks[stockIndex].amount = stock.amount
-      state.stocks[stockIndex].averagePrice = stock.averagePrice
+      state.stocks[stockIndex].amount = stock.amount? stock.amount: state.stocks[stockIndex].amount
+      state.stocks[stockIndex].averagePrice = stock.averagePrice ? stock.averagePrice: state.stocks[stockIndex].averagePrice
       state.stocks[stockIndex].changedAmount = 0
+      state.stocks[stockIndex].diff = stock.diff? stock.diff: state.stocks[stockIndex].diff
+      state.stocks[stockIndex].diffPer = stock.diffPer? stock.diffPer: state.stocks[stockIndex].diffPer
     })
   },
   SET_STOCK(state, stocks) {

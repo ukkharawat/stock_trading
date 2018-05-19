@@ -48,15 +48,20 @@
         'getCash',
         'getUsername',
         'isLoggedIn',
-        'getStock'
+        'getStock',
+        'getUnchangedStocks'
       ])
     },
     watch: {
       getStock: {
         handler(val) {
           this.capital = this.getCash
-          let holdingStock = this.getStock.filter(stock => stock.amount > 0)
-          
+          let holdingStock = val.filter(stock => stock.amount > 0)
+          this.getUnchangedStocks.forEach(unchangedStock => {
+            if(unchangedStock.amount === 0)
+              holdingStock.push(unchangedStock)
+          })
+
           if(holdingStock.length > 0) {
             this.capital += holdingStock.map(stock => (stock.amount - stock.changedAmount) * stock.averagePrice)
                               .reduce((sum, current) => sum + current)

@@ -20,8 +20,16 @@ export default class StockDatasource {
   static createChangedStockObject(stock) {
     return {
       "symbol": stock.symbol,
-      "amount": stock.volume,
-      "averagePrice": stock.averagePrice
+      "amount": stock.volume
+    }
+  }
+
+  static createUpdatedPriceStock(stock) {
+    return {
+      "symbol": stock.symbol,
+      "averagePrice": stock.currentPrice,
+      "diff": stock.diff,
+      "diffPer": stock.diffPer
     }
   }
 
@@ -32,7 +40,9 @@ export default class StockDatasource {
       "amount": 0,
       "changedAmount": 0,
       "price": 0,
-      "averagePrice": 0
+      "averagePrice": 0,
+      "diff": 0,
+      "diffPer": 0
     }
   }
 
