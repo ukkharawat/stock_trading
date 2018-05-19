@@ -37,7 +37,6 @@
   import stock from '@/components/Stock'
   import indexMenu from '@/components/IndexMenu'
   import virtualList from 'vue-virtual-scroll-list'
-  import stockController from '@/controllers/Stock.controller'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -50,12 +49,6 @@
         portfolio: []
       }
     },
-    async created() {
-      await stockController.getComparedValue()
-                .then(response => {
-                  this.values = response.comparedValues
-                })
-    },
     components: {
       index,
       stock,
@@ -65,7 +58,7 @@
     computed: {
       ...mapGetters([
         'getStock',
-        'getTrackingDay'
+        'getUnchangedStocks'
       ]),
       filteredStockBySearch() {
         return this.portfolio.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
@@ -74,26 +67,32 @@
     watch: {
       getStock: {
         handler(stocks) {
-          if(this.portfolio.length == 0)
-            this.portfolio = stocks.filter(stock => stock.amount > 0)
-            
+          this.portfolio = stocks.filter(stock => stock.amount > 0)
+          this.getUnchangedStocks.forEach(unchangedStock => {
+            if(unchangedStock.amount === 0)
+              this.portfolio.push(stocks.find(stock => stock.symbol === unchangedStock.symbol))
+          })
+          
+          this.updateValues()
           if(this.portfolio.length != 0)
             this.selectedSymbol = this.portfolio[0].symbol
         },
         deep: true
-      },
-      getTrackingDay: {
-        async handler() {
-          await stockController.getComparedValue()
-                .then(response => {
-                  this.values = response.comparedValues
-                })
-        }
       }
     },
     methods: {
       selectSymbol(symbol) {
         this.selectedSymbol = symbol
+      },
+      updateValues() {
+        this.values = this.portfolio.map(stock => {
+            return {
+              symbol: stock.symbol,
+              diff: stock.diff,
+              diffPer: stock.diffPer,
+              currentPrice: stock.averagePrice
+            }
+          })
       }
     }
   }

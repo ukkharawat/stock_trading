@@ -22,15 +22,12 @@
       summaryFooter
     },
     async created() {
-      this.setStockList()
-        .then(() => {
-          if(cacheController.isLoggedIn()) {
-            this.setUsername(cacheController.getUsername())
-            this.updateUserDetail()
-          }
-        })
-
-      
+      await this.setStockList()
+      await this.getComparedValue()
+      if(cacheController.isLoggedIn()) {
+        this.setUsername(cacheController.getUsername())
+        await this.updateUserDetail()
+      }
     },
     computed: {
       ...mapGetters([
@@ -40,8 +37,9 @@
     },
     watch: {
       getTrackingDay: {
-        handler() {
-          this.updateUserDetail()
+        async handler() {
+          await this.getComparedValue()
+          await this.updateUserDetail()
         }
       }
     },
@@ -53,20 +51,29 @@
         'setCash'
       ]),
       updateUserDetail() {
-        userController.getUserDetail()
-          .then(response => {
-            this.setCash(response.cash)
+        return userController.getUserDetail()
+                .then(response => {
+                  this.setCash(response.cash)
 
-            let stocks = response.portfolio.map(stock => stockDatasource.createChangedStockObject(stock))
-            this.updateStock(stocks)
-          })
+                  let stocks = response.portfolio.map(stock => stockDatasource.createChangedStockObject(stock))
+                  this.updateStock(stocks)
+                })
+      },
+      getComparedValue() {
+        return stockController.getComparedValue()
+                .then(response => response.comparedValues)
+                .then(comparedValues => {
+                  let stocks = comparedValues.map(comparedValue => stockDatasource.createUpdatedPriceStock(comparedValue))
+
+                  this.updateStock(stocks)
+                })
       },
       setStockList() {
         return stockController.getStockList()
                 .then(response => response.stockList)
                 .then(stockLists => {
                   let stockList = stockLists.map(stock => stockDatasource.createDefaultStockList(stock))
-
+                  
                   this.setStock(stockList)
                 })
       }
