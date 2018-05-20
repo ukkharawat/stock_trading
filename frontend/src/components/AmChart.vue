@@ -1,5 +1,10 @@
 <template>
-  <div :id="symbol" class="chartdiv">
+  <div>
+    <content-placeholders v-show="!chart" :rounded="true" class="small-margin-left margin-top">
+      <content-placeholders-img style="height:400px"/>
+    </content-placeholders>
+    <div v-show="chart" :id="symbol" class="chartdiv">
+    </div>
   </div>
 </template>
 
@@ -42,8 +47,8 @@
         }
       }
     },
-    async created() {
-      await stockController.getStockValue(this.symbol)
+    created() {
+      stockController.getStockValue(this.symbol)
         .then(response => response.stockValue)
         .then(stockValue => {
           this.displayData = stockValue

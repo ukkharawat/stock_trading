@@ -4356,6 +4356,10 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-content-placeholders@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/vue-content-placeholders/-/vue-content-placeholders-0.2.1.tgz#5876bda4577c80ff6d396fb33b2dbbf8b8cc140f"
+
 vue-functional-data-merge@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-functional-data-merge/-/vue-functional-data-merge-2.0.3.tgz#fe79c9f6fab13e047f1e6dcaa4a0fde63fe15587"

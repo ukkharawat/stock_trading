@@ -11,7 +11,10 @@
           </b-form-input>
         </div>
         <div class="scrollable">
-          <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
+          <content-placeholders v-for="i in 10" :key="i" v-if="!filteredStockBySearch.length" :rounded="true">
+            <content-placeholders-img style="height:60px"/>
+            <hr>
+          </content-placeholders>
           <virtualList class="scroll" :size="40" :remain="8" :bench="32" :startIndex="startIndex">
             <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
               <indexMenu
@@ -60,13 +63,16 @@
       ]),
       filteredStockBySearch() {
         return this.getStock.filter(stock => stock.symbol.includes(this.symbol.toUpperCase()))
+          .filter(stock => stock.averagePrice !== 0)
       }
     },
     watch: {
       getStock: {
         handler(stocks) {
           this.updateValues(stocks)
-          this.selectedSymbol = stocks[0].symbol
+          if (!this.selectedSymbol) {
+            this.selectedSymbol = stocks[0].symbol
+          }
         },
         deep: true
       }
