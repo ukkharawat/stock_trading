@@ -6,12 +6,14 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import store from './vuex/store'
 import VeeValidate from 'vee-validate'
+import VueContentPlaceholders from 'vue-content-placeholders'
 
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate)
+Vue.use(VueContentPlaceholders)
 Vue.config.productionTip = false
 
 VeeValidate.Validator.extend('verify_password', {
