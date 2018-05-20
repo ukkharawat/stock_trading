@@ -351,6 +351,10 @@ em:hover {
   padding: 0.0675rem 0.5rem;
 }
 
+.small-margin-left {
+  margin-left: 16px;
+}
+
 .loader {
   content: "";
   margin: 0 auto;
