@@ -39,7 +39,6 @@ export default class StockDatasource {
       "fullname": stock.fullname,
       "amount": 0,
       "changedAmount": 0,
-      "price": 0,
       "averagePrice": 0,
       "diff": 0,
       "diffPer": 0
