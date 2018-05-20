@@ -21,12 +21,12 @@
       navbar,
       summaryFooter
     },
-    created() {
-      this.setStockList()
-      this.getComparedValue()
+    async created() {
+      await this.setStockList()
+      await this.getComparedValue()
       if(cacheController.isLoggedIn()) {
         this.setUsername(cacheController.getUsername())
-        this.updateUserDetail()
+        await this.updateUserDetail()
       }
     },
     computed: {
@@ -37,9 +37,9 @@
     },
     watch: {
       getTrackingDay: {
-        handler() {
-          this.getComparedValue()
-          this.updateUserDetail()
+        async handler() {
+          await this.getComparedValue()
+          await this.updateUserDetail()
         }
       }
     },
