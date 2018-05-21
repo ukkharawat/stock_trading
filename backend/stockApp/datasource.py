@@ -6,7 +6,7 @@ class Datasource(object):
     def createStockDetail(stock):
         return {
             'fullname': str(stock['fullname']),
-            'symbol': str(stock['name'])
+            'symbol': str(stock['symbol'])
         }
 
     @staticmethod
@@ -36,11 +36,11 @@ class Datasource(object):
 
     @staticmethod
     def createStockValue(stockValue):
-        if (stockValue.openPrice == stockValue.openPrice):
+        if (stockValue.open == stockValue.open):
             return {
             'Date': str(stockValue.date),
-            'Open': stockValue.openPrice,
-            'Close': stockValue.closePrice,
+            'Open': stockValue.open,
+            'Close': stockValue.close,
             'BuyPrice': Utility.findStockPrice(stockValue),
             'High': stockValue.high,
             'Low': stockValue.low,
@@ -62,5 +62,5 @@ class Datasource(object):
             'diff': "{0:.2f}".format(diff),
             'diffPer': "{0:.2f}".format(round(diff/oldPrice,2)) if oldPrice > 0 else 0,
             'currentPrice': currentPrice,
-            'symbol': str(after.name)
+            'symbol': str(after.symbol)
         }

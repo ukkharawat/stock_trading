@@ -2,11 +2,11 @@ class Utility(object):
 
     @staticmethod
     def findStockPrice(stockValue):
-        if stockValue.openPrice is None and stockValue.closePrice is None:
+        if stockValue.open is None and stockValue.close is None:
             return 0
         else:
             
-            price = (stockValue.openPrice + stockValue.closePrice) / 2
+            price = (stockValue.open + stockValue.close) / 2
             return "{0:.2f}".format(round(price,2))
 
     @staticmethod
