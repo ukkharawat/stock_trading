@@ -90,7 +90,7 @@
           .then(response => {
             this.fetchCache(response)
             this.closeModal()
-            this.$refs.loader.activateLoader()
+            this.$refs.loader.activateLoader(750)
           })
           .catch(error => {
             this.isLoginFailed = true

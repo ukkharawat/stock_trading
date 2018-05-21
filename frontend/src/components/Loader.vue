@@ -12,13 +12,13 @@ export default {
     }
   },
   methods: {
-    async  activateLoader() {
+    async  activateLoader(ms) {
       this.isLoadingModalOpen = 'block'
-      await this.sleep()
+      await this.sleep(ms)
       this.isLoadingModalOpen = 'none'
     },
     sleep() {
-      return new Promise(resolve => setTimeout(resolve, 750))
+      return new Promise(resolve => setTimeout(resolve, ms))
     }
   }
 }
