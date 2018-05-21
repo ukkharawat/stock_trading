@@ -119,13 +119,12 @@
         return result + price.replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
       },
       async proceed() {
-        this.$refs.loader.activateLoader()
         await this.sellStock()
         await this.buyStock()
         await this.nextDay()
-        
         this.clearUnchangedStock()
         this.closeModal()
+        this.$refs.loader.activateLoader(1000)
       },
       sellStock() {
         let sellStock = this.getUnchangedStocks.filter(stock => stock.changedAmount < 0)

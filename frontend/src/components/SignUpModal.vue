@@ -117,7 +117,7 @@
           .then(response => {
             this.fetchUserDetail(response)
             this.closeModal()
-            this.$refs.loader.activateLoader()
+            this.$refs.loader.activateLoader(750)
           })
           .catch(error => {
             this.isSignUpFailed = true

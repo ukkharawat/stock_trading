@@ -38,10 +38,10 @@ def getCurrentStockData(request):
 			step = 1
 			
 		symbol = request.GET['symbol']
-		stock = Stock.objects.get(name = symbol)
+		stock = Stock.objects.get(symbol = symbol)
 		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 		
-		stockValue = StockValue.objects.filter(name = stock, date__gte = date)[:1]
+		stockValue = StockValue.objects.filter(symbol = stock, date__gte = date)[:1]
 
 		if stockValue is not None:
 			return Response.createStockData(stockValue[0])
@@ -85,10 +85,10 @@ def getStockValue(request):
 			step = 1
 
 		symbol = request.GET['symbol']
-		stock = Stock.objects.get(name = symbol)
+		stock = Stock.objects.get(symbol = symbol)
 		date = datetime.date(2016, 1, 3) + datetime.timedelta(days = step)
 
-		stockValue = StockValue.objects.filter(name = stock, date__lte=date)
+		stockValue = StockValue.objects.filter(symbol = stock, date__lte=date)
 		if stockValue.exists():
 			return Response.createStockValueList(stockValue)
 		else:
