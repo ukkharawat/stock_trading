@@ -11,16 +11,17 @@
           </b-form-input>
         </div>
         <div class="scrollable">
-          <content-placeholders v-for="i in 10" :key="i" v-if="!filteredStockBySearch.length" :rounded="true">
+          <content-placeholders v-for="i in 10" :key="i" v-if="!filteredStockBySearch.length && !symbol" :rounded="true">
             <content-placeholders-img style="height:60px"/>
             <hr>
           </content-placeholders>
+          <h4 v-if="!filteredStockBySearch.length && symbol" class="warning">No matching symbol for "{{symbol}}"</h4>
           <virtualList class="scroll" :size="40" :remain="8" :bench="32" :startIndex="startIndex">
             <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
               <indexMenu
                 :stock="stock"
                 :value="values.find(e => e.symbol === stock.symbol)"
-                @selectSymbol="selectSymbol">
+                @selectStock="selectStock">
               </indexMenu>
             </div>
           </virtualList>
@@ -28,8 +29,8 @@
       </index>
     </b-col>
     <b-col cols="8" class="remove-left-padding">
-      <stock v-show="selectedSymbol !== null"
-             :symbol="selectedSymbol">
+      <stock :symbol="selectedSymbol"
+             :fullname="selectedFullname">
       </stock>
     </b-col>
   </b-row>
@@ -47,6 +48,7 @@
       return {
         symbol: "",
         selectedSymbol: null,
+        selectedFullname: null,
         values: [],
         startIndex: 0
       }
@@ -71,15 +73,16 @@
         handler(stocks) {
           this.updateValues(stocks)
           if (!this.selectedSymbol) {
-            this.selectedSymbol = stocks[0].symbol
+            this.selectStock(stocks[0])
           }
         },
         deep: true
       }
     },
     methods: {
-      selectSymbol(symbol) {
-        this.selectedSymbol = symbol
+      selectStock(stock) {
+        this.selectedSymbol = stock.symbol
+        this.selectedFullname = stock.fullname
       },
       updateValues(stocks) {
         this.values = stocks.map(stock => {
