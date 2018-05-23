@@ -17,7 +17,7 @@ export default {
       await this.sleep(ms)
       this.isLoadingModalOpen = 'none'
     },
-    sleep() {
+    sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms))
     }
   }

@@ -12,17 +12,19 @@
           <b-col cols="5" class="text-right">
               <p class="summary complete-trading footer-button" v-if="buyAmount == 0 && sellAmount == 0" @click="nextDay">next <i class="fas fa-angle-right"></i></p>
               <p class="summary complete-trading footer-button" v-else-if="totalPrice <= getCash" @click="openModal">complete trading <i class="fas fa-check"></i></p>
-              <p class="summary footer-button" v-else>check your cash</p>
+              <p class="summary" v-else>check your cash</p>
           </b-col>
       </div>
     </div>
     <summaryModal ref="summaryModal"></summaryModal>
+    <loader ref="loader"></loader>
   </div>
 </template>
 <script>
   import { mapGetters, mapActions } from 'vuex'
   import summaryModal from '@/components/SummaryModal'
   import userController from '@/controllers/User.controller'
+  import loader from '@/components/Loader.vue'
 
   export default {
     data() {
@@ -35,7 +37,8 @@
         }
     },
     components: {
-        summaryModal
+        summaryModal,
+        loader
     },
     computed: {
         ...mapGetters([
@@ -97,7 +100,9 @@
             this.$refs.summaryModal.openModal()
         },
         nextDay() {
-            userController.nextDay().then(() => this.increaseTrackingDay())
+            userController.nextDay()
+                .then(() => this.increaseTrackingDay())
+                .then(() => this.$refs.loader.activateLoader(750))
         }
     }
   }
