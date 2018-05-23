@@ -1,7 +1,10 @@
 <template>
   <div id="stock-header">
-    <h2 class="symbol">{{symbol}}</h2>
-    <h3 class="fullname">{{fullname}}</h3>
+    <content-placeholders v-show="!symbol">
+      <content-placeholders-img style="height:30px"/>
+    </content-placeholders>
+    <h2 class="symbol" v-show="symbol">{{symbol}}</h2>
+    <h3 class="fullname" v-show="fullname">{{fullname}}</h3>
   </div>
 </template>
 
