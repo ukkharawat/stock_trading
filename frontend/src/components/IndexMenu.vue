@@ -1,5 +1,5 @@
 <template>
-  <div id="index-menu" @click="selectSymbol" v-if="isDisplay">
+  <div id="index-menu" @click="selectStock" v-if="isDisplay">
     <b-row class="stock-list-margin">
       <b-col cols="3" class="cursor-pointer">
         <h4>{{ stock.symbol }}</h4>
@@ -87,8 +87,8 @@
 
         this.updateUnchangedStock(stock)
       },
-      selectSymbol() {
-        this.$emit('selectSymbol', this.stock.symbol)
+      selectStock() {
+        this.$emit('selectStock', this.stock)
       }
     }
   }

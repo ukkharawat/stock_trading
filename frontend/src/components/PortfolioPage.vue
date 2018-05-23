@@ -11,13 +11,17 @@
           </b-form-input>
         </div>
         <div class="scrollable">
-          <h4 v-if="!filteredStockBySearch.length" class="warning">No symbol found.</h4>
+          <content-placeholders v-for="i in 10" :key="i" v-if="!filteredStockBySearch.length && !symbol" :rounded="true">
+            <content-placeholders-img style="height:60px"/>
+            <hr>
+          </content-placeholders>
+          <h4 v-if="!filteredStockBySearch.length && symbol" class="warning">No matching symbol for "{{symbol}}"</h4>
           <virtualList class="scroll" :size="40" :remain="8" :bench="32" :startIndex="startIndex">
             <div v-for="stock in filteredStockBySearch" v-bind:key="stock.symbol">
               <indexMenu
                 :stock="stock"
                 :value="values.find(e => e.symbol === stock.symbol)"
-                @selectSymbol="selectSymbol">
+                @selectedStock="selectedStock">
               </indexMenu>
             </div>
           </virtualList>
@@ -25,8 +29,8 @@
       </index>
     </b-col>
     <b-col cols="8" class="remove-left-padding">
-      <stock v-show="selectedSymbol !== null"
-             :symbol="selectedSymbol">
+      <stock :symbol="selectedSymbol"
+             :fullname="selectedFullname">
       </stock>
     </b-col>
   </b-row>
@@ -44,6 +48,7 @@
       return {
         symbol: "",
         selectedSymbol: null,
+        selectedFullname: null,
         values: [],
         startIndex: 0,
         portfolio: []
@@ -75,14 +80,15 @@
           
           this.updateValues()
           if(this.portfolio.length != 0)
-            this.selectedSymbol = this.portfolio[0].symbol
+            this.selectedStock(this.portfolio[0])
         },
         deep: true
       }
     },
     methods: {
-      selectSymbol(symbol) {
-        this.selectedSymbol = symbol
+      selectedStock(stock) {
+        this.selectedSymbol = stock.symbol
+        this.selectedFullname = stock.fullname
       },
       updateValues() {
         this.values = this.portfolio.map(stock => {
