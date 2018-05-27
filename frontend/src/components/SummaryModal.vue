@@ -143,22 +143,24 @@
           return stockController.buyStock(buyStock)
       },
       nextDay() {
-        userController.nextDay()
-          .then(() => this.updateCash())
-          .then(() => this.updateComparedValue())
-          .then(() => this.increaseTrackingDay())
+        userController.nextDay().then(() => this.updateData())
+      },
+      async updateData() {
+        await this.updateCash()
+        await this.updateComparedValue()
+        this.increaseTrackingDay()
       },
       updateCash() {
-        userController.getUserDetail().then(response => this.setCash(response.cash))
+        return userController.getUserDetail().then(response => this.setCash(response.cash))
       },
       updateComparedValue() {
-        stockController.getComparedValue()
-          .then(response => response.comparedValues)
-          .then(comparedValues => {
-            let stocks = comparedValues.map(comparedValue => stockDatasource.createUpdatedPriceStock(comparedValue))
+        return stockController.getComparedValue()
+            .then(response => response.comparedValues)
+            .then(comparedValues => {
+              let stocks = comparedValues.map(comparedValue => stockDatasource.createUpdatedPriceStock(comparedValue))
 
-            this.updateStock(stocks)
-          })
+              this.updateStock(stocks)
+            })
       }
     }
   }
