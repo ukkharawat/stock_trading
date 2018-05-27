@@ -40,7 +40,8 @@
         'setUsername',
         'updateStock',
         'setStock',
-        'setCash'
+        'setCash',
+        'increaseTrackingDay'
       ]),
       updateUserDetail() {
         return userController.getUserDetail()
