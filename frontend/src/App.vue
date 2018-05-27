@@ -27,21 +27,13 @@
       if(cacheController.isLoggedIn()) {
         this.setUsername(cacheController.getUsername())
         await this.updateUserDetail()
+        this.increaseTrackingDay()
       }
     },
     computed: {
       ...mapGetters([
-        'isLoggedIn',
-        'getTrackingDay'
+        'isLoggedIn'
       ])
-    },
-    watch: {
-      getTrackingDay: {
-        async handler() {
-          await this.getComparedValue()
-          await this.updateUserDetail()
-        }
-      }
     },
     methods: {
       ...mapActions([
