@@ -47,8 +47,7 @@
     },
     computed: {
       ...mapGetters([
-        'isLoggedIn',
-        'getTrackingDay'
+        'isLoggedIn'
       ]),
       isPriceUp() {
         return this.value.diff >= 0
