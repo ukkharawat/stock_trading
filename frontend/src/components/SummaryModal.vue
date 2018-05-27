@@ -87,7 +87,9 @@
     methods: {
       ...mapActions([
         'clearUnchangedStock',
-        'increaseTrackingDay'
+        'increaseTrackingDay',
+        'setCash',
+        'updateStock'
       ]),
       openModal() {
         this.isModalOpen = 'flex'
@@ -124,7 +126,7 @@
         await this.nextDay()
         this.clearUnchangedStock()
         this.closeModal()
-        this.$refs.loader.activateLoader(1000)
+        this.$refs.loader.activateLoader(1500)
       },
       sellStock() {
         let sellStock = this.getUnchangedStocks.filter(stock => stock.changedAmount < 0)
@@ -141,7 +143,22 @@
           return stockController.buyStock(buyStock)
       },
       nextDay() {
-        userController.nextDay().then(() => this.increaseTrackingDay())
+        userController.nextDay()
+          .then(() => this.updateCash())
+          .then(() => this.updateComparedValue())
+          .then(() => this.increaseTrackingDay())
+      },
+      updateCash() {
+        userController.getUserDetail().then(response => this.setCash(response.cash))
+      },
+      updateComparedValue() {
+        stockController.getComparedValue()
+          .then(response => response.comparedValues)
+          .then(comparedValues => {
+            let stocks = comparedValues.map(comparedValue => stockDatasource.createUpdatedPriceStock(comparedValue))
+
+            this.updateStock(stocks)
+          })
       }
     }
   }
