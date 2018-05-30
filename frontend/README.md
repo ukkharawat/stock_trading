@@ -7,14 +7,15 @@
   1. Display stock in graph
   2. Buy Stock
   3. Sell Stock
+  4. Portfolio page
 ```
 
 ## Prerequisite
 
 ``` bash
   # Recommend
-  node: 6.10.2
-  yarn: 0.27.5
+  node: 8.10.0
+  yarn: 1.5.1
 ```
 
 ## Build Setup
