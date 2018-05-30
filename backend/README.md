@@ -7,6 +7,7 @@
   1. Display stock in graph
   2. Buy Stock
   3. Sell Stock
+  4. Portfolio page
 ```
 
 ## Prerequisite
@@ -18,6 +19,7 @@
   djangorestframework 3.7.7  
   django-cors-headers 2.1.0  
   bcrypt 3.1.4
+  psycopgs 2.7.4
 ```
 
 ## Build Setup
@@ -25,4 +27,13 @@
 ``` bash
 # run in local
   python manage.py runserver [port: optional]
+  
+# change model
+  python manage.py makemigrations
+  
+# apply model
+  python manage.py migrate
+ 
+# create superuser (Require runserver)
+  prthon manage.py createsuperuser 
 ```
