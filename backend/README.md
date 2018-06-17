@@ -1,4 +1,4 @@
-# Stock Trading Using Vue :: Backend
+# Stock Trading:: Backend
 
 
 ## Feature
