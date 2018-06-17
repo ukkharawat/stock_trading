@@ -1,7 +1,7 @@
 # Trading simulation platform using Deep learning
 ## features
-1. Trading platform  
-2. Predict stock price using Deep Learning
+1. Trading web application
+2. [Stock trading system using Deep learning](https://github.com/Shinnawat19/SeniorProject)
 
 ### frontend
 ###### using VueJS javascript framework
