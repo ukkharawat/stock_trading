@@ -1,4 +1,4 @@
-# Stock Trading Using Vue
+# Stock Trading :: frontend
 
 
 ## Feature
@@ -11,11 +11,10 @@
 ```
 
 ## Prerequisite
-
+#### [Node 8.x.x](https://nodejs.org/en/)
+#### npm i -g dependency
 ``` bash
-  # Recommend
-  node: 8.10.0
-  yarn: 1.5.1
+  yarn: latest
 ```
 
 ## Build Setup
