@@ -12,9 +12,9 @@
 
 ## Prerequisite
 
-``` bash
-  # Recommend
-  python: 3.6.3  
+### Python3 based on [Anaconda3](https://www.anaconda.com/download/)
+##### pip install package==version [pip3 for linux]
+``` bash 
   django: 2.0.2
   djangorestframework 3.7.7  
   django-cors-headers 2.1.0  
