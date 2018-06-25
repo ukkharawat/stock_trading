@@ -19,7 +19,7 @@
   djangorestframework 3.7.7  
   django-cors-headers 2.1.0  
   bcrypt 3.1.4
-  psycopgs 2.7.4
+  psycopg2 2.7.4
 ```
 
 ## Build Setup
