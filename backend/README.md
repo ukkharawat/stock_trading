@@ -19,7 +19,18 @@
   djangorestframework 3.7.7  
   django-cors-headers 2.1.0  
   bcrypt 3.1.4
-  psycopg2 2.7.4
+  psycopg2-binary
+```
+
+## Database setup
+```bash
+  apt-get -y install postgresql postgresql-contrib
+  sudo su - postgres
+  psql
+  CREATE DATABASE DB_NAME
+  CREATE USER USER_NAME WITH PASSWORD YOUR_PASSWORD \\MUST CHANGE IN SETTINGS
+  \q
+  exit
 ```
 
 ## Build Setup
